@@ -1,14 +1,11 @@
 import ProductContainer from "./ProductContainer";
-import { ProductCreateModal } from "./ProductCreateModal";
 import SchoolContainer from "./SchoolContainer";
-import SchoolShow from "./SchoolContainer";
 
 export default function SchoolPage() {
   return (
-    <div>
+    <section className="w-full max-w-[600px] grid gap-cols-1 gap-3">
       <SchoolContainer />
       <ProductContainer />
-      <ProductCreateModal />
-    </div>
+    </section>
   );
 }

@@ -1,9 +1,18 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ProductCreateModal } from "./ProductCreateModal";
 
 export default function ProductContainer() {
   return (
-    <div>
+    <section>
+      <Card>
+        <CardHeader>
+          <CardTitle>商品</CardTitle>
+        </CardHeader>
+        <CardContent>
 
-    </div>
+          <ProductCreateModal />
+        </CardContent>
+      </Card>
+    </section>
   );
 }
