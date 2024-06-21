@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import Header from "@/components/layout/header/Header";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,7 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={cn(inter.className, 'min-h-screen')}>{children}</body>
+      <body className={cn(inter.className, "min-h-screen")}>
+        <Header />
+        {children}
+        <Toaster richColors closeButton duration={2000}/>
+      </body>
     </html>
   );
 }

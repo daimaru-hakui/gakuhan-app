@@ -1,27 +1,49 @@
-'use client';
+"use client";
 import { SubmitRhkButton } from "@/components/form/Buttons";
 import { FormInput } from "@/components/form/FormInput";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
+import { auth } from "@/lib/firebase/client";
 import { LoginInputs, LoginSchema } from "@/utils/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { FaSchool } from "react-icons/fa";
 
-
 export default function LoginForm() {
+  const router = useRouter()
   const form = useForm<LoginInputs>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
-      password: ""
-    }
+      password: "",
+    },
   });
 
   const onSubmit = (data: LoginInputs) => {
-    console.log(data);
+    handleLogin(data);
   };
+
+  function handleLogin({ email, password }: LoginInputs) {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log(user)
+      router.push("/schools")
+    } else {
+      console.log(user)
+    }
+  });
 
   return (
     <Card className="w-[350px]">
@@ -36,22 +58,35 @@ export default function LoginForm() {
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-3">
               <FormInput form={form} type="text" name="email" label="Email" />
-              <FormInput form={form} type="password" name="password" label="Password" />
+              <FormInput
+                form={form}
+                type="password"
+                name="password"
+                label="Password"
+              />
               <p>
-                <Link href='/' className="text-xs text-primary font-semibold">
+                <Link href="/" className="text-xs text-primary font-semibold">
                   パスワードをお忘れですか?
                 </Link>
               </p>
             </div>
-            <SubmitRhkButton isValid={!form.formState.isValid} text="ログイン" className="w-full mt-5" />
-            <p className="text-xs mt-3">アカウントが未登録ですか？
-              <Link href='/auth/sign-up' className=" text-primary font-semibold">
+            <SubmitRhkButton
+              isValid={!form.formState.isValid}
+              text="ログイン"
+              className="w-full mt-5"
+            />
+            <p className="text-xs mt-3">
+              アカウントが未登録ですか？
+              <Link
+                href="/auth/register"
+                className=" text-primary font-semibold"
+              >
                 アカウントの作成
               </Link>
             </p>
           </form>
         </Form>
       </CardContent>
-    </Card >
+    </Card>
   );
 }

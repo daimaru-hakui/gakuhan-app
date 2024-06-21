@@ -1,11 +1,18 @@
-import ProductContainer from "./ProductContainer";
-import SchoolContainer from "./SchoolContainer";
+import ProductContainer from "../../../components/products/ProductContainer";
+import SchoolContainer from "../../../components/schools/SchoolContainer";
 
-export default function SchoolPage() {
+interface Props {
+  params: {
+    id: string;
+  };
+}
+
+export default function SchoolPage({ params }: Props) {
+  const id = params.id;
   return (
-    <section className="w-full max-w-[600px] grid gap-cols-1 gap-3">
-      <SchoolContainer />
-      <ProductContainer />
+    <section className="w-full max-w-[600px] md:w-auto md:max-w-full grid gap-cols-1 md:grid-cols-[500px,1fr] gap-4 px-6">
+      <SchoolContainer id={id} />
+      <ProductContainer id={id} />
     </section>
   );
 }

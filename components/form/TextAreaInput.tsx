@@ -1,19 +1,31 @@
-import { Control } from "react-hook-form";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { UseFormReturn } from "react-hook-form";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
 import { Textarea } from "../ui/textarea";
 
 type Props = {
-  control: Control<any, any>;
+  form: UseFormReturn<any, any>;
   name: string;
   label?: string;
   placeholder?: string;
   defaultValue?: string;
 };
 
-export default function TextAreaInput({ control, name, label, placeholder, defaultValue }: Props) {
+export default function TextAreaInput({
+  form,
+  name,
+  label,
+  placeholder,
+  defaultValue,
+}: Props) {
   return (
     <FormField
-      control={control}
+      control={form.control}
       name={name}
       defaultValue={defaultValue}
       render={({ field }) => (

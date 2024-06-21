@@ -1,31 +1,48 @@
-'use client';
-import { useState, useTransition } from "react";
+"use client";
+import { useState } from "react";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { Button } from "../ui/button";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Calendar } from "../ui/calendar";
-import { Control, useForm } from "react-hook-form";
+import { UseFormReturn } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 
 type Props = {
-  control: Control<any, any>;
+  form: UseFormReturn<any, any>;
   name: string;
   label?: string;
   defaultValue?: Date;
+  require?: boolean;
 };
 
-export default function FormCalendarInput({ control, name, label, defaultValue }: Props) {
+export default function FormCalendarInput({
+  form,
+  name,
+  label,
+  defaultValue,
+  require,
+}: Props) {
   const [calendarOpen, setCalendarOpen] = useState(false);
+
   return (
     <FormField
-      control={control}
+      control={form.control}
       name={name}
       defaultValue={defaultValue}
       render={({ field }) => (
         <FormItem className="flex flex-col">
-          <FormLabel>{label || name}</FormLabel>
+          <FormLabel>
+            {label || name}
+            {require && <span className="text-red-500 text-xs ml-1">*</span>}
+          </FormLabel>
           <Popover
             open={calendarOpen}
             onOpenChange={() => {
@@ -55,7 +72,7 @@ export default function FormCalendarInput({ control, name, label, defaultValue }
                 mode="single"
                 numberOfMonths={1}
                 selected={new Date(field.value)}
-                onSelect={field.onChange}
+                onSelect={field.onChange || new Date()}
                 initialFocus
               />
               <div className="w-full text-center">

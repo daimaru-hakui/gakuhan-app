@@ -8,31 +8,31 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
-// import { toast } from "@/components/ui/use-toast";
+import { Timestamp, doc, updateDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase/client";
+import { School } from "@/utils/school.type";
+import { toast } from "sonner";
 
-const FormSchema = z.object({
-  dob: z.date({
-    required_error: "A date of birth is required.",
-  }),
-});
+export function SchoolSettingCalendar({ school }: { school: School }) {
+  const defaultDate =
+    new Date(school.scheduledDate?.toDate().toString()) || new Date();
+  const [value, setValue] = useState(defaultDate);
 
-export function SchoolSettingCalendar() {
-  const [value, setValue] = useState(new Date());
-  console.log(value);
+  async function handleUpdateSwitch(e: Date | undefined) {
+    const date = !e ? defaultDate : e;
+    setValue(date || new Date());
+    const docRef = doc(db, "schools", school.id);
+    await updateDoc(docRef, {
+      scheduledDate: date,
+    });
+    toast.success(`採寸日を更新しました`);
+  }
 
   return (
     <div className="flex flex-col">
@@ -46,11 +46,7 @@ export function SchoolSettingCalendar() {
               !value && "text-muted-foreground"
             )}
           >
-            {value ? (
-              format(value, "yyyy-MM-dd")
-            ) : (
-              <span>Pick a date</span>
-            )}
+            {value ? format(value, "yyyy-MM-dd") : <span>Pick a date</span>}
             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -58,7 +54,9 @@ export function SchoolSettingCalendar() {
           <Calendar
             mode="single"
             selected={value}
-            onSelect={(e) => setValue(e || new Date())}
+            onSelect={(e) => {
+              handleUpdateSwitch(e);
+            }}
             initialFocus
           />
         </PopoverContent>
