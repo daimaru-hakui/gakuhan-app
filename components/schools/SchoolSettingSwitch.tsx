@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { db } from "@/lib/firebase/client";
+import { db } from "@/firebase/client";
 import { cn } from "@/lib/utils";
 import { School } from "@/utils/school.type";
 import { doc, updateDoc } from "firebase/firestore";

@@ -5,11 +5,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { SchoolSettingCalendar } from "./SchoolSettingCalendar";
 import { useEffect, useState } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
-import { db } from "@/lib/firebase/client";
+import { db } from "@/firebase/client";
 import { School } from "@/utils/school.type";
-import { toast } from 'sonner'
+import { toast } from 'sonner';
 
-export default function SchoolContainer({ id }: { id: string }) {
+export default function SchoolContainer({ id }: { id: string; }) {
   const [school, setSchool] = useState<School>();
 
   useEffect(() => {

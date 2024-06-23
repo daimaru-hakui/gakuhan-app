@@ -4,24 +4,29 @@ import MenuTitle from "./MenuTitle";
 import MenuList from "./MenuList";
 import LogoutButton from "./LogoutButton";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/lib/firebase/client";
+import { auth } from "@/firebase/client";
 import { usePathname, useRouter } from "next/navigation";
+import { useStore } from "@/store";
 
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const pattern = RegExp('(auth).*', 'g');
+  const user = useStore(state => state.user);
+  const setUser = useStore(state => state.setUser);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log(user);
+        setUser(user);
       } else {
         router.push("/auth/login");
+        setUser(null);
       }
     });
     return () => unsub();
-  }, [router]);
+  }, [router, setUser]);
 
   return (
     <>

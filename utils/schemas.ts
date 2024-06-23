@@ -46,6 +46,7 @@ export type CreateSchool = z.infer<typeof CreateSchoolSchema>;
 
 export const CreateProductSchema = z.object({
   gender: z.enum(["other", "man", "woman"]),
+  isRequire: z.boolean(),
   description: z.string().optional(),
   quantity: z.object({
     min: z.coerce.number().int(),
@@ -57,16 +58,57 @@ export const CreateProductSchema = z.object({
       size: z.string().array(),
       color: z.string().array(),
       price: z.coerce.number().min(0, { message: "金額を入力してください" }),
+      images: z.object({
+        productUrl: z.string(),
+        sizeUrl: z.string()
+      }),
       inseam: z.object({
-        flag: z.boolean(),
+        isFlag: z.boolean(),
         min: z.coerce
           .number()
           .int()
           .min(1, { message: "1以上を設定してください" }),
         max: z.coerce.number().int(),
         base: z.coerce.number().int(),
+        price: z.coerce.number().int(),
+        isUnNeededItem: z.boolean()
       }),
     })
     .array(),
 });
 export type CreateProduct = z.infer<typeof CreateProductSchema>;
+
+export const UpdateProductSchema = z.object({
+  id: z.string(),
+  gender: z.enum(["other", "man", "woman"]),
+  isRequire: z.boolean(),
+  description: z.string().optional(),
+  quantity: z.object({
+    min: z.coerce.number().int(),
+    max: z.coerce.number().int(),
+  }),
+  items: z
+    .object({
+      name: z.string().min(1, { message: "商品名を入力してください" }),
+      size: z.string().array(),
+      color: z.string().array(),
+      price: z.coerce.number().min(0, { message: "金額を入力してください" }),
+      images: z.object({
+        productUrl: z.string(),
+        sizeUrl: z.string()
+      }),
+      inseam: z.object({
+        isFlag: z.boolean(),
+        min: z.coerce
+          .number()
+          .int()
+          .min(1, { message: "1以上を設定してください" }),
+        max: z.coerce.number().int(),
+        base: z.coerce.number().int(),
+        price: z.coerce.number().int(),
+        isUnNeededItem: z.boolean()
+      }),
+    })
+    .array(),
+});
+export type UpdateProduct = z.infer<typeof UpdateProductSchema>;
