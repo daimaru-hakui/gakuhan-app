@@ -6,6 +6,7 @@ import { FiTrash2 } from "react-icons/fi";
 import ProductSizeInput from "./ProductSizeInput";
 import ProductColorInput from "./ProductColorInput";
 import ProductInseamInput from "./ProductInseamInput";
+import ProductImageInput from "./ProductImageInput";
 
 interface Props {
   form: UseFormReturn<CreateProduct, any, undefined>;
@@ -18,8 +19,9 @@ export default function ProductItemInputs({
   index,
   removeProduct,
 }: Props) {
+
   return (
-    <div className="border rounded-md p-3">
+    <div className="border rounded-md p-3 space-y-3">
       <div className="flex justify-between items-center">
         <span className="flex items-center justify-center border w-8 h-8 rounded-full bg-primary text-muted">
           {index + 1}
@@ -28,7 +30,7 @@ export default function ProductItemInputs({
           <FiTrash2 onClick={removeProduct} className="cursor-pointer" />
         )}
       </div>
-      <div className="mt-3 space-y-3">
+      <div className="mt-3 space-y-6">
         <div className="grid md:grid-cols-[1fr_100px] gap-3">
           <FormInput
             type="text"
@@ -44,6 +46,7 @@ export default function ProductItemInputs({
             label="価格"
           />
         </div>
+        <ProductImageInput form={form} index={index} />
         <ProductSizeInput form={form} label="サイズ" index={index} />
         <ProductColorInput form={form} label="カラー" index={index} />
         <ProductInseamInput form={form} index={index} />

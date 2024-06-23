@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { db } from "@/lib/firebase/client";
+import { db } from "@/firebase/client";
 import { School } from "@/utils/school.type";
 import { format } from "date-fns";
 import { collection, onSnapshot } from "firebase/firestore";

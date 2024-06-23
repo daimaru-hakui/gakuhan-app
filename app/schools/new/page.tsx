@@ -1,4 +1,4 @@
-import SchoolCreateForm from "./SchoolCreateFrom";
+import SchoolCreateForm from "@/components/schools/SchoolCreateFrom";
 
 export default function SchoolCreatePage() {
   return (

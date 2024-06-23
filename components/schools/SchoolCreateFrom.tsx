@@ -5,7 +5,7 @@ import { FormInput } from "@/components/form/FormInput";
 import TextAreaInput from "@/components/form/TextAreaInput";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
-import { db } from "@/lib/firebase/client";
+import { db } from "@/firebase/client";
 import { CreateSchool, CreateSchoolSchema } from "@/utils/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addDoc, collection } from "firebase/firestore";

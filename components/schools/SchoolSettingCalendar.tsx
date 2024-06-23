@@ -15,11 +15,11 @@ import {
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Timestamp, doc, updateDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase/client";
+import { db } from "@/firebase/client";
 import { School } from "@/utils/school.type";
 import { toast } from "sonner";
 
-export function SchoolSettingCalendar({ school }: { school: School }) {
+export function SchoolSettingCalendar({ school }: { school: School; }) {
   const defaultDate =
     new Date(school.scheduledDate?.toDate().toString()) || new Date();
   const [value, setValue] = useState(defaultDate);

@@ -3,17 +3,20 @@ import { SubmitRhkButton } from "@/components/form/Buttons";
 import { FormInput } from "@/components/form/FormInput";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
-import { auth } from "@/lib/firebase/client";
+import { auth } from "@/firebase/client";
+import { useStore } from "@/store";
 import { LoginInputs, LoginSchema } from "@/utils/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FaSchool } from "react-icons/fa";
 
 export default function LoginForm() {
-  const router = useRouter()
+  const router = useRouter();
+  const setUser = useStore(state => state.setUser);
   const form = useForm<LoginInputs>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -30,20 +33,24 @@ export default function LoginForm() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
+        setUser(user);
       })
       .catch((error) => {
         console.log(error.message);
       });
   }
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      console.log(user)
-      router.push("/schools")
-    } else {
-      console.log(user)
-    }
-  });
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log(user);
+        router.push("/schools");
+      } else {
+        console.log(user);
+      }
+    });
+    return () => unsub();
+  }, [router]);
 
   return (
     <Card className="w-[350px]">

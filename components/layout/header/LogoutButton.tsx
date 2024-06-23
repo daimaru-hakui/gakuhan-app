@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { auth } from "@/lib/firebase/client";
+import { auth } from "@/firebase/client";
 import React from "react";
 
 export default function LogoutButton() {
