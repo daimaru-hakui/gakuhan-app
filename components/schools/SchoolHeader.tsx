@@ -1,10 +1,25 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form } from "@/components/ui/form";
+import { SchoolSettingCalendar } from "./SchoolSettingCalendar";
+import { School } from "@/utils/school.interface";
 
-export default function SchoolHeader() {
+interface Props {
+  school: School;
+}
+
+export default function SchoolHeader({ school }: Props) {
   return (
-
-    <div className="text-3xl">詳細</div>
+    <div className="space-y-6">
+      <div>
+        <h3 className="font-semibold text-lg">学校名</h3>
+        <div className="mt-1 text-2xl">{school.title}</div>
+      </div>
+      <div>
+        <h3 className="font-semibold">説明</h3>
+        <p className="mt-1 text-sm whitespace-pre-line">
+          {school.description}
+        </p>
+      </div>
+      <SchoolSettingCalendar school={school} />
+    </div>
 
   );
 }

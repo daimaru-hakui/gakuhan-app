@@ -7,7 +7,7 @@ import { db } from "@/firebase/client";
 import { Product } from "@/utils/product.interface";
 import ProductsList from "./ProductsList";
 
-export default function ProductContainer({ id }: { id: string }) {
+export default function ProductContainer({ id }: { id: string; }) {
   const [products, setProducts] = useState<Product[]>();
 
   useEffect(() => {
@@ -18,20 +18,21 @@ export default function ProductContainer({ id }: { id: string }) {
           snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as Product))
         );
       },
+      error: (e) => {
+        console.log(e);
+      }
     });
   }, [id]);
 
   return (
-    <section className="w-full">
-      <Card>
-        <CardHeader>
-          <CardTitle className="whitespace-pre-line">商品</CardTitle>
-        </CardHeader>
-        <CardContent className="w-full">
-          <ProductsList id={id} products={products} />
-          <ProductCreateModal id={id} />
-        </CardContent>
-      </Card>
-    </section>
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle className="whitespace-pre-line">商品</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <ProductsList id={id} products={products} />
+        <ProductCreateModal id={id} />
+      </CardContent>
+    </Card>
   );
 }
