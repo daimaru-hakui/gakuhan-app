@@ -21,7 +21,7 @@ export default function ProductsList({ id, products }: Props) {
   if (products.length === 0) return <EmptyList text="商品が未登録です。" />;
 
   return (
-    <div className="overflow-auto md:w-[500px] 2xl:w-[1000px]">
+    <div className="overflow-auto">
       <Table className="min-w-[900px]">
         <TableHeader>
           <TableRow>
@@ -31,10 +31,10 @@ export default function ProductsList({ id, products }: Props) {
             <TableHead>商品名</TableHead>
             <TableHead>サイズ</TableHead>
             <TableHead>カラー</TableHead>
-            <TableHead className="min-w-[100px]">商品画像</TableHead>
-            <TableHead className="min-w-[100px]">サイズ画像</TableHead>
-            <TableHead className="min-w-[100px]">裾上有無</TableHead>
-            <TableHead className="min-w-[100px]">裾上不要欄</TableHead>
+            <TableHead className="text-center min-w-[100px]">商品画像</TableHead>
+            <TableHead className="text-center min-w-[100px]">サイズ画像</TableHead>
+            <TableHead className="text-center min-w-[100px]">裾上有無</TableHead>
+            <TableHead className="text-center min-w-[100px]">裾上不要欄</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -55,9 +55,13 @@ export default function ProductsList({ id, products }: Props) {
                 ))}
               </TableCell>
               <TableCell>
-                {product.items?.map((item) => (
-                  <div key={item.name}>{item.size.join(",")}</div>
-                ))}
+                {product.items?.map((item) => {
+                  if (item.size.length === 0) {
+                    return <div key={item.name}>-</div>;
+                  } else {
+                    return <div key={item.name}>{item.size.join(",")}</div>;
+                  }
+                })}
               </TableCell>
               <TableCell>
                 {product.items?.map((item) => {
@@ -69,24 +73,40 @@ export default function ProductsList({ id, products }: Props) {
                 })}
               </TableCell>
               <TableCell className="text-center">
-                {product.items?.map((item) =>
-                  item.images.productUrl ? "〇" : "-"
-                )}
+                {product.items?.map((item) => {
+                  if (item.images.productUrl) {
+                    return <div key={item.name}>〇</div>;
+                  } else {
+                    return <div key={item.name}>-</div>;
+                  }
+                })}
               </TableCell>
               <TableCell className="text-center">
-                {product.items?.map((item) =>
-                  item.images.sizeUrl ? "〇" : "-"
-                )}
+                {product.items?.map((item) => {
+                  if (item.images.sizeUrl) {
+                    return <div key={item.name}>〇</div>;
+                  } else {
+                    return <div key={item.name}>-</div>;
+                  }
+                })}
               </TableCell>
               <TableCell className="text-center">
-                {product.items?.map((item) =>
-                  item.inseam.isFlag ? "〇" : "-"
-                )}
+                {product.items?.map((item) => {
+                  if (item.inseam.isFlag) {
+                    return <div key={item.name}>〇</div>;
+                  } else {
+                    return <div key={item.name}>-</div>;
+                  }
+                })}
               </TableCell>
               <TableCell className="text-center">
-                {product.items?.map((item) =>
-                  item.inseam.isFlag && item.inseam.isUnNeededItem ? "〇" : "-"
-                )}
+                {product.items?.map((item) => {
+                  if (item.inseam.isFlag && item.inseam.isUnNeededItem) {
+                    return <div key={item.name}>〇</div>;
+                  } else {
+                    return <div key={item.name}>-</div>;
+                  }
+                })}
               </TableCell>
             </TableRow>
           ))}

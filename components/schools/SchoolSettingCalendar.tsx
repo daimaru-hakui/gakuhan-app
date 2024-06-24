@@ -16,7 +16,7 @@ import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Timestamp, doc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase/client";
-import { School } from "@/utils/school.type";
+import { School } from "@/utils/school.interface";
 import { toast } from "sonner";
 
 export function SchoolSettingCalendar({ school }: { school: School; }) {
