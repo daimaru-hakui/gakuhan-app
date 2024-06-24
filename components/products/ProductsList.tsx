@@ -10,6 +10,8 @@ import {
 import { Product } from "@/utils/product.interface";
 import EmptyList from "../EmptyList";
 import LoaderIcon from "../LoaderIcon";
+import { HiCheck } from "react-icons/hi";
+import { RxDotFilled } from "react-icons/rx";
 
 interface Props {
   id: string;
@@ -42,7 +44,10 @@ export default function ProductsList({ id, products }: Props) {
             <TableRow key={product.id}>
               <TableCell>{product.gender}</TableCell>
               <TableCell className="text-center">
-                {product.isRequire && "〇"}
+                {product.isRequire &&
+                  <div key={product.id} className="flex justify-center">
+                    <HiCheck className="text-primary" />
+                  </div>}
               </TableCell>
               <TableCell>
                 {product.quantity.min === product.quantity.max
@@ -57,7 +62,11 @@ export default function ProductsList({ id, products }: Props) {
               <TableCell>
                 {product.items?.map((item) => {
                   if (item.size.length === 0) {
-                    return <div key={item.name}>-</div>;
+                    return (
+                      <div key={item.name} className="flex justify-center">
+                        <RxDotFilled className="text-muted" />
+                      </div>
+                    );
                   } else {
                     return <div key={item.name}>{item.size.join(",")}</div>;
                   }
@@ -66,7 +75,11 @@ export default function ProductsList({ id, products }: Props) {
               <TableCell>
                 {product.items?.map((item) => {
                   if (item.color.length === 0) {
-                    return <div key={item.name}>-</div>;
+                    return (
+                      <div key={item.name} className="flex justify-center">
+                        <RxDotFilled className="text-muted" />
+                      </div>
+                    );
                   } else {
                     return <div key={item.name}>{item.color.join(",")}</div>;
                   }
@@ -75,36 +88,68 @@ export default function ProductsList({ id, products }: Props) {
               <TableCell className="text-center">
                 {product.items?.map((item) => {
                   if (item.images.productUrl) {
-                    return <div key={item.name}>〇</div>;
+                    return (
+                      <div key={item.name} className="flex justify-center">
+                        <HiCheck className="text-primary" />
+                      </div>
+                    );
                   } else {
-                    return <div key={item.name}>-</div>;
+                    return (
+                      <div key={item.name} className="flex justify-center">
+                        <RxDotFilled className="text-muted" />
+                      </div>
+                    );
                   }
                 })}
               </TableCell>
               <TableCell className="text-center">
                 {product.items?.map((item) => {
                   if (item.images.sizeUrl) {
-                    return <div key={item.name}>〇</div>;
+                    return (
+                      <div key={item.name} className="flex justify-center">
+                        <HiCheck className="text-primary" />
+                      </div>
+                    );
                   } else {
-                    return <div key={item.name}>-</div>;
+                    return (
+                      <div key={item.name} className="flex justify-center">
+                        <RxDotFilled className="text-muted" />
+                      </div>
+                    );
                   }
                 })}
               </TableCell>
               <TableCell className="text-center">
                 {product.items?.map((item) => {
                   if (item.inseam.isFlag) {
-                    return <div key={item.name}>〇</div>;
+                    return (
+                      <div key={item.name} className="flex justify-center">
+                        <HiCheck className="text-primary" />
+                      </div>
+                    );
                   } else {
-                    return <div key={item.name}>-</div>;
+                    return (
+                      <div key={item.name} className="flex justify-center">
+                        <RxDotFilled className="text-muted" />
+                      </div>
+                    );
                   }
                 })}
               </TableCell>
               <TableCell className="text-center">
                 {product.items?.map((item) => {
                   if (item.inseam.isFlag && item.inseam.isUnNeededItem) {
-                    return <div key={item.name}>〇</div>;
+                    return (
+                      <div key={item.name} className="flex justify-center">
+                        <HiCheck className="text-primary" />
+                      </div>
+                    );
                   } else {
-                    return <div key={item.name}>-</div>;
+                    return (
+                      <div key={item.name} className="flex justify-center">
+                        <RxDotFilled className="text-muted" />
+                      </div>
+                    );
                   }
                 })}
               </TableCell>
