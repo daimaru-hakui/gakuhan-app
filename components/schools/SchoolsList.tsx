@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { db } from "@/firebase/client";
-import { School } from "@/utils/school.type";
+import { School } from "@/utils/school.interface";
 import { format } from "date-fns";
 import { collection, onSnapshot } from "firebase/firestore";
 import Link from "next/link";

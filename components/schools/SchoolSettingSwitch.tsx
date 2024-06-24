@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { db } from "@/firebase/client";
 import { cn } from "@/lib/utils";
-import { School } from "@/utils/school.type";
+import { School } from "@/utils/school.interface";
 import { doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import { toast } from "sonner";

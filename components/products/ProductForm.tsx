@@ -11,12 +11,21 @@ import ProductQuantityInput from "./ProductQuantityInput";
 import { cn } from "@/lib/utils";
 import ProductGenderSelectButton from "./ProductGenderSelectButton";
 import ProductRequireSwitch from "./ProductRequireSwitch";
+import {
+  addDoc,
+  collection,
+  doc,
+  getCountFromServer,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "@/firebase/client";
 
 interface Props {
   setIsActive: (bool: boolean) => void;
+  id: string;
 }
 
-export default function ProductForm({ setIsActive }: Props) {
+export default function ProductForm({ setIsActive, id }: Props) {
   const form = useForm<CreateProduct>({
     resolver: zodResolver(CreateProductSchema),
     defaultValues: {
@@ -34,7 +43,7 @@ export default function ProductForm({ setIsActive }: Props) {
           color: [],
           images: {
             productUrl: "",
-            sizeUrl: ""
+            sizeUrl: "",
           },
           inseam: {
             isFlag: false,
@@ -42,7 +51,7 @@ export default function ProductForm({ setIsActive }: Props) {
             max: 30,
             base: 0,
             price: 0,
-            isUnNeededItem: false
+            isUnNeededItem: false,
           },
         },
       ],
@@ -53,8 +62,23 @@ export default function ProductForm({ setIsActive }: Props) {
     name: "items",
   });
 
-  function onSubmit(data: CreateProduct) {
+  async function onSubmit(data: CreateProduct) {
     console.log(data);
+    await createProduct(data);
+  }
+
+  async function createProduct(data: CreateProduct) {
+    try {
+      const schoolsRef = collection(db, "schools", id, "products");
+      const snapshot = await getCountFromServer(schoolsRef);
+      const count = snapshot.data().count;
+      await addDoc(schoolsRef, {
+        ...data,
+        sortNum: count + 1,
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   function addProduct() {
@@ -65,7 +89,7 @@ export default function ProductForm({ setIsActive }: Props) {
       color: [],
       images: {
         productUrl: "",
-        sizeUrl: ""
+        sizeUrl: "",
       },
       inseam: {
         isFlag: false,
@@ -73,7 +97,7 @@ export default function ProductForm({ setIsActive }: Props) {
         max: 30,
         base: 0,
         price: 0,
-        isUnNeededItem: false
+        isUnNeededItem: false,
       },
     });
   }

@@ -6,7 +6,7 @@ import { SchoolSettingCalendar } from "./SchoolSettingCalendar";
 import { useEffect, useState } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "@/firebase/client";
-import { School } from "@/utils/school.type";
+import { School } from "@/utils/school.interface";
 import { toast } from 'sonner';
 
 export default function SchoolContainer({ id }: { id: string; }) {
@@ -27,7 +27,7 @@ export default function SchoolContainer({ id }: { id: string; }) {
   if (!school) return <div></div>;
 
   return (
-    <section>
+    <section className="w-full">
       <Card>
         <CardHeader>
           <CardTitle>詳細</CardTitle>
