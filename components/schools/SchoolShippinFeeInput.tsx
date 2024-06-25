@@ -29,10 +29,10 @@ export default function SchoolShippinFeeInput({ school }: Props) {
           税込み送料を入力してください
         </div>
       </div>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
         <Input
           type="number"
-          className={cn("max-w-[80px] px-2 h-8")}
+          className={cn("max-w-[75px] px-2 h-8")}
           value={shippingFee}
           onChange={(e) => setShippingFee(+e.target.value)}
           onFocus={(e) => e.target.select()}

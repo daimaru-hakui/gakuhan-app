@@ -26,26 +26,27 @@ export const SignUpSchema = z
 export type SignUpInputs = z.infer<typeof SignUpSchema>;
 
 export const CreateSchoolSchema = z.object({
-  title: z.string().min(1, { message: "必須項目です" }),
+  title: z
+    .string()
+    .min(1, { message: "必須項目です" })
+    .max(100, { message: "100文字以内で入力してください" }),
   scheduledDate: z.date().optional(),
-  description: z.string().max(500),
+  description: z.string().max(1000),
 });
 export type CreateSchool = z.infer<typeof CreateSchoolSchema>;
 
-// export const CreateCustomerSchema = z.object({
-//   customerName: z.string(),
-//   customerCode: z.string(),
-//   products: z
-//     .object({
-//       productName: z.string(),
-//       price: z.coerce.number(),
-//     })
-//     .array(),
-// });
-// export type CreateCustomer = z.infer<typeof CreateCustomerSchema>;
+export const EditSchoolSchema = z.object({
+  title: z
+    .string()
+    .min(1, { message: "必須項目です" })
+    .max(100, { message: "100文字以内で入力してください" }),
+  description: z.string().max(1000),
+  scheduledDate: z.date().optional(),
+});
+export type EditSchool = z.infer<typeof EditSchoolSchema>;
 
 export const CreateProductSchema = z.object({
-  id:z.string(),
+  id: z.string(),
   gender: z.enum(["other", "man", "woman"]),
   isRequire: z.boolean(),
   description: z.string().optional(),
@@ -61,7 +62,7 @@ export const CreateProductSchema = z.object({
       price: z.coerce.number().min(0, { message: "金額を入力してください" }),
       images: z.object({
         productUrl: z.string(),
-        sizeUrl: z.string()
+        sizeUrl: z.string(),
       }),
       inseam: z.object({
         isFlag: z.boolean(),
@@ -72,7 +73,7 @@ export const CreateProductSchema = z.object({
         max: z.coerce.number().int(),
         base: z.coerce.number().int(),
         price: z.coerce.number().int(),
-        isUnNeededItem: z.boolean()
+        isUnNeededItem: z.boolean(),
       }),
     })
     .array(),
@@ -96,7 +97,7 @@ export const UpdateProductSchema = z.object({
       price: z.coerce.number().min(0, { message: "金額を入力してください" }),
       images: z.object({
         productUrl: z.string(),
-        sizeUrl: z.string()
+        sizeUrl: z.string(),
       }),
       inseam: z.object({
         isFlag: z.boolean(),
@@ -107,7 +108,7 @@ export const UpdateProductSchema = z.object({
         max: z.coerce.number().int(),
         base: z.coerce.number().int(),
         price: z.coerce.number().int(),
-        isUnNeededItem: z.boolean()
+        isUnNeededItem: z.boolean(),
       }),
     })
     .array(),

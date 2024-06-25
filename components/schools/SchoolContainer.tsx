@@ -31,7 +31,7 @@ export default function SchoolContainer({ id }: { id: string; }) {
       <CardHeader>
         <CardTitle>詳細</CardTitle>
       </CardHeader>
-      <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
         <SchoolHeader school={school} />
         <SchoolContent school={school} />
       </CardContent>
