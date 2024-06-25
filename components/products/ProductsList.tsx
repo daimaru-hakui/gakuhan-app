@@ -8,7 +8,6 @@ import {
 } from "../ui/table";
 import { Product } from "@/utils/product.interface";
 import EmptyList from "../EmptyList";
-import LoaderIcon from "../LoaderIcon";
 import { HiCheck } from "react-icons/hi";
 import { RxDotFilled } from "react-icons/rx";
 import GenderBadge from "../GenderBadge";
@@ -16,11 +15,10 @@ import ProductEditWithDeleteButton from "./ProductEditWithDeleteButton";
 
 interface Props {
   id: string;
-  products: Product[] | undefined;
+  products: Product[];
 }
 
 export default function ProductsList({ id, products }: Props) {
-  if (!products) return <LoaderIcon />;
   if (products.length === 0) return <EmptyList text="商品が未登録です。" />;
 
   return (

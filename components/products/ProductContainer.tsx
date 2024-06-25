@@ -6,8 +6,10 @@ import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "@/firebase/client";
 import { Product } from "@/utils/product.interface";
 import ProductsList from "./ProductsList";
+import ProductDragAndDrop from "./ProductDragAndDrop";
+import LoaderIcon from "../LoaderIcon";
 
-export default function ProductContainer({ id }: { id: string }) {
+export default function ProductContainer({ id }: { id: string; }) {
   const [products, setProducts] = useState<Product[]>();
 
   useEffect(() => {
@@ -25,14 +27,21 @@ export default function ProductContainer({ id }: { id: string }) {
     });
   }, [id]);
 
+  if (!products) return <LoaderIcon />;
+
   return (
     <Card className="w-full">
-      <CardHeader>
+      <CardHeader className="flex flex-row justify-between items-center">
         <CardTitle className="whitespace-pre-line">商品</CardTitle>
+        <div className="flex justify-end items-center gap-3 mb-3">
+          {products.length > 1 && (
+            <ProductDragAndDrop id={id} products={products} />
+          )}
+          <ProductCreateModal id={id} />
+        </div>
       </CardHeader>
-      <CardContent className="text-center">
+      <CardContent>
         <ProductsList id={id} products={products} />
-        <ProductCreateModal id={id} />
       </CardContent>
     </Card>
   );
