@@ -25,4 +25,5 @@ export interface Product {
       isUnNeededItem: boolean;
     };
   }[];
+  sortNum: number;
 }

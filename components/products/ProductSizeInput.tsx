@@ -31,7 +31,7 @@ export default function ProductSizeInput({ form, index, label }: Props) {
     <div>
       <Label>{label}</Label>
       <Input
-        className="mt-2"
+        className="mt-2 shadow-none"
         onChange={handleChange}
         value={value}
         placeholder="F,S,Lとカンマで区切って入力してください"

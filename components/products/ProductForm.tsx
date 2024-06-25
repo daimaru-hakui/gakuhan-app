@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useTransition } from "react";
 import { FieldValue, useFieldArray, useForm } from "react-hook-form";
 import { Form } from "../ui/form";
 import ProductItemInputs from "./ProductItemInputs";
@@ -11,24 +11,22 @@ import ProductQuantityInput from "./ProductQuantityInput";
 import { cn } from "@/lib/utils";
 import ProductGenderSelectButton from "./ProductGenderSelectButton";
 import ProductRequireSwitch from "./ProductRequireSwitch";
-import {
-  addDoc,
-  collection,
-  doc,
-  getCountFromServer,
-  updateDoc,
-} from "firebase/firestore";
+import { addDoc, collection, getCountFromServer } from "firebase/firestore";
 import { db } from "@/firebase/client";
+import { LuLoader2 } from "react-icons/lu";
 
 interface Props {
   setIsActive: (bool: boolean) => void;
+  setOpen: (bool: boolean) => void;
   id: string;
 }
 
-export default function ProductForm({ setIsActive, id }: Props) {
+export default function ProductForm({ setIsActive, setOpen, id }: Props) {
+  const [pending, startTransaction] = useTransition();
   const form = useForm<CreateProduct>({
     resolver: zodResolver(CreateProductSchema),
     defaultValues: {
+      id: "",
       gender: "other",
       isRequire: true,
       quantity: {
@@ -64,7 +62,10 @@ export default function ProductForm({ setIsActive, id }: Props) {
 
   async function onSubmit(data: CreateProduct) {
     console.log(data);
-    await createProduct(data);
+    startTransaction(async () => {
+      await createProduct(data);
+      setOpen(false);
+    });
   }
 
   async function createProduct(data: CreateProduct) {
@@ -111,7 +112,7 @@ export default function ProductForm({ setIsActive, id }: Props) {
   return (
     <Form {...form}>
       <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="overflow-auto h-[calc(100vh-200px)] pl-1 pr-7 space-y-6">
+        <div className="overflow-auto w-full h-[calc(100vh-200px)] pl-1 pr-7 space-y-6">
           <ProductGenderSelectButton form={form} />
           <ProductRequireSwitch form={form} />
           <ProductQuantityInput form={form} />
@@ -136,13 +137,14 @@ export default function ProductForm({ setIsActive, id }: Props) {
             商品を追加する
           </Button>
         </div>
-        <DialogFooter className="flex flex-row justify-end gap-3 w-full pr-6">
+        <DialogFooter className="w-full flex flex-row justify-end gap-3 pr-6">
           <DialogClose asChild>
             <Button type="button" variant="secondary" className="w-full">
               閉じる
             </Button>
           </DialogClose>
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" disabled={pending}>
+            {pending && <LuLoader2 className="mr-2 h-4 w-4 animate-spin" />}
             登録
           </Button>
         </DialogFooter>

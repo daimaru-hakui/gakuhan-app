@@ -45,6 +45,7 @@ export type CreateSchool = z.infer<typeof CreateSchoolSchema>;
 // export type CreateCustomer = z.infer<typeof CreateCustomerSchema>;
 
 export const CreateProductSchema = z.object({
+  id:z.string(),
   gender: z.enum(["other", "man", "woman"]),
   isRequire: z.boolean(),
   description: z.string().optional(),

@@ -21,7 +21,7 @@ export default function ProductItemInputs({
 }: Props) {
 
   return (
-    <div className="border rounded-md p-3 space-y-3">
+    <div className="w-full border rounded-md p-3 space-y-3">
       <div className="flex justify-between items-center">
         <span className="flex items-center justify-center border w-8 h-8 rounded-full bg-primary text-muted">
           {index + 1}
@@ -30,8 +30,8 @@ export default function ProductItemInputs({
           <FiTrash2 onClick={removeProduct} className="cursor-pointer" />
         )}
       </div>
-      <div className="mt-3 space-y-6">
-        <div className="grid md:grid-cols-[1fr_100px] gap-3">
+      <div className="w-full flex flex-col mt-3 space-y-6">
+        <div className="w-full grid md:grid-cols-[1fr_100px] gap-3">
           <FormInput
             type="text"
             form={form}

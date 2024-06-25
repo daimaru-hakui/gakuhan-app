@@ -31,7 +31,7 @@ export default function ProductColorInput({ form, index, label }: Props) {
     <div>
       <Label>{label}</Label>
       <Input
-        className="mt-2"
+        className="mt-2 shadow-none"
         onChange={handleChange}
         value={value}
         placeholder="ホワイト,ブラック,ブルーとカンマで区切って入力してください"

@@ -8,6 +8,7 @@ import {
   FormMessage,
 } from "../ui/form";
 import { UseFormReturn } from "react-hook-form";
+import { cn } from "@/lib/utils";
 
 type FormInputProps = {
   form: UseFormReturn<any, any>;
@@ -58,7 +59,7 @@ export function FormInput(props: FormInputProps) {
                 placeholder={placeholder}
                 autoComplete="off"
                 {...field}
-                className={className}
+                className={cn("shadow-none",className)}
                 {...InputProps}
               />
             </FormControl>

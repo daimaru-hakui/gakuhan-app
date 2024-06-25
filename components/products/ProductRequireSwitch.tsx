@@ -1,6 +1,11 @@
 import { UseFormReturn } from "react-hook-form";
-import { FormControl, FormDescription, FormField, FormItem, FormLabel } from "../ui/form";
-import { Label } from "../ui/label";
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "../ui/form";
 import { CreateProduct } from "@/utils/schemas";
 import { Switch } from "../ui/switch";
 
@@ -23,6 +28,7 @@ export default function ProductRequireSwitch({ form }: Props) {
           </div>
           <FormControl>
             <Switch
+              className="shadow-none"
               checked={field.value}
               onCheckedChange={field.onChange}
             />

@@ -14,8 +14,9 @@ import { cn } from "@/lib/utils";
 
 export function ProductCreateModal({ id }: { id: string }) {
   const [isActive, setIsActive] = useState(false);
+  const [open, setOpen] = useState(false);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={() => setOpen(!open)}>
       <DialogTrigger asChild>
         <Button size="default" className="mt-6">
           <div>商品追加</div>
@@ -30,7 +31,7 @@ export function ProductCreateModal({ id }: { id: string }) {
         <DialogHeader>
           <DialogTitle>商品追加</DialogTitle>
         </DialogHeader>
-        <ProductForm setIsActive={setIsActive} id={id} />
+        <ProductForm setIsActive={setIsActive} setOpen={setOpen} id={id} />
       </DialogContent>
     </Dialog>
   );
