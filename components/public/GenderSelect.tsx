@@ -1,32 +1,27 @@
 import { UseFormReturn } from "react-hook-form";
 import { Button } from "../ui/button";
-import { CreateProduct } from "@/utils/schemas";
 import { cn } from "@/lib/utils";
 import { Label } from "../ui/label";
 
-interface Props<T> {
-  form: UseFormReturn<CreateProduct, any, undefined>;
+interface Props {
+  form: UseFormReturn<any, any, undefined>;
 }
 
-export default function ProductGenderSelectButton<T>({ form }: Props<T>) {
-  const genders: { id: "other" | "man" | "woman"; label: string }[] = [
-    {
-      id: "other",
-      label: "Unisex",
-    },
+export default function GenderSelect({ form }: Props) {
+  const genders: { id:  "man" | "woman"; label: string }[] = [
     {
       id: "man",
-      label: "Mens",
+      label: "男性",
     },
     {
       id: "woman",
-      label: "Ledies",
+      label: "女性",
     },
   ];
 
   return (
     <div>
-      <Label>区分</Label>
+      <Label>性別</Label>
       <div className="flex gap-3 mt-2">
         {genders.map((gender) => (
           <Button

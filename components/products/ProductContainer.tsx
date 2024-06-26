@@ -9,13 +9,13 @@ import ProductsList from "./ProductsList";
 import ProductDragAndDrop from "./ProductDragAndDrop";
 import LoaderIcon from "../LoaderIcon";
 
-export default function ProductContainer({ id }: { id: string; }) {
+export default function ProductContainer({ id }: { id: string }) {
   const [products, setProducts] = useState<Product[]>();
 
   useEffect(() => {
     const productsRef = collection(db, "schools", id, "products");
     const q = query(productsRef, orderBy("sortNum", "asc"));
-    onSnapshot(q, {
+    const unsub = onSnapshot(q, {
       next: (snapshot) => {
         setProducts(
           snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as Product))
@@ -25,6 +25,7 @@ export default function ProductContainer({ id }: { id: string; }) {
         console.log(e);
       },
     });
+    return () => unsub();
   }, [id]);
 
   if (!products) return <LoaderIcon />;

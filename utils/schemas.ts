@@ -49,7 +49,10 @@ export const CreateProductSchema = z.object({
   id: z.string(),
   gender: z.enum(["other", "man", "woman"]),
   isRequire: z.boolean(),
-  description: z.string().optional(),
+  description: z
+    .string()
+    .max(1000, { message: "1000文字以内で入力してください" })
+    .optional(),
   quantity: z.object({
     min: z.coerce.number().int(),
     max: z.coerce.number().int(),
@@ -57,9 +60,9 @@ export const CreateProductSchema = z.object({
   items: z
     .object({
       name: z.string().min(1, { message: "商品名を入力してください" }),
+      price: z.coerce.number().min(0, { message: "金額を入力してください" }),
       size: z.string().array(),
       color: z.string().array(),
-      price: z.coerce.number().min(0, { message: "金額を入力してください" }),
       images: z.object({
         productUrl: z.string(),
         sizeUrl: z.string(),
@@ -80,37 +83,32 @@ export const CreateProductSchema = z.object({
 });
 export type CreateProduct = z.infer<typeof CreateProductSchema>;
 
-export const UpdateProductSchema = z.object({
+export const CreateStudentSchema = z.object({
   id: z.string(),
-  gender: z.enum(["other", "man", "woman"]),
-  isRequire: z.boolean(),
-  description: z.string().optional(),
-  quantity: z.object({
-    min: z.coerce.number().int(),
-    max: z.coerce.number().int(),
+  studentNumber: z
+    .string()
+    .min(1, { message: "学籍番号を入力してください" })
+    .max(20, { message: "20文字以内で入力してください" }),
+  gender: z.string(),
+  lastName: z
+    .string()
+    .min(1, { message: "苗字を入力してください" })
+    .max(20, { message: "20文字以内で入力してください" }),
+  firstName: z
+    .string()
+    .min(1, { message: "名前を入力してください" })
+    .max(20, { message: "20文字以内で入力してください" }),
+  address: z.object({
+    prefecture: z
+      .string()
+      .min(1, { message: "都道府県を選択してください" })
+      .max(20, { message: "20文字以内で入力してください" }),
+    city: z
+      .string()
+      .min(1, { message: "市区町村を入力してください" })
+      .max(50, { message: "50文字以内で入力してください" }),
+    street: z.string().max(50, { message: "50文字以内で入力してください" }),
+    building: z.string().max(50, { message: "50文字以内で入力してください" }),
   }),
-  items: z
-    .object({
-      name: z.string().min(1, { message: "商品名を入力してください" }),
-      size: z.string().array(),
-      color: z.string().array(),
-      price: z.coerce.number().min(0, { message: "金額を入力してください" }),
-      images: z.object({
-        productUrl: z.string(),
-        sizeUrl: z.string(),
-      }),
-      inseam: z.object({
-        isFlag: z.boolean(),
-        min: z.coerce
-          .number()
-          .int()
-          .min(1, { message: "1以上を設定してください" }),
-        max: z.coerce.number().int(),
-        base: z.coerce.number().int(),
-        price: z.coerce.number().int(),
-        isUnNeededItem: z.boolean(),
-      }),
-    })
-    .array(),
 });
-export type UpdateProduct = z.infer<typeof UpdateProductSchema>;
+export type CreateStudent = z.infer<typeof CreateStudentSchema>;

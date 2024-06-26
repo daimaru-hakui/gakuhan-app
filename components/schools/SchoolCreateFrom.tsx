@@ -10,10 +10,12 @@ import { CreateSchool, CreateSchoolSchema } from "@/utils/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addDoc, collection } from "firebase/firestore";
 import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 
 export default function SchoolCreateForm() {
   const router = useRouter();
+  const [pending, startTransaction] = useTransition();
   const form = useForm<CreateSchool>({
     resolver: zodResolver(CreateSchoolSchema),
     defaultValues: {
@@ -25,13 +27,22 @@ export default function SchoolCreateForm() {
 
   const onSubmit = async (data: CreateSchool) => {
     const defaultDate = data.scheduledDate || new Date();
-    await createSchool({ ...data, scheduledDate: defaultDate });
+    startTransaction(async () => {
+      await createSchool({ ...data, scheduledDate: defaultDate });
+    });
   };
 
   const createSchool = async (data: CreateSchool): Promise<void> => {
     const schoolRef = collection(db, "schools");
     const { id } = await addDoc(schoolRef, {
       ...data,
+      isAddress: false,
+      isGender: false,
+      isShipping: false,
+      shippingFee: 0,
+      createdAt: new Date(),
+      isDeleted: false,
+      deletedAt: null,
     });
     router.push(`/schools/${id}`);
   };
@@ -64,6 +75,7 @@ export default function SchoolCreateForm() {
             </div>
             <SubmitRhkButton
               isValid={!form.formState.isValid}
+              isPending={pending}
               text="登録"
               className="w-full mt-5"
             />

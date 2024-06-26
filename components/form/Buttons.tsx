@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { ReloadIcon } from '@radix-ui/react-icons';
-import { useFormStatus } from 'react-dom';
-import { Button } from '@/components/ui/button';
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { useFormStatus } from "react-dom";
+import { Button, ButtonProps } from "@/components/ui/button";
 
-type btnSize = 'default' | 'lg' | 'sm';
+type btnSize = "default" | "lg" | "sm";
 
 type SubmitButtonProps = {
   className?: string;
@@ -12,20 +12,28 @@ type SubmitButtonProps = {
   size?: btnSize;
 };
 
-export function SubmitButton({ className = '', text = "sumit", size = 'lg' }: SubmitButtonProps) {
+export function SubmitButton({
+  className = "",
+  text = "sumit",
+  size = "lg",
+}: SubmitButtonProps) {
   const { pending } = useFormStatus();
 
   return (
     <Button
-      type='submit'
+      type="submit"
       disabled={pending}
       className={`capitalize ${className}`}
       size={size}
     >
-      {pending ? <>
-        <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
-        Please wait...
-      </> : text}
+      {pending ? (
+        <>
+          <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+          Please wait...
+        </>
+      ) : (
+        text
+      )}
     </Button>
   );
 }
@@ -36,24 +44,33 @@ type SubmitRhkButtonProps = {
   size?: btnSize;
   isPending?: boolean;
   isValid?: boolean;
+  props?: ButtonProps;
 };
 
-
 export function SubmitRhkButton({
-  className = '', text = "sumit", size = 'default', isPending, isValid = false
+  className = "",
+  text = "sumit",
+  size = "default",
+  isPending,
+  isValid = false,
+  props,
 }: SubmitRhkButtonProps) {
-
   return (
     <Button
-      type='submit'
+      type="submit"
       disabled={isValid || isPending}
       className={`capitalize ${className}`}
       size={size}
+      {...props}
     >
-      {isPending ? <>
-        <ReloadIcon className='mr-2 h-4 w-4 animate-spin' />
-        Please wait...
-      </> : text}
+      {isPending ? (
+        <>
+          <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+          Please wait...
+        </>
+      ) : (
+        text
+      )}
     </Button>
   );
 }

@@ -64,7 +64,7 @@ export default function ProductsList({ id, products }: Props) {
               <TableCell className="flex gap-2">
                 <ProductEditWithDeleteButton id={id} product={product} />
               </TableCell>
-              <TableCell>
+              <TableCell className="text-center">
                 <GenderBadge gender={product.gender} />
               </TableCell>
               <TableCell className="text-center">
@@ -74,17 +74,17 @@ export default function ProductsList({ id, products }: Props) {
                   </div>
                 )}
               </TableCell>
-              <TableCell>
+              <TableCell className="text-center">
                 {product.quantity.min === product.quantity.max
                   ? product.quantity.min
                   : `${product.quantity.min} ~ ${product.quantity.max}`}
               </TableCell>
-              <TableCell>
+              <TableCell className="text-center">
                 {product.items?.map((item) => (
                   <div key={item.name}>{item.name}</div>
                 ))}
               </TableCell>
-              <TableCell>
+              <TableCell className="text-center">
                 {product.items?.map((item) => (
                   <div key={item.name} className="flex justify-center">
                     {item.size.length === 0 ? (
@@ -95,7 +95,7 @@ export default function ProductsList({ id, products }: Props) {
                   </div>
                 ))}
               </TableCell>
-              <TableCell>
+              <TableCell className="text-center">
                 {product.items?.map((item) => (
                   <div key={item.name} className="flex justify-center">
                     {item.color.length === 0 ? (

@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 type FormInputProps = {
   form: UseFormReturn<any, any>;
   name: string;
-  type: string;
+  type?: string;
   label?: string;
   defaultValue?: string;
   placeholder?: string;
@@ -28,46 +28,42 @@ export function FormInput(props: FormInputProps) {
     form,
     label,
     name,
-    type,
+    type = "text",
     defaultValue,
     placeholder,
     description,
     require = false,
     className,
-    InputProps
+    InputProps,
   } = props;
   return (
-    <div className="mb-2">
-      <FormField
-        control={form.control}
-        name={name}
-        defaultValue={defaultValue}
-        render={({ field }) => (
-          <FormItem>
-            {label && (
-              <FormLabel>
-                {label}
-                {require && (
-                  <span className="text-red-500 text-xs ml-1">*</span>
-                )}
-              </FormLabel>
-            )}
-            <FormControl>
-              <Input
-                required={require}
-                type={type}
-                placeholder={placeholder}
-                autoComplete="off"
-                {...field}
-                className={cn("shadow-none",className)}
-                {...InputProps}
-              />
-            </FormControl>
-            {description && <FormDescription> {description} </FormDescription>}
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    </div>
+    <FormField
+      control={form.control}
+      name={name}
+      defaultValue={defaultValue}
+      render={({ field }) => (
+        <FormItem>
+          {label && (
+            <FormLabel>
+              {label}
+              {require && <span className="text-red-500 text-xs ml-1">*</span>}
+            </FormLabel>
+          )}
+          <FormControl>
+            <Input
+              required={require}
+              type={type}
+              placeholder={placeholder}
+              autoComplete="off"
+              {...field}
+              className={cn("shadow-none", className)}
+              {...InputProps}
+            />
+          </FormControl>
+          {description && <FormDescription> {description} </FormDescription>}
+          <FormMessage />
+        </FormItem>
+      )}
+    />
   );
 }

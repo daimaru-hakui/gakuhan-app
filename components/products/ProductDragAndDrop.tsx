@@ -2,7 +2,6 @@
 import { Product } from "@/utils/product.interface";
 import { Reorder } from "framer-motion";
 import { useEffect, useState, useTransition } from "react";
-import LoaderIcon from "../LoaderIcon";
 import {
   Dialog,
   DialogClose,
@@ -15,9 +14,11 @@ import {
 import { Button } from "../ui/button";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase/client";
-import LoadingButton from "../form/LoadingButton";
 import { cn } from "@/lib/utils";
 import GenderBadge from "../GenderBadge";
+import { SubmitRhkButton } from "../form/Buttons";
+import LoaderIcon from "../LoaderIcon";
+import { toast } from "sonner";
 
 interface Props {
   id: string;
@@ -30,20 +31,26 @@ export default function ProductDragAndDrop({ id, products }: Props) {
     setItems(products);
   }, [products]);
 
-
   async function handleClickSort() {
-    startTransaction(async () => {
-      await updateProductsSort();
-    });
-  };
+    try {
+      startTransaction(async () => {
+        await updateProductsSort();
+      });
+      toast.success("順番を更新しました。")
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   async function updateProductsSort() {
-    const newProducts = items.map(
-      (product, index) => ({ id: product.id, sortNum: index + 1 }));
+    const newProducts = items.map((product, index) => ({
+      id: product.id,
+      sortNum: index + 1,
+    }));
     for (const product of newProducts) {
       const productRef = doc(db, "schools", id, "products", product.id);
       await updateDoc(productRef, {
-        sortNum: product.sortNum
+        sortNum: product.sortNum,
       });
     }
   }
@@ -53,11 +60,7 @@ export default function ProductDragAndDrop({ id, products }: Props) {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-8"
-        >
+        <Button variant="outline" size="sm" className="h-8">
           並び替え
         </Button>
       </DialogTrigger>
@@ -65,21 +68,27 @@ export default function ProductDragAndDrop({ id, products }: Props) {
         <DialogHeader>
           <DialogTitle>並び替え</DialogTitle>
         </DialogHeader>
-        <Reorder.Group axis='y' values={items} onReorder={setItems}
-          className="flex flex-col space-y-3">
-          {items.map(item => (
+        <Reorder.Group
+          axis="y"
+          values={items}
+          onReorder={setItems}
+          className="flex flex-col space-y-3"
+        >
+          {items.map((item) => (
             <Reorder.Item
               key={item.id}
               value={item}
-              className={cn("flex items-center gap-3 w-full bg-white border rounded-md p-3 cursor-pointer")}
+              className={cn(
+                "flex items-center gap-3 w-full bg-white border rounded-md p-3 cursor-pointer"
+              )}
             >
               <GenderBadge gender={item.gender} />
               <p>
-                {item.items.map(item =>
+                {item.items.map((item) => (
                   <span key={item.name} className="">
                     {item.name}
                   </span>
-                )}
+                ))}
               </p>
             </Reorder.Item>
           ))}
@@ -90,12 +99,13 @@ export default function ProductDragAndDrop({ id, products }: Props) {
               閉じる
             </Button>
           </DialogClose>
-          <LoadingButton
-            pending={pending}
+          <SubmitRhkButton
+            isValid={pending}
+            isPending={pending}
+            text="更新"
+            className="w-full"
             props={{ onClick: handleClickSort }}
-          >
-            更新する
-          </LoadingButton>
+          />
         </DialogFooter>
       </DialogContent>
     </Dialog>

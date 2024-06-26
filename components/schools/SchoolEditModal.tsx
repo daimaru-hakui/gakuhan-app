@@ -16,12 +16,12 @@ import { EditSchool, EditSchoolSchema } from "@/utils/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { School } from "@/utils/school.interface";
 import { Form } from "../ui/form";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase/client";
-import { LuLoader2 } from "react-icons/lu";
 import FormCalendarInput from "../form/FormCalendarInput";
 import { toast } from "sonner";
+import { SubmitRhkButton } from "../form/Buttons";
 
 interface Props {
   school: School;
@@ -48,7 +48,7 @@ export default function SchoolEditModal({ school }: Props) {
   async function onSubmit(data: EditSchool) {
     startTransaction(async () => {
       await updateSchool(data);
-      toast.success("学校情報を更新しました")
+      toast.success("学校情報を更新しました");
       setOpen(false);
     });
   }
@@ -76,8 +76,10 @@ export default function SchoolEditModal({ school }: Props) {
         form.reset();
       }}
     >
-      <DialogTrigger>
-        <Button size="sm">編集</Button>
+      <DialogTrigger asChild>
+        <Button size="sm" className="h-6" onClick={() => setOpen(true)}>
+          編集
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <Form {...form}>
@@ -99,12 +101,15 @@ export default function SchoolEditModal({ school }: Props) {
                     閉じる
                   </Button>
                 </DialogClose>
-                <Button type="submit" className="w-full" disabled={pending}>
-                  {pending && (
-                    <LuLoader2 className="mr-2 h-4 w-4 animate-spin" />
-                  )}
-                  登録
-                </Button>
+                <SubmitRhkButton
+                  isValid={!form.formState.isValid}
+                  isPending={pending}
+                  text="更新"
+                  className="w-full"
+                  props={{
+                    onClick: () => setOpen(!open),
+                  }}
+                />
               </DialogFooter>
             </div>
           </form>

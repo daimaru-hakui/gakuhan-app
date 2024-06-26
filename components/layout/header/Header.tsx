@@ -11,7 +11,7 @@ import { useStore } from "@/store";
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
-  const pattern = RegExp('(auth).*', 'g');
+  const pattern = RegExp('(auth|public-register).*', 'g');
   const user = useStore(state => state.user);
   const setUser = useStore(state => state.setUser);
 

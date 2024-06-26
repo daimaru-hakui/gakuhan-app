@@ -34,7 +34,6 @@ export default function TextAreaInput({
           <FormControl>
             <Textarea
               placeholder={placeholder}
-              className="resize-none"
               {...field}
             />
           </FormControl>

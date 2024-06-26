@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { db } from "@/firebase/client";
-import { UpdateProduct, UpdateProductSchema } from "@/utils/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   collection,
@@ -19,8 +18,10 @@ import ProductItemInputs from "../ProductItemInputs";
 import { Product } from "@/utils/product.interface";
 import Link from "next/link";
 import paths from "@/utils/paths";
-import { LuLoader2 } from "react-icons/lu";
 import { toast } from "sonner";
+import { SubmitRhkButton } from "@/components/form/Buttons";
+import TextAreaInput from "@/components/form/TextAreaInput";
+import { CreateProduct, CreateProductSchema } from "@/utils/schemas";
 
 interface Props {
   setIsActive?: (bool: boolean) => void;
@@ -30,8 +31,8 @@ interface Props {
 
 export default function ProductEditForm({ id, setIsActive, product }: Props) {
   const [pending, startTransaction] = useTransition();
-  const form = useForm<UpdateProduct>({
-    resolver: zodResolver(UpdateProductSchema),
+  const form = useForm<CreateProduct>({
+    resolver: zodResolver(CreateProductSchema),
     defaultValues: product,
   });
   const { fields, append, remove } = useFieldArray({
@@ -39,12 +40,12 @@ export default function ProductEditForm({ id, setIsActive, product }: Props) {
     name: "items",
   });
 
-  async function onSubmit(data: UpdateProduct) {
+  async function onSubmit(data: CreateProduct) {
     console.log(data);
     await updateProduct(data);
   }
 
-  async function updateProduct(data: UpdateProduct) {
+  async function updateProduct(data: CreateProduct) {
     try {
       const productRef = doc(db, "schools", id, "products", product.id);
       startTransaction(async () => {
@@ -84,9 +85,10 @@ export default function ProductEditForm({ id, setIsActive, product }: Props) {
     <Form {...form}>
       <form className="w-full space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
         <div className="w-full pl-1 pr-7 space-y-6">
-          <ProductGenderSelectButton<UpdateProduct> form={form} />
+          <ProductGenderSelectButton<CreateProduct> form={form} />
           <ProductRequireSwitch form={form} />
           <ProductQuantityInput form={form} />
+          <TextAreaInput name="description" label="説明分" form={form} />
           <div
             className={cn(
               "grid grid-cols-1 gap-3",
@@ -114,12 +116,12 @@ export default function ProductEditForm({ id, setIsActive, product }: Props) {
           <Button type="button" variant="outline" className="w-full" asChild>
             <Link href={paths.schoolShow(id)}>キャンセル</Link>
           </Button>
-          <Button className="w-full">
-            {pending && (
-              <LuLoader2 className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            商品を更新する
-          </Button>
+          <SubmitRhkButton
+            isValid={pending}
+            isPending={pending}
+            text="商品を更新する"
+            className="w-full"
+          />
         </div>
       </form>
     </Form>

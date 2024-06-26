@@ -1,32 +1,25 @@
-import { format } from "date-fns";
-import SchoolEditModal from "./SchoolEditModal";
-import { School } from "@/utils/school.interface";
+import React from "react";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 interface Props {
-  school: School;
+  id: string;
 }
 
-export default function SchoolHeader({ school }: Props) {
+export default function SchoolHeader({ id }: Props) {
   return (
-    <div className="space-y-6">
-      <div>
-        <div className="flex justify-between">
-          <h3 className="font-semibold">学校名</h3>
-          <span>
-            <SchoolEditModal school={school} />
-          </span>
+    <div>
+      <div className="flex items-center justify-between gap-3">
+        <h1 className="text-3xl font-bold">詳細</h1>
+        <div className="flex gap-3">
+          <Button variant="outline" asChild>
+            <Link href="/schools">一覧へ戻る</Link>
+          </Button>
+          <Button>ダッシュボード</Button>
+          <Button asChild>
+            <Link href={`/public-register/${id}`}>採寸ページ</Link>
+          </Button>
         </div>
-        <div className="text-2xl">{school.title}</div>
-      </div>
-      <div>
-        <h3 className="font-semibold">説明</h3>
-        <p className="mt-1 whitespace-pre-line">{school.description}</p>
-      </div>
-      <div>
-        <h3 className="font-semibold">採寸日</h3>
-        <p className="mt-1 text-md whitespace-pre-line">
-          {format(school.scheduledDate.toDate(), "yyyy年MM月dd日")}
-        </p>
       </div>
     </div>
   );

@@ -13,7 +13,8 @@ import ProductGenderSelectButton from "./ProductGenderSelectButton";
 import ProductRequireSwitch from "./ProductRequireSwitch";
 import { addDoc, collection, getCountFromServer } from "firebase/firestore";
 import { db } from "@/firebase/client";
-import { LuLoader2 } from "react-icons/lu";
+import { SubmitRhkButton } from "../form/Buttons";
+import TextAreaInput from "../form/TextAreaInput";
 
 interface Props {
   setIsActive: (bool: boolean) => void;
@@ -29,6 +30,7 @@ export default function ProductForm({ setIsActive, setOpen, id }: Props) {
       id: "",
       gender: "other",
       isRequire: true,
+      description: "",
       quantity: {
         min: 1,
         max: 10,
@@ -116,6 +118,7 @@ export default function ProductForm({ setIsActive, setOpen, id }: Props) {
           <ProductGenderSelectButton form={form} />
           <ProductRequireSwitch form={form} />
           <ProductQuantityInput form={form} />
+          <TextAreaInput name="description" label="説明分" form={form} />
           <div
             className={cn(
               "grid grid-cols-1 gap-3",
@@ -143,10 +146,12 @@ export default function ProductForm({ setIsActive, setOpen, id }: Props) {
               閉じる
             </Button>
           </DialogClose>
-          <Button type="submit" className="w-full" disabled={pending}>
-            {pending && <LuLoader2 className="mr-2 h-4 w-4 animate-spin" />}
-            登録
-          </Button>
+          <SubmitRhkButton
+            isValid={!form.formState.isValid}
+            isPending={pending}
+            text="登録"
+            className="w-full"
+          />
         </DialogFooter>
       </form>
     </Form>
