@@ -2,13 +2,14 @@ import { UseFormReturn } from "react-hook-form";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { Label } from "../ui/label";
+import { CreateStudent } from "@/utils/schemas";
 
 interface Props {
-  form: UseFormReturn<any, any, undefined>;
+  form: UseFormReturn<CreateStudent, any, undefined>;
 }
 
 export default function GenderSelect({ form }: Props) {
-  const genders: { id:  "man" | "woman"; label: string }[] = [
+  const genders: { id: "man" | "woman"; label: string; }[] = [
     {
       id: "man",
       label: "男性",
@@ -35,12 +36,13 @@ export default function GenderSelect({ form }: Props) {
               "w-24 h-12"
             )}
             // asChild
-            onClick={() => form.setValue("gender", gender.id)}
+            onClick={() => form.setValue("gender", gender.id, { shouldValidate: true })}
           >
             <div>{gender.label}</div>
           </Button>
         ))}
       </div>
+      {form.formState.errors.gender && <div className="text-red-500 text-xs mt-2">性別を選択してください</div>}
     </div>
   );
 }

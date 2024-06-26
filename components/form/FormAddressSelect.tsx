@@ -15,9 +15,10 @@ import {
 } from "../ui/select";
 import { UseFormReturn } from "react-hook-form";
 import { addresses } from "@/utils/addresses";
+import { CreateStudent } from "@/utils/schemas";
 
 interface Props {
-  form: UseFormReturn<any, any>;
+  form: UseFormReturn<CreateStudent, any, any>;
   name: string;
   type?: string;
   label?: string;
@@ -44,14 +45,16 @@ export default function FormAddressSelect({
   return (
     <FormField
       control={form.control}
-      name="email"
+      name="address.prefecture"
       render={({ field }) => (
         <FormItem>
           <FormLabel>{label}</FormLabel>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <Select onValueChange={field.onChange} value={field.value}>
             <FormControl>
               <SelectTrigger>
-                <SelectValue placeholder="都道府県を選択" />
+                <SelectValue  >
+                  {field.value}
+                </SelectValue>
               </SelectTrigger>
             </FormControl>
             <SelectContent>
@@ -63,7 +66,7 @@ export default function FormAddressSelect({
             </SelectContent>
           </Select>
           <FormMessage />
-        </FormItem>
+        </ FormItem>
       )}
     />
   );
