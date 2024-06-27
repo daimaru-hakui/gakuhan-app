@@ -84,12 +84,11 @@ export const CreateProductSchema = z.object({
 export type CreateProduct = z.infer<typeof CreateProductSchema>;
 
 export const CreateStudentSchema = z.object({
-  id: z.string(),
   studentNumber: z
     .string()
     .min(1, { message: "学籍番号を入力してください" })
     .max(20, { message: "20文字以内で入力してください" }),
-  gender: z.string(),
+  gender: z.string().min(1, { message: "性別を選択してください" }),
   lastName: z
     .string()
     .min(1, { message: "苗字を入力してください" })
@@ -98,17 +97,18 @@ export const CreateStudentSchema = z.object({
     .string()
     .min(1, { message: "名前を入力してください" })
     .max(20, { message: "20文字以内で入力してください" }),
+  zipCode: z.string().min(1, { message: "郵便番号を入力してください" }),
   address: z.object({
     prefecture: z
-      .string()
-      .min(1, { message: "都道府県を選択してください" })
+      .string({ message: "都道府県を選択してください" })
       .max(20, { message: "20文字以内で入力してください" }),
     city: z
-      .string()
-      .min(1, { message: "市区町村を入力してください" })
+      .string({ message: "市区町村を入力してください" })
       .max(50, { message: "50文字以内で入力してください" }),
-    street: z.string().max(50, { message: "50文字以内で入力してください" }),
-    building: z.string().max(50, { message: "50文字以内で入力してください" }),
+    street: z.string({ message: "番地を入力してください" }).max(50, { message: "50文字以内で入力してください" }),
+    building: z.string()
+      .max(50, { message: "50文字以内で入力してください" })
+      .optional(),
   }),
 });
 export type CreateStudent = z.infer<typeof CreateStudentSchema>;
