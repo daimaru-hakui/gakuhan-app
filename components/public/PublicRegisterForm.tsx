@@ -18,7 +18,7 @@ interface Props {
 
 export default function PublicRegisterForm({ school }: Props) {
   const [open, setOpen] = useState(false);
-  const [values,setValues] = useState<CreateStudent>()
+  const [values, setValues] = useState<CreateStudent>();
   const [loading, setLoading] = useState(false);
   const form = useForm<CreateStudent>({
     resolver: zodResolver(CreateStudentSchema),
@@ -28,8 +28,8 @@ export default function PublicRegisterForm({ school }: Props) {
       lastName: "",
       firstName: "",
       gender: school.isGender ? "" : "other",
-      zipCode: school.isAddress ? "" : "-",
       address: {
+        zipCode: school.isAddress ? "" : "-",
         prefecture: school.isAddress ? "大阪府" : "-",
         city: school.isAddress ? "" : "-",
         street: school.isAddress ? "" : "-",
@@ -40,7 +40,7 @@ export default function PublicRegisterForm({ school }: Props) {
 
   function onSubmit(data: CreateStudent) {
     setOpen(true);
-    setValues(data)
+    setValues(data);
   }
 
   function Error(data: any) {
@@ -51,10 +51,17 @@ export default function PublicRegisterForm({ school }: Props) {
     setLoading(true);
     try {
       const data = await getAddress(zipCode);
+      console.log(data)
       if (!data) return;
-      form.setValue("address.prefecture", data.results?.at(0)?.address1 || "");
-      form.setValue("address.city", data.results?.at(0)?.address2 || "");
-      form.setValue("address.street", data.results?.at(0)?.address3 || "");
+      form.setValue("address.prefecture", data.results?.at(0)?.address1 || "", {
+        shouldValidate: true,
+      });
+      form.setValue("address.city", data.results?.at(0)?.address2 || "", {
+        shouldValidate: true,
+      });
+      form.setValue("address.street", data.results?.at(0)?.address3 || "", {
+        shouldValidate: true,
+      });
     } catch (e) {
       console.log(e);
     } finally {
@@ -92,7 +99,7 @@ export default function PublicRegisterForm({ school }: Props) {
                 <div className="flex gap-1">
                   <FormInput
                     form={form}
-                    name="zipCode"
+                    name="address.zipCode"
                     label="〒番号"
                     require
                   />
@@ -100,7 +107,7 @@ export default function PublicRegisterForm({ school }: Props) {
                     disabled={loading}
                     type="button"
                     className="w-12 min-w-12 mt-8"
-                    onClick={() => handleClickGetAddress(form.watch("zipCode"))}
+                    onClick={() => handleClickGetAddress(form.watch("address.zipCode"))}
                   >
                     {loading ? (
                       <ReloadIcon className="h-4 animate-spin" />

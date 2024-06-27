@@ -8,20 +8,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "../ui/button";
-import { FormInput } from "../form/FormInput";
-import TextAreaInput from "../form/TextAreaInput";
+import { Button } from "../../ui/button";
+import { FormInput } from "../../form/FormInput";
+import TextAreaInput from "../../form/TextAreaInput";
 import { useForm } from "react-hook-form";
 import { EditSchool, EditSchoolSchema } from "@/utils/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { School } from "@/utils/school.interface";
-import { Form } from "../ui/form";
+import { Form } from "../../ui/form";
 import { useEffect, useState, useTransition } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase/client";
-import FormCalendarInput from "../form/FormCalendarInput";
+import FormCalendarInput from "../../form/FormCalendarInput";
 import { toast } from "sonner";
-import { SubmitRhkButton } from "../form/Buttons";
+import { SubmitRhkButton } from "../../form/Buttons";
 
 interface Props {
   school: School;

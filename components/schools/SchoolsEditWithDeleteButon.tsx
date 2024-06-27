@@ -43,7 +43,7 @@ export default function SchoolsEditWithDeleteButon({ school }: Props) {
   }
   return (
     <div className="flex gap-3">
-      <Link href={`/schools/${school.id}`} className="w-8 h-8 flex justify-center items-center">
+      <Link href={`/schools/${school.id}/edit`} className="w-8 h-8 flex justify-center items-center">
         <LuSettings   size={24} color="gray" className="cursor-pointer" />
       </Link>
       <div className="w-8 h-8 flex justify-center items-center">

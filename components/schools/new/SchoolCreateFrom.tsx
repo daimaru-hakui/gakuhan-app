@@ -41,10 +41,11 @@ export default function SchoolCreateForm() {
       isShipping: false,
       shippingFee: 0,
       createdAt: new Date(),
+      isPublic: true,
       isDeleted: false,
       deletedAt: null,
     });
-    router.push(`/schools/${id}`);
+    router.push(`/schools/${id}/edit`);
   };
 
   return (

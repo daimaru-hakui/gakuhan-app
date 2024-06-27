@@ -1,11 +1,6 @@
-"use client";
-import React, { useEffect, useState } from "react";
+"use client"
 import PublicRegisterForm from "./PublicRegisterForm";
-import { doc, onSnapshot } from "firebase/firestore";
-import { db } from "@/firebase/client";
 import { School } from "@/utils/school.interface";
-import LoaderIcon from "../LoaderIcon";
-import { notFound } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -14,24 +9,11 @@ import {
   CardTitle,
 } from "../ui/card";
 
-export default function PublicRagisterContainer({ id }: { id: string }) {
-  const [school, setSchool] = useState<School>();
+interface Props {
+  school: School;
+}
 
-  useEffect(() => {
-    const schoolRef = doc(db, "schools", id);
-    const unsub = onSnapshot(schoolRef, {
-      next: (snapshot) => {
-        setSchool({ ...snapshot.data(), id: snapshot.id } as School);
-      },
-      error: (e) => {
-        console.log(e);
-      },
-    });
-    return () => unsub();
-  }, [id]);
-
-  if (!school) return <LoaderIcon />;
-  if (school.isDeleted) return notFound();
+export default function PublicRagisterContainer({  school }: Props) {
 
   return (
     <div className="w-full md:max-w-[500px] mx-auto">

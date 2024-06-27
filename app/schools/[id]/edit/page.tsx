@@ -1,6 +1,6 @@
 import ProductContainer from "@/components/products/ProductContainer";
-import SchoolContainer from "@/components/schools/SchoolContainer";
-import SchoolHeader from "@/components/schools/SchoolHeader";
+import SchoolContainer from "@/components/schools/edit/SchoolContainer";
+import SchoolHeader from "@/components/schools/edit/SchoolHeader";
 
 interface Props {
   params: {

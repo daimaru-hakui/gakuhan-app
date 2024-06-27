@@ -41,20 +41,19 @@ export default function ProductEditForm({ id, setIsActive, product }: Props) {
   });
 
   async function onSubmit(data: CreateProduct) {
-    console.log(data);
-    await updateProduct(data);
-  }
-
-  async function updateProduct(data: CreateProduct) {
     try {
-      const productRef = doc(db, "schools", id, "products", product.id);
       startTransaction(async () => {
-        await updateDoc(productRef, data);
+        await updateProduct(data);
       });
-      toast.success(`商品を更新しました`);
     } catch (e) {
       console.log(e);
     }
+  }
+
+  async function updateProduct(data: CreateProduct) {
+    const productRef = doc(db, "schools", id, "products", product.id);
+    await updateDoc(productRef, data);
+    toast.success(`商品を更新しました`);
   }
 
   function addProduct() {

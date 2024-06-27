@@ -97,17 +97,19 @@ export const CreateStudentSchema = z.object({
     .string()
     .min(1, { message: "名前を入力してください" })
     .max(20, { message: "20文字以内で入力してください" }),
-  zipCode: z.string().min(1, { message: "郵便番号を入力してください" }),
   address: z.object({
+    zipCode: z
+      .string()
+      .max(8, { message: "文字数を確認してください" }),
     prefecture: z
       .string({ message: "都道府県を選択してください" })
       .max(20, { message: "20文字以内で入力してください" }),
     city: z
-      .string({ message: "市区町村を入力してください" })
+      .string()
       .min(1, { message: "市区町村を入力してください" })
       .max(50, { message: "50文字以内で入力してください" }),
     street: z
-      .string({ message: "番地を入力してください" })
+      .string()
       .min(1, { message: "番地を入力してください" })
       .max(50, { message: "50文字以内で入力してください" }),
     building: z

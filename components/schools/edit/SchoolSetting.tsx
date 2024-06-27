@@ -1,7 +1,7 @@
 import React from 'react';
-import SchoolSettingSwitch from './SchoolSettingSwitch';
+import SchoolSettingSwitch from '@/components/schools/edit/SchoolSettingSwitch';
 import { School } from '@/utils/school.interface';
-import SchoolShippinFeeInput from './SchoolShippinFeeInput';
+import SchoolShippinFeeInput from '@/components/schools/edit/SchoolShippinFeeInput';
 
 interface Props {
   school: School;

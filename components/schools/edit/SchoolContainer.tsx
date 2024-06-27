@@ -1,14 +1,17 @@
 "use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "@/firebase/client";
 import { School } from "@/utils/school.interface";
-import SchoolContent from "./SchoolContent";
-import SchoolSetting from "./SchoolSetting";
+import SchoolContent from "@/components/schools/edit//SchoolContent";
+import SchoolSetting from "@/components/schools/edit//SchoolSetting";
+import LoaderIcon from "@/components/LoaderIcon";
+import { notFound } from "next/navigation";
 
 export default function SchoolContainer({ id }: { id: string }) {
   const [school, setSchool] = useState<School>();
+  console.log(id);
 
   useEffect(() => {
     const docRef = doc(db, "schools", id);
@@ -23,7 +26,8 @@ export default function SchoolContainer({ id }: { id: string }) {
     return () => unsub();
   }, [id]);
 
-  if (!school) return <div></div>;
+  if (!school) return <LoaderIcon />;
+  if (school === undefined) return notFound();
 
   return (
     <Card className="w-full pt-6">

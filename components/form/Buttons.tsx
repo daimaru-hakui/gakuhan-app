@@ -29,7 +29,6 @@ export function SubmitButton({
       {pending ? (
         <>
           <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-          Please wait...
         </>
       ) : (
         text
@@ -66,7 +65,42 @@ export function SubmitRhkButton({
       {isPending ? (
         <>
           <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-          Please wait...
+        </>
+      ) : (
+        text
+      )}
+    </Button>
+  );
+}
+
+type LoadingButton = {
+  className?: string;
+  text?: string;
+  size?: btnSize;
+  isPending?: boolean;
+  isValid?: boolean;
+  props?: ButtonProps;
+};
+
+export function LoadingButton({
+  className = "",
+  text = "sumit",
+  size = "default",
+  isPending,
+  isValid = false,
+  props,
+}: SubmitRhkButtonProps) {
+  return (
+    <Button
+      type="button"
+      disabled={isValid || isPending}
+      className={`capitalize ${className}`}
+      size={size}
+      {...props}
+    >
+      {isPending ? (
+        <>
+          <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
         </>
       ) : (
         text

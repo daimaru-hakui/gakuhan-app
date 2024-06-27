@@ -28,7 +28,7 @@ export default function ProductContainer({ id }: { id: string }) {
     return () => unsub();
   }, [id]);
 
-  if (!products) return <LoaderIcon />;
+  if (!products) return
 
   return (
     <Card className="w-full">

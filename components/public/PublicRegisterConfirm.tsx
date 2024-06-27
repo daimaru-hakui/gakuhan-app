@@ -11,6 +11,12 @@ import { Button } from "../ui/button";
 import { CreateStudent } from "@/utils/schemas";
 import { School } from "@/utils/school.interface";
 import { useTransition } from "react";
+import { LoadingButton } from "../form/Buttons";
+import { addDoc, collection, getDocs } from "firebase/firestore";
+import { db } from "@/firebase/client";
+import { Product } from "@/utils/product.interface";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface Props {
   open: boolean;
@@ -26,6 +32,7 @@ export default function PublicRegisterConfirm({
   school,
 }: Props) {
   const [pending, startTransaction] = useTransition();
+  const router = useRouter();
 
   if (!open || !values) return;
 
@@ -59,17 +66,40 @@ export default function PublicRegisterConfirm({
   }
 
   const handleClick = () => {
-    try {
-      startTransaction(async () => {
-        await createStudentAction(values);
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    startTransaction(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      const { id } = await createStudentAction(values);
+      if (id) {
+        router.push(`/schools/${school.id}/public-students/${id}`);
+      } else {
+        toast.error("登録に失敗しました");
+      }
+    });
   };
 
-  async function createStudentAction(data: CreateStudent) {
-    console.log(data);
+  async function createStudentAction(
+    data: CreateStudent
+  ): Promise<{ id: string | null }> {
+    try {
+      const productsRef = collection(db, "schools", school.id, "products");
+      const products = (await getDocs(productsRef)).docs
+        .map((doc) => ({ ...doc.data() } as Product))
+        .filter((product) => {
+          if (product.gender === values?.gender || product.gender === "other") {
+            return product;
+          }
+        });
+      const studentRef = collection(
+        db,
+        "schools",
+        school.id,
+        "public-students"
+      );
+      const { id } = await addDoc(studentRef, { ...data, products });
+      return { id };
+    } catch (e) {
+      return { id: null };
+    }
   }
 
   return (
@@ -104,7 +134,7 @@ export default function PublicRegisterConfirm({
                   {school.isAddress && (
                     <ValueComponent
                       title="住所"
-                      value={`〒${values.zipCode}`}
+                      value={`〒${values.address.zipCode}`}
                       subValue={
                         values.address.prefecture +
                         values.address.city +
@@ -116,7 +146,11 @@ export default function PublicRegisterConfirm({
                   )}
                 </div>
                 <DrawerFooter>
-                  <Button onClick={handleClick}>採寸を開始</Button>
+                  <LoadingButton
+                    isPending={pending}
+                    props={{ onClick: handleClick }}
+                    text="採寸を開始"
+                  />
                   <Button variant="outline" onClick={() => setOpen(false)}>
                     戻る
                   </Button>

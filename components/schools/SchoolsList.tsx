@@ -7,47 +7,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { db } from "@/firebase/client";
-import { School } from "@/utils/school.interface";
-import { format } from "date-fns";
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-} from "firebase/firestore";
-import { useEffect, useState } from "react";
+
 import { HiCheck } from "react-icons/hi";
 import { RxDotFilled } from "react-icons/rx";
-import LoaderIcon from "../LoaderIcon";
 import SchoolsEditWithDeleteButon from "./SchoolsEditWithDeleteButon";
+import { School } from "@/utils/school.interface";
+import { format } from "date-fns";
 
-export default function SchoolsList() {
-  const [schools, setSchools] = useState<School[]>();
+interface Props {
+  schools: School[];
+}
 
-  useEffect(() => {
-    const schoolsRef = collection(db, "schools");
-    const q = query(
-      schoolsRef,
-      orderBy("createdAt", "desc"),
-      where("isDeleted", "==", false)
-    );
-    const unsub = onSnapshot(q, {
-      next: (snapshot) => {
-        setSchools(
-          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as School))
-        );
-      },
-      error: (e) => {
-        console.log(e.message);
-      },
-    });
-    return () => unsub();
-  }, []);
-
-  if (!schools) return <LoaderIcon />;
-
+export default function SchoolsList({ schools }: Props) {
   return (
     <Table className="min-w-[500px]">
       <TableHeader>

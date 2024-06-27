@@ -9,7 +9,7 @@ interface Props {
 
 export default function ProductQuantityInput({ form }: Props) {
   return (
-    <div className="flex items-end gap-3">
+    <div className="flex gap-3">
       <FormInput
         type="number"
         form={form}
@@ -18,12 +18,12 @@ export default function ProductQuantityInput({ form }: Props) {
         className="w-24"
         InputProps={{ min: 0 }}
       />
-      <span className="h-10">~</span>
+      <span className="mt-9">~</span>
       <FormInput
         type="number"
         form={form}
         name={`quantity.max`}
-        className="w-24"
+        className="w-24 mt-8"
         InputProps={{ min: form.watch("quantity.min") }}
       />
     </div>
