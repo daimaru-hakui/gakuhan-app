@@ -6,9 +6,10 @@ import { CreateStudent } from "@/utils/schemas";
 
 interface Props {
   form: UseFormReturn<CreateStudent, any, undefined>;
+  require?:boolean
 }
 
-export default function GenderSelect({ form }: Props) {
+export default function GenderSelect({ form,require }: Props) {
   const genders: { id: "man" | "woman"; label: string; }[] = [
     {
       id: "man",
@@ -22,7 +23,7 @@ export default function GenderSelect({ form }: Props) {
 
   return (
     <div>
-      <Label>性別</Label>
+      <Label>性別{require && <span className="text-red-500 text-xs ml-1">*</span>}</Label>
       <div className="flex gap-3 mt-2">
         {genders.map((gender) => (
           <Button

@@ -13,11 +13,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { UseFormReturn } from "react-hook-form";
+import { UseFormReturn, useFormContext } from "react-hook-form";
 import { addresses } from "@/utils/addresses";
 import { CreateStudent } from "@/utils/schemas";
 
-interface Props {
+interface Props<T> {
   form: UseFormReturn<CreateStudent, any, any>;
   name: string;
   type?: string;
@@ -30,7 +30,7 @@ interface Props {
   InputProps?: React.ComponentProps<"input">;
 }
 
-export default function FormAddressSelect({
+export default function FormAddressSelect<T>({
   form,
   name,
   type,
@@ -41,20 +41,21 @@ export default function FormAddressSelect({
   require,
   className,
   InputProps,
-}: Props) {
+}: Props<T>) {
   return (
     <FormField
       control={form.control}
       name="address.prefecture"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel>
+            {label}
+            {require && <span className="text-red-500 text-xs ml-1">*</span>}
+          </FormLabel>
           <Select onValueChange={field.onChange} value={field.value}>
             <FormControl>
               <SelectTrigger>
-                <SelectValue  >
-                  {field.value}
-                </SelectValue>
+                <SelectValue>{field.value}</SelectValue>
               </SelectTrigger>
             </FormControl>
             <SelectContent>
@@ -66,7 +67,7 @@ export default function FormAddressSelect({
             </SelectContent>
           </Select>
           <FormMessage />
-        </ FormItem>
+        </FormItem>
       )}
     />
   );

@@ -6,7 +6,13 @@ import { db } from "@/firebase/client";
 import { School } from "@/utils/school.interface";
 import LoaderIcon from "../LoaderIcon";
 import { notFound } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
 
 export default function PublicRagisterContainer({ id }: { id: string }) {
   const [school, setSchool] = useState<School>();
@@ -28,12 +34,14 @@ export default function PublicRagisterContainer({ id }: { id: string }) {
   if (school.isDeleted) return notFound();
 
   return (
-    <div className="w-full md:max-w-[600px] mx-auto">
-      <Card>
+    <div className="w-full md:max-w-[500px] mx-auto">
+      <h1 className="font-bold text-xl text-center">採寸登録</h1>
+      <Card className="mt-2">
         <CardHeader>
-          <CardTitle>採寸登録</CardTitle>
+          <CardTitle>{school.title}</CardTitle>
         </CardHeader>
-        <CardContent className="w-full">
+        <CardContent className="w-full space-y-6">
+          <CardDescription>{school.description}</CardDescription>
           <PublicRegisterForm school={school} />
         </CardContent>
       </Card>
