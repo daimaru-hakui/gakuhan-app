@@ -79,16 +79,16 @@ export default function PublicRegisterConfirm({
 
   async function createStudentAction(
     data: CreateStudent
-  ): Promise<{ id: string | null; }> {
+  ): Promise<{ id: string | null }> {
     try {
-      const productsRef = collection(db, "schools", school.id, "products");
-      const products = (await getDocs(productsRef)).docs
-        .map((doc) => ({ ...doc.data() } as Product))
-        .filter((product) => {
-          if (product.gender === values?.gender || product.gender === "other") {
-            return product;
-          }
-        });
+      // const productsRef = collection(db, "schools", school.id, "products");
+      // const products = (await getDocs(productsRef)).docs
+      //   .map((doc) => ({ ...doc.data() } as Product))
+      //   .filter((product) => {
+      //     if (product.gender === values?.gender || product.gender === "other") {
+      //       return product;
+      //     }
+      //   });
       const studentRef = collection(
         db,
         "schools",
@@ -97,9 +97,9 @@ export default function PublicRegisterConfirm({
       );
       const { id } = await addDoc(studentRef, {
         ...data,
-        products,
+        schoolId: school.id,
         startedAt: new Date(),
-        finishedAt: null
+        finishedAt: null,
       });
       return { id };
     } catch (e) {

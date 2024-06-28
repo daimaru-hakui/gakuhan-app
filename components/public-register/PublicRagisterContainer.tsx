@@ -1,5 +1,5 @@
 "use client"
-import PublicRegisterForm from "./PublicRegisterForm";
+import PublicRegisterForm from "../public-register/PublicRegisterForm";
 import { School } from "@/utils/school.interface";
 import {
   Card,

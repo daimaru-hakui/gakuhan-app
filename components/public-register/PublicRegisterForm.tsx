@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { FormInput } from "../form/FormInput";
 import FormAddressSelect from "../form/FormAddressSelect";
 import { Button } from "../ui/button";
-import GenderSelect from "./GenderSelect";
+import GenderSelect from "../public-students/GenderSelect";
 import { CreateStudent, CreateStudentSchema } from "@/utils/schemas";
 import { School } from "@/utils/school.interface";
 import { zodResolver } from "@hookform/resolvers/zod";

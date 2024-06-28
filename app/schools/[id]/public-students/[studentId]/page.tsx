@@ -1,5 +1,6 @@
 import PublicMesaureContainer from "@/components/public-students/PublicMeasureContainer";
 import { db } from "@/firebase/server";
+import { Product } from "@/utils/product.interface";
 import { School } from "@/utils/school.interface";
 import { Student } from "@/utils/student.interface";
 import { notFound } from "next/navigation";
@@ -18,24 +19,41 @@ export default async function PublicStudentPage({ params }: Props) {
   const schoolSnap = await db.collection("schools").doc(id).get();
   const school = schoolSnap.data() as School;
 
-  const snapshot = await db
+  if (!school) return;
+  if (!school.isPublic) return notFound();
+  if (school.isDeleted) return notFound();
+
+  const studentSnap = await db
     .collection("schools")
     .doc(id)
     .collection("public-students")
     .doc(studentId)
     .get();
 
-  const rawData = { ...snapshot.data(), id: snapshot.id } as Student;
-  const JsonData = JSON.stringify(rawData);
-  const student = JSON.parse(JsonData) as Student;
+  const studentRaw = { ...studentSnap.data(), id: studentSnap.id } as Student;
+  const studentData = JSON.stringify(studentRaw);
+  const student = JSON.parse(studentData) as Student;
 
-  if (!school) return;
-  if (!school.isPublic) return notFound();
-  if (school.isDeleted) return notFound();
+  const productsSnap = await db
+    .collection("schools")
+    .doc(id)
+    .collection("products")
+    .get();
+
+  const productsRaw = productsSnap.docs.map(
+    (doc) => ({ ...doc.data(), id: doc.id } as Product)
+  );
+
+  const filterProductsRow = productsRaw.filter(
+    (product) => product.gender === "other" || product.gender === student.gender
+  );
+
+  const productsData = JSON.stringify(filterProductsRow);
+  const products = JSON.parse(productsData) as Product[];
 
   return (
     <div className="w-full">
-      <PublicMesaureContainer student={student} />
+      <PublicMesaureContainer student={student} products={products} />
     </div>
   );
 }

@@ -5,7 +5,6 @@ import { collection, onSnapshot, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import LoaderIcon from "../LoaderIcon";
 import EmptyList from "../EmptyList";
-import { Card, CardContent } from "../ui/card";
 import { cn } from "@/lib/utils";
 
 interface Props {
