@@ -79,7 +79,7 @@ export default function PublicRegisterConfirm({
 
   async function createStudentAction(
     data: CreateStudent
-  ): Promise<{ id: string | null }> {
+  ): Promise<{ id: string | null; }> {
     try {
       const productsRef = collection(db, "schools", school.id, "products");
       const products = (await getDocs(productsRef)).docs
@@ -95,7 +95,12 @@ export default function PublicRegisterConfirm({
         school.id,
         "public-students"
       );
-      const { id } = await addDoc(studentRef, { ...data, products });
+      const { id } = await addDoc(studentRef, {
+        ...data,
+        products,
+        startedAt: new Date(),
+        finishedAt: null
+      });
       return { id };
     } catch (e) {
       return { id: null };

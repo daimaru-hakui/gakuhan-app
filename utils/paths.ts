@@ -11,9 +11,12 @@ const paths = {
   }) {
     return `/schools/${schoolId}/products/${productId}/edit`;
   },
-  schoolShow(id:string) {
-    return `/schools/${id}`
-  }
+  schoolShow(id: string) {
+    return `/schools/${id}`;
+  },
+  schoolEdit(id: string) {
+    return `/schools/${id}/edit`;
+  },
 };
 
 export default paths;

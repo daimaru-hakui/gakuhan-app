@@ -1,4 +1,4 @@
-import PublicRagisterContainer from "@/components/public/PublicRagisterContainer";
+import PublicRagisterContainer from "@/components/public-students/PublicRagisterContainer";
 import { db } from "@/firebase/server";
 import { School } from "@/utils/school.interface";
 import { notFound } from "next/navigation";

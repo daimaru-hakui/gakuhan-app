@@ -113,7 +113,7 @@ export default function ProductEditForm({ id, setIsActive, product }: Props) {
         </div>
         <div className="flex justify-between gap-3 pr-7">
           <Button type="button" variant="outline" className="w-full" asChild>
-            <Link href={paths.schoolShow(id)}>キャンセル</Link>
+            <Link href={paths.schoolEdit(id)}>キャンセル</Link>
           </Button>
           <SubmitRhkButton
             isValid={pending}
