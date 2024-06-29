@@ -12,7 +12,7 @@ import ProductForm from "./ProductForm";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-export function ProductCreateModal({ id }: { id: string }) {
+export function ProductCreateModal({ id }: { id: string; }) {
   const [isActive, setIsActive] = useState(false);
   const [open, setOpen] = useState(false);
   return (

@@ -9,7 +9,7 @@ import SchoolSetting from "@/components/schools/edit//SchoolSetting";
 import LoaderIcon from "@/components/LoaderIcon";
 import { notFound } from "next/navigation";
 
-export default function SchoolContainer({ id }: { id: string }) {
+export default function SchoolContainer({ id }: { id: string; }) {
   const [school, setSchool] = useState<School>();
   console.log(id);
 

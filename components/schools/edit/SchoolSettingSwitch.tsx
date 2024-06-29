@@ -5,7 +5,7 @@ import { Switch } from "@/components/ui/switch";
 import { db } from "@/firebase/client";
 import { cn } from "@/lib/utils";
 import { School } from "@/utils/school.interface";
-import { doc, updateDoc } from "firebase/firestore";
+import { collection, doc, getCountFromServer, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -26,14 +26,22 @@ export default function SchoolSettingSwitch({
 }: Props) {
   const [show, setShow] = useState(value || false);
 
-
   async function handleUpdateSwitch() {
     const docRef = doc(db, "schools", school.id);
-    await updateDoc(docRef, {
-      [prop]: !show,
-    });
-    setShow(!show);
-    toast.success(`${title}を更新しました`);
+    const studentsRef = collection(db, "schools", school.id, "public-students");
+    const studentsSnap = await getCountFromServer(studentsRef);
+    const count = studentsSnap.data().count;
+    try {
+      if (count > 0) throw new Error("採寸中のため失敗しました");
+      await updateDoc(docRef, {
+        [prop]: !show,
+      });
+      setShow(!show);
+      toast.success(`${title}を更新しました`);
+    } catch (e) {
+      const message = e instanceof Error ? e.message : "エラーが発生しました";
+      toast.error(message);
+    }
   }
 
   return (

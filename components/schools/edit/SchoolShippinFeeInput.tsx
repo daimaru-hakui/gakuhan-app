@@ -16,10 +16,15 @@ export default function SchoolShippinFeeInput({ school }: Props) {
   const [shippingFee, setShippingFee] = useState(school.shippingFee || 0);
   async function handleUpdateShipping() {
     const docRef = doc(db, "schools", school.id);
-    await updateDoc(docRef, {
-      shippingFee,
-    });
-    toast.success(`送料を更新しました`);
+    try {
+      await updateDoc(docRef, {
+        shippingFee,
+      });
+      toast.success(`送料を更新しました`);
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : "エラーが発生しました";
+      toast.error(message);
+    }
   }
   return (
     <div className="flex items-center justify-between gap-6">

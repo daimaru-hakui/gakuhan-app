@@ -1,13 +1,13 @@
 "use client";
 import React from "react";
 import { Form } from "../ui/form";
-import { useForm } from "react-hook-form";
-import { FormInput } from "../form/FormInput";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { SubmitErrorHandler, useForm } from "react-hook-form";
 import { Student } from "@/utils/student.interface";
 import { Product } from "@/utils/product.interface";
-import Image from "next/image";
 import PublicMeasureCard from "./PublicMeasureCard";
+import { CreateMeasureStudent, CreateMeasureStudentSchema } from "@/utils/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SubmitRhkButton } from "../form/Buttons";
 
 interface Props {
   student: Student;
@@ -15,17 +15,102 @@ interface Props {
 }
 
 export default function PublicMeasureForm({ student, products }: Props) {
-  const form = useForm();
-  console.log(student);
-  console.log(products);
+  const defaultValues = products.map(product => {
+    const oneItem = product.items.length === 1;
+    const item = product.items.at(0);
+
+    // サイズ
+    let size;
+    if (oneItem) {
+      switch (item?.size.length) {
+        case 0:
+          size = "F";
+          break;
+        case 1:
+          size = item.size.join();
+          break;
+        default:
+          size = "";
+      }
+    } else {
+      size = "";
+    }
+
+    // カラー
+    let color;
+    if (oneItem) {
+      switch (item?.color.length) {
+        case 0:
+          color = "-";
+          break;
+        case 1:
+          color = item.color.join();
+          break;
+        default:
+          color = "";
+      }
+    } else {
+      color = "";
+    }
+
+    // スソ上げ 
+    let inseam = {
+      price: 0,
+      cutLength: 0,
+      base: 0
+    };
+    if (oneItem) {
+      inseam.price = item?.inseam.isFlag ? item.inseam.price : 0;
+      inseam.cutLength = item?.inseam.isFlag ? item.inseam.min : 0;
+      inseam.base = item?.inseam.isFlag ? item.inseam.base : 0;
+    } else {
+      inseam.price = 0;
+      inseam.cutLength = 0;
+      inseam.base = 0;
+    }
+
+    let quantity = 0;
+    if (oneItem) {
+      if (product.quantity.min === product.quantity.max) {
+        quantity = product.quantity.min;
+      }
+    }
+
+    return {
+      name: oneItem ? item?.name : "",
+      price: oneItem ? item?.price || 0 : 0,
+      size,
+      color,
+      quantity,
+      inseam: {
+        price: inseam.price,
+        cutLength: inseam.cutLength,
+        base: inseam.base
+      }
+    };
+  });
+  const form = useForm<CreateMeasureStudent>({
+    resolver: zodResolver(CreateMeasureStudentSchema),
+    defaultValues: { products: defaultValues },
+  });
+
+  function onSubmit(data: CreateMeasureStudent) {
+    console.log(data);
+  }
+
+  function onError(data: any) {
+    console.log(data);
+  }
+
   return (
     <Form {...form}>
-      <form>
-        <div className="grid grid-cols-1 gap-6">
-          {products.map((product) => (
-            <PublicMeasureCard key={product.id} product={product} />
+      <form onSubmit={form.handleSubmit(onSubmit, onError)}>
+        <div className="grid grid-cols-1 gap-6 px-3">
+          {products.map((product, index) => (
+            <PublicMeasureCard key={product.id} product={product} form={form} index={index} />
           ))}
         </div>
+        <SubmitRhkButton text="登録" />
       </form>
     </Form>
   );
