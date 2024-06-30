@@ -8,8 +8,8 @@ import {
 } from "../ui/select";
 import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
-import { useState } from "react";
 import { Item } from "./PublicMeasureCard";
+import { cn } from "@/lib/utils";
 
 interface Props {
   item: Item;
@@ -19,13 +19,21 @@ interface Props {
   max: number;
   label?: string;
   unit?: string;
-  isSwitch?: boolean;
   check?: boolean;
   setCheck?: (bool: boolean) => void;
 }
 
-export default function PublicMeasureInseam(
-  { item, value, setValue, min, max, label, unit = "", isSwitch = false, check, setCheck }: Props) {
+export default function PublicMeasureInseam({
+  item,
+  value,
+  setValue,
+  min,
+  max,
+  label,
+  unit = "",
+  check,
+  setCheck
+}: Props) {
   const array = Array.from(Array(max - min), (_, i) => i + min);
 
 
@@ -44,30 +52,34 @@ export default function PublicMeasureInseam(
         null
       ) : (
         <div className="flex gap-3">
-          <div className="flex-grow">
-            <Label >{label}</Label>
-            <Select disabled={check} value={String(value)} onValueChange={(e) => setValue(+e)}>
-              <SelectTrigger>
-                <SelectValue >{value !== 0 ? value + unit : "選択してください"}</SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                {array.map((value => (
-                  <SelectItem
-                    key={value}
-                    value={String(value)}
-                  >
-                    {value}{unit}
-                  </SelectItem>
-                )))}
-              </SelectContent>
-            </Select>
-          </div>
-          {isSwitch && (
-            <div className="flex items-center space-x-2 mt-6">
-              <Switch checked={check} id="airplane-mode" onClick={(e) => handleSwitch(e)} />
-              <Label htmlFor="airplane-mode">股下不要</Label>
+          {!check && (
+            <div className="flex-grow">
+              <Label >{label}</Label>
+              <Select disabled={check} value={String(value)} onValueChange={(e) => setValue(+e)}>
+                <SelectTrigger>
+                  <SelectValue >{value !== 0 ? value + unit : "選択してください"}</SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {array.map((value => (
+                    <SelectItem
+                      key={value}
+                      value={String(value)}
+                    >
+                      {value}{unit}
+                    </SelectItem>
+                  )))}
+                </SelectContent>
+              </Select>
             </div>
           )}
+          <div className={cn("flex items-center space-x-2", check ? "" : "mt-6")}>
+            <Switch
+              checked={check}
+              id="airplane-mode"
+              onClick={(e) => handleSwitch(e)}
+            />
+            <Label htmlFor="airplane-mode">股下不要</Label>
+          </div>
         </div>
       ))}
     </>

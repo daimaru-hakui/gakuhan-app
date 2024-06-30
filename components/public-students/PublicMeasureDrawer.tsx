@@ -4,7 +4,7 @@ import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, D
 import { Item } from "./PublicMeasureCard";
 import Image from "next/image";
 import { UseFormReturn } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Product } from "@/utils/product.interface";
 import PublicMeasureSelect from "./PublicMeasureSelect";
 import PublicMeasureQuantity from "./PublicMeasureQuantity";
@@ -17,14 +17,21 @@ interface Props {
   item: Item | undefined;
   form: UseFormReturn<any, any>;
   index: number;
+  isNoInseam: boolean;
+  setIsNoInseam: (bool: boolean) => void;
 }
 
-export default function PublicMeasureDrawer({ open, setOpen, product, item, form, index }: Props) {
+export default function PublicMeasureDrawer({
+  open, setOpen, product, item, form, index, isNoInseam, setIsNoInseam }: Props
+) {
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
   const [quantity, setQuantity] = useState(0);
-  const [cutLength, setCutLength] = useState(0);
-  const [isNoInseam, setNoInseam] = useState(false);
+  const [cutLength, setCutLength] = useState(
+    form.getValues(`products.${index}.cutLength`)
+      ? form.getValues(`products.${index}.cutLength`)
+      : 0
+  );
 
   function handleClick() {
     if (!open) return;
@@ -35,39 +42,41 @@ export default function PublicMeasureDrawer({ open, setOpen, product, item, form
     if (item.color.length === 0) {
       form.setValue(`products.${index}.color`, "-");
     } else if (item.color.length === 1) {
-      console.log(item.color.join());
       form.setValue(`products.${index}.color`, item.color.join());
     } else {
-      console.log(color);
       form.setValue(`products.${index}.color`, color);
     }
 
     if (item.size.length === 0) {
       form.setValue(`products.${index}.size`, "F");
     } else if (item.size.length === 1) {
-      console.log(item.size.join());
       form.setValue(`products.${index}.size`, item.size.join());
     } else {
-      console.log(size);
       form.setValue(`products.${index}.size`, size);
     }
 
     if (product.quantity.min === product.quantity.max) {
       form.setValue(`products.${index}.quantity`, product.quantity.min);
-    } else {
+    } else if (quantity !== 0) {
       form.setValue(`products.${index}.quantity`, quantity);
     }
 
     if (item.inseam.min === item.inseam.max) {
       form.setValue(`products.${index}.cutLength`, item.inseam.min);
-    } else {
+    } else if (!item.inseam.isFlag) {
+      form.setValue(`products.${index}.cutLength`, 0);
+    } else if (item.inseam.isFlag && cutLength !== 0) {
       form.setValue(`products.${index}.cutLength`, cutLength);
+    } else if (item.inseam.isFlag && isNoInseam) {
+      form.setValue(`products.${index}.cutLength`, 0);
+    } else if (item.inseam.isFlag && cutLength === 0) {
+      form.setValue(`products.${index}.cutLength`, "");
     }
-
     setOpen(false);
   }
 
   if (!item) return null;
+
   return (
     <>
       {open && (
@@ -98,13 +107,6 @@ export default function PublicMeasureDrawer({ open, setOpen, product, item, form
                     array={item.size}
                     label="サイズ"
                   />
-                  <PublicMeasureQuantity
-                    value={quantity}
-                    setValue={setQuantity}
-                    min={product.quantity.min}
-                    max={product.quantity.max}
-                    label="数量"
-                  />
                   <PublicMeasureInseam
                     item={item}
                     value={cutLength}
@@ -113,16 +115,26 @@ export default function PublicMeasureDrawer({ open, setOpen, product, item, form
                     max={item.inseam.max}
                     label="股下"
                     unit="cm"
-                    isSwitch={true}
                     check={isNoInseam}
-                    setCheck={setNoInseam}
+                    setCheck={setIsNoInseam}
+                  />
+                  <PublicMeasureQuantity
+                    value={quantity}
+                    setValue={setQuantity}
+                    min={product.quantity.min}
+                    max={product.quantity.max}
+                    label="数量"
                   />
                 </div>
                 <DrawerFooter className="grid grid-cols-2 gap-3 mt-6 ">
                   <Button
                     type="button"
                     variant="outline"
-                    onClick={() => setOpen(false)}
+                    onClick={() => {
+                      setOpen(false);
+                      setIsNoInseam(
+                        item?.inseam.isFlag && form.getValues(`products.${index}.cutLength`) === 0 ? true : false);
+                    }}
                   >
                     戻る
                   </Button>

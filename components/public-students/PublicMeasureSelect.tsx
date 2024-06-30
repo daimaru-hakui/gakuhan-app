@@ -14,7 +14,7 @@ export default function PublicMeasureSelect({ value, setValue, array, label }: P
     <>
       {(array.length <= 1 ? (
         array.length === 0 ? null
-          : <div>{label}<span className="ml-3">{array.join()}</span></div>
+          : <div className="text-sm">{label}<span className="ml-3">{array.join()}</span></div>
       ) : (
         <div>
           <Label>{label}</Label>

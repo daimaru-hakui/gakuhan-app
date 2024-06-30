@@ -5,6 +5,7 @@ import { Product } from "@/utils/product.interface";
 import PublicMeasureDrawer from "./PublicMeasureDrawer";
 import { UseFormReturn } from "react-hook-form";
 import { cn } from "@/lib/utils";
+import { Badge } from "../ui/badge";
 
 interface Props {
   product: Product;
@@ -34,10 +35,12 @@ export interface Item {
 export default function PublicMeasureCard({ product, form, index }: Props) {
   const [open, setOpen] = useState(false);
   const [item, setItem] = useState<Item>();
+  const [isNoInseam, setIsNoInseam] = useState(false);
+  const name = form.getValues(`products.${index}.name`) as string;
   const color = form.getValues(`products.${index}.color`) as string;
   const size = form.getValues(`products.${index}.size`) as string;
-  const quantity = form.getValues(`products.${index}.quantity`) as number;
   const cutLength = form.getValues(`products.${index}.cutLength`) as number;
+  const quantity = form.getValues(`products.${index}.quantity`) as number;
 
   function handleClick(value: Item | undefined) {
     if (!value) return;
@@ -46,17 +49,18 @@ export default function PublicMeasureCard({ product, form, index }: Props) {
   }
   return (
     <div key={product.id} className="p-3 border">
-      <div>{product.isRequire ? "必須" : "選択"}</div>
+      <header className="flex justify-between mb-3">
+        {product.isRequire
+          ? <Badge variant="destructive">必須</Badge>
+          : <Badge variant="outline">選択</Badge>}
+        <span></span>
+      </header>
       {product.items.length === 1 ? (
         <div className="space-y-1 cursor-pointer"
           onClick={() => handleClick(product.items.at(0))}
         >
           <Image
-            src={
-              product.items.at(0)?.images.productUrl || "/images/noImage.png"
-            }
-            alt=""
-            width={200}
+            src={product.items.at(0)?.images.productUrl || "/images/noImage.png"} alt="" width={200}
             height={200}
             className="w-full"
           />
@@ -76,7 +80,7 @@ export default function PublicMeasureCard({ product, form, index }: Props) {
                 width={200}
                 height={200}
                 className={cn("border p-1 rounded-md w-full h-full object-contain",
-                  form.getValues(`products.${index}.name`) === item.name ? 'border-black' : "")}
+                  name === item.name ? 'border-black' : "")}
               />
               <h3 className="font-semibold">{item.name}</h3>
               <div>￥{item.price}</div>
@@ -91,14 +95,16 @@ export default function PublicMeasureCard({ product, form, index }: Props) {
         item={item}
         form={form}
         index={index}
+        isNoInseam={isNoInseam}
+        setIsNoInseam={setIsNoInseam}
       />
       <div className="mt-3 flex gap-1">
         <PropertyStringLabel property={color} text="カラー" />
         <PropertyStringLabel property={size} text="サイズ" />
-        <PropertyNumberLabel property={quantity} text="数量" />
         {form.getValues(`products.${index}.inseam.isFlag`) && (
           <PropertyNumberLabel property={cutLength} text="股下" unit="cm" />
         )}
+        <PropertyNumberLabel property={quantity} text="数量" />
       </div>
     </div>
   );
