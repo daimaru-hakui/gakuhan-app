@@ -119,3 +119,20 @@ export const CreateStudentSchema = z.object({
   }),
 });
 export type CreateStudent = z.infer<typeof CreateStudentSchema>;
+
+export const CreateMeasureStudentSchema = z.object({
+  products: z.object({
+    name: z.string().min(1, { message: "商品を選択してください" }),
+    color: z.string(),
+    size: z.string(),
+    price: z.number(),
+    quantity: z.coerce.number().int(),
+    cutLength: z.coerce.number().int(),
+    inseam: z.object({
+      isFlag: z.boolean(),
+      price: z.number(),
+      base: z.number()
+    })
+  }).array()
+});
+export type CreateMeasureStudent = z.infer<typeof CreateMeasureStudentSchema>;

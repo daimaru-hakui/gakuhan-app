@@ -26,6 +26,7 @@ interface Props {
 }
 export default function ProductDragAndDrop({ id, products }: Props) {
   const [items, setItems] = useState<Product[]>([]);
+  const [open, setOpen] = useState(false);
   const [pending, startTransaction] = useTransition();
   useEffect(() => {
     setItems(products);
@@ -36,7 +37,7 @@ export default function ProductDragAndDrop({ id, products }: Props) {
       startTransaction(async () => {
         await updateProductsSort();
       });
-      toast.success("順番を更新しました。")
+      toast.success("順番を更新しました。");
     } catch (e) {
       console.log(e);
     }
@@ -58,8 +59,8 @@ export default function ProductDragAndDrop({ id, products }: Props) {
   if (!items) return <LoaderIcon />;
 
   return (
-    <Dialog>
-      <DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
         <Button variant="outline" size="sm" className="h-8">
           並び替え
         </Button>
@@ -94,7 +95,7 @@ export default function ProductDragAndDrop({ id, products }: Props) {
           ))}
         </Reorder.Group>
         <DialogFooter className="sm:justify-start">
-          <DialogClose asChild>
+          <DialogClose>
             <Button type="button" variant="secondary">
               閉じる
             </Button>
@@ -108,6 +109,6 @@ export default function ProductDragAndDrop({ id, products }: Props) {
           />
         </DialogFooter>
       </DialogContent>
-    </Dialog>
+    </Dialog >
   );
 }

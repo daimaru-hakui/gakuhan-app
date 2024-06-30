@@ -5,7 +5,7 @@ import Link from "next/link";
 import React, { useTransition } from "react";
 import { LuLoader2 } from "react-icons/lu";
 import { RiDeleteBin6Line, RiEditLine } from "react-icons/ri";
-import { LuSettings  } from "react-icons/lu";
+import { LuSettings } from "react-icons/lu";
 import { toast } from "sonner";
 
 interface Props {
@@ -25,7 +25,7 @@ export default function SchoolsEditWithDeleteButon({ school }: Props) {
       });
     } catch (e) {
       console.log(e);
-      toast.error("失敗しました");
+      toast.error("削除に失敗しました");
     }
   }
 
@@ -44,7 +44,7 @@ export default function SchoolsEditWithDeleteButon({ school }: Props) {
   return (
     <div className="flex gap-3">
       <Link href={`/schools/${school.id}/edit`} className="w-8 h-8 flex justify-center items-center">
-        <LuSettings   size={24} color="gray" className="cursor-pointer" />
+        <LuSettings size={24} color="gray" className="cursor-pointer" />
       </Link>
       <div className="w-8 h-8 flex justify-center items-center">
         {pending ? (

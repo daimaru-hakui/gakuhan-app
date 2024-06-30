@@ -1,20 +1,20 @@
 "use client";
 import React, { useTransition } from "react";
 import { FieldValue, useFieldArray, useForm } from "react-hook-form";
-import { Form } from "../ui/form";
-import ProductItemInputs from "./ProductItemInputs";
+import { Form } from "../../ui/form";
+import ProductItemInputs from "../ProductItemInputs";
 import { CreateProduct, CreateProductSchema } from "@/utils/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "../ui/button";
-import { DialogClose, DialogFooter } from "../ui/dialog";
-import ProductQuantityInput from "./ProductQuantityInput";
+import { Button } from "../../ui/button";
+import { DialogClose, DialogFooter } from "../../ui/dialog";
+import ProductQuantityInput from "../ProductQuantityInput";
 import { cn } from "@/lib/utils";
-import ProductGenderSelectButton from "./ProductGenderSelectButton";
-import ProductRequireSwitch from "./ProductRequireSwitch";
+import ProductGenderSelectButton from "../ProductGenderSelectButton";
+import ProductRequireSwitch from "../ProductRequireSwitch";
 import { addDoc, collection, getCountFromServer } from "firebase/firestore";
 import { db } from "@/firebase/client";
-import { SubmitRhkButton } from "../form/Buttons";
-import TextAreaInput from "../form/TextAreaInput";
+import { SubmitRhkButton } from "../../form/Buttons";
+import TextAreaInput from "../../form/TextAreaInput";
 
 interface Props {
   setIsActive: (bool: boolean) => void;
@@ -141,7 +141,7 @@ export default function ProductForm({ setIsActive, setOpen, id }: Props) {
           </Button>
         </div>
         <DialogFooter className="w-full flex flex-row justify-end gap-3 pr-6">
-          <DialogClose asChild>
+          <DialogClose className="w-full">
             <Button type="button" variant="secondary" className="w-full">
               閉じる
             </Button>

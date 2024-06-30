@@ -16,7 +16,7 @@ import { EditSchool, EditSchoolSchema } from "@/utils/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { School } from "@/utils/school.interface";
 import { Form } from "../../ui/form";
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase/client";
 import FormCalendarInput from "../../form/FormCalendarInput";
@@ -47,9 +47,13 @@ export default function SchoolEditModal({ school }: Props) {
 
   async function onSubmit(data: EditSchool) {
     startTransaction(async () => {
-      await updateSchool(data);
-      toast.success("学校情報を更新しました");
-      setOpen(false);
+      const result = await updateSchool(data);
+      if (result.status === "success") {
+        toast.success(result.message);
+        setOpen(false);
+      } else {
+        toast.error(result.message);
+      }
     });
   }
 
@@ -63,8 +67,17 @@ export default function SchoolEditModal({ school }: Props) {
         ...data,
         scheduledDate: date,
       });
-    } catch (e) {
+      return {
+        status: "success",
+        message: "学校情報を更新しました"
+      };
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : "エラーが発生しました";
       console.log(e);
+      return {
+        status: "error",
+        message
+      };
     }
   }
 

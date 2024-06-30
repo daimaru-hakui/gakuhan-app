@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { UseFormReturn, useFormContext } from "react-hook-form";
+import { UseFormReturn } from "react-hook-form";
 import { addresses } from "@/utils/addresses";
 import { CreateStudent } from "@/utils/schemas";
 
