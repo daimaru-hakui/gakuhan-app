@@ -126,9 +126,10 @@ export const CreateMeasureStudentSchema = z.object({
     color: z.string(),
     size: z.string(),
     price: z.number(),
-    quantity: z.number(),
+    quantity: z.coerce.number().int(),
+    cutLength: z.coerce.number().int(),
     inseam: z.object({
-      cutLength: z.number(),
+      isFlag: z.boolean(),
       price: z.number(),
       base: z.number()
     })

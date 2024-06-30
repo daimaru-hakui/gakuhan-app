@@ -34,18 +34,16 @@ export interface Item {
 export default function PublicMeasureCard({ product, form, index }: Props) {
   const [open, setOpen] = useState(false);
   const [item, setItem] = useState<Item>();
-  const color = form.getValues(`products.${index}.color`);
-  const size = form.getValues(`products.${index}.size`);
-  const quantity = form.getValues(`products.${index}.quantity`);
+  const color = form.getValues(`products.${index}.color`) as string;
+  const size = form.getValues(`products.${index}.size`) as string;
+  const quantity = form.getValues(`products.${index}.quantity`) as number;
+  const cutLength = form.getValues(`products.${index}.cutLength`) as number;
 
   function handleClick(value: Item | undefined) {
     if (!value) return;
     setOpen(true);
     setItem(value);
   }
-
-  console.log(color);
-
   return (
     <div key={product.id} className="p-3 border">
       <div>{product.isRequire ? "必須" : "選択"}</div>
@@ -86,29 +84,48 @@ export default function PublicMeasureCard({ product, form, index }: Props) {
           ))}
         </div>
       )}
-      <PublicMeasureDrawer open={open} setOpen={setOpen} item={item} form={form} index={index} />
-      <div className="mt-3 flex gap-3">
-        {(color !== '') ?
-          (
-            <div className="border bg-primary text-muted  font-semibold p-2">
-              {color}
-            </div>
-          ) : (
-            <div className="border p-2">
-              カラー未選択
-            </div>
-          )}
-
-        {size !== '' ? (
-          <div className="border bg-primary text-muted font-semibold p-2">
-            {size}
-          </div>
-        ) : (
-          <div className="border p-2">
-            サイズ未選択
-          </div>
+      <PublicMeasureDrawer
+        open={open}
+        setOpen={setOpen}
+        product={product}
+        item={item}
+        form={form}
+        index={index}
+      />
+      <div className="mt-3 flex gap-1">
+        <PropertyStringLabel property={color} text="カラー" />
+        <PropertyStringLabel property={size} text="サイズ" />
+        <PropertyNumberLabel property={quantity} text="数量" />
+        {form.getValues(`products.${index}.inseam.isFlag`) && (
+          <PropertyNumberLabel property={cutLength} text="股下" unit="cm" />
         )}
       </div>
     </div>
   );
 };
+
+function PropertyStringLabel({ property, text, unit = "" }
+  : { property: string | number; text: string; unit?: string; }) {
+  return (
+    <div
+      className={cn("border font-semibold text-xs p-1",
+        property ? "bg-primary text-muted" : ""
+      )}>
+      {(property ? `${property} ${unit}` : text + "未選択")}
+    </div>
+  );
+};
+
+function PropertyNumberLabel({ property, text, unit = "" }
+  : { property: number; text: string; unit?: string; }) {
+  return (
+    <div
+      className={cn("border font-semibold text-xs p-1",
+        property || property === 0 ? "bg-primary text-muted" : ""
+      )}>
+      {(property
+        ? `${property} ${unit}`
+        : property === 0 ? text + "不要" : text + "未選択")}
+    </div>
+  );
+};;

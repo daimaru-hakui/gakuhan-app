@@ -54,26 +54,32 @@ export default function PublicMeasureForm({ student, products }: Props) {
     }
 
     // スソ上げ 
-    let inseam = {
-      price: 0,
-      cutLength: 0,
-      base: 0
-    };
+    let cutLength;
     if (oneItem) {
-      inseam.price = item?.inseam.isFlag ? item.inseam.price : 0;
-      inseam.cutLength = item?.inseam.isFlag ? item.inseam.min : 0;
-      inseam.base = item?.inseam.isFlag ? item.inseam.base : 0;
+      cutLength = item?.inseam.isFlag ? "" : 0;
     } else {
-      inseam.price = 0;
-      inseam.cutLength = 0;
-      inseam.base = 0;
+      cutLength = "";
     }
 
-    let quantity = 0;
+    const inseam = {
+      price: 0,
+      base: 0,
+      isFlag: false
+    };
+
     if (oneItem) {
-      if (product.quantity.min === product.quantity.max) {
-        quantity = product.quantity.min;
-      }
+      inseam.price = item?.inseam.isFlag ? item.inseam.price : 0;
+      inseam.base = item?.inseam.isFlag ? item.inseam.base : 0;
+      inseam.isFlag = item?.inseam.isFlag ? true : false;
+    } else {
+      inseam.price = 0;
+      inseam.base = 0;
+      inseam.isFlag = product.items.some(item => item.inseam.isFlag);
+    }
+
+    let quantity;
+    if (product.quantity.min === product.quantity.max) {
+      quantity = product.quantity.min;
     }
 
     return {
@@ -84,8 +90,8 @@ export default function PublicMeasureForm({ student, products }: Props) {
       quantity,
       inseam: {
         price: inseam.price,
-        cutLength: inseam.cutLength,
-        base: inseam.base
+        base: inseam.base,
+        isFlag: inseam.isFlag
       }
     };
   });
@@ -107,10 +113,17 @@ export default function PublicMeasureForm({ student, products }: Props) {
       <form onSubmit={form.handleSubmit(onSubmit, onError)}>
         <div className="grid grid-cols-1 gap-6 px-3">
           {products.map((product, index) => (
-            <PublicMeasureCard key={product.id} product={product} form={form} index={index} />
+            <PublicMeasureCard
+              key={product.id}
+              product={product}
+              form={form}
+              index={index}
+            />
           ))}
         </div>
-        <SubmitRhkButton text="登録" />
+        <div className="w-ful mt-3">
+          <SubmitRhkButton text="登録" />
+        </div>
       </form>
     </Form>
   );
