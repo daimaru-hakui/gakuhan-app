@@ -15,6 +15,7 @@ export interface Student {
     street: string;
     building: string;
   };
+  tel: string;
   products: {
     id: string;
     name: string;

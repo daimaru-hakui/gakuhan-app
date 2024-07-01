@@ -53,7 +53,7 @@ export default async function PublicStudentPage({ params }: Props) {
 
   return (
     <div className="w-full">
-      <PublicMesaureContainer student={student} products={products} />
+      <PublicMesaureContainer student={student} products={products} id={id} />
     </div>
   );
 }

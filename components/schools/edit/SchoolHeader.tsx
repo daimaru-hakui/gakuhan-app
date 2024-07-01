@@ -16,7 +16,7 @@ export default function SchoolHeader({ id }: Props) {
             <Link href="/schools">一覧へ戻る</Link>
           </Button>
           <Button asChild>
-            <Link href={`/schools/${id}/public-students/`}>
+            <Link href={`/schools/${id}/public-students/board`}>
               ダッシュボード
             </Link>
           </Button>

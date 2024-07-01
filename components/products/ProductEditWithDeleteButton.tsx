@@ -16,6 +16,7 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebase/client";
 import paths from "@/utils/paths";
+import { useStore } from "@/store";
 
 interface Props {
   id: string;
@@ -24,6 +25,7 @@ interface Props {
 
 export default function ProductEditWithDeleteButton({ id, product }: Props) {
   const [pending, startTransaction] = useTransition();
+  const studentsCount = useStore((state) => state.studentsCount);
 
   async function handleClickProductDelete(productId: string) {
     startTransaction(async () => {
@@ -61,7 +63,11 @@ export default function ProductEditWithDeleteButton({ id, product }: Props) {
           <RiEditLine size={18} />
         </Link>
       </Button>
-      <Button variant="outline" className="w-8 h-8 p-0 hover:bg-white">
+      <Button
+        disabled={studentsCount ? true : false}
+        variant="outline"
+        className="w-8 h-8 p-0 hover:bg-white"
+      >
         {pending ? (
           <LuLoader2 className="h-4 w-4 animate-spin" />
         ) : (

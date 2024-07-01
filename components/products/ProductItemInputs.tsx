@@ -19,7 +19,6 @@ export default function ProductItemInputs({
   index,
   removeProduct,
 }: Props) {
-
   return (
     <div className="w-full border rounded-md p-3 space-y-3">
       <div className="flex justify-between items-center">
@@ -31,19 +30,26 @@ export default function ProductItemInputs({
         )}
       </div>
       <div className="w-full flex flex-col mt-3 space-y-6">
-        <div className="w-full grid md:grid-cols-[1fr_100px] gap-3">
-          <FormInput
-            type="text"
-            form={form}
-            name={`items.${index}.name`}
-            label="商品名"
-            require
-          />
+        <FormInput
+          type="text"
+          form={form}
+          name={`items.${index}.name`}
+          label="商品名"
+          require
+        />
+        <div className="w-full md:max-w-[200px] grid grid-cols-2 gap-3">
           <FormInput
             type="number"
             form={form}
             name={`items.${index}.price`}
             label="価格"
+          />
+          <FormInput
+            type="text"
+            form={form}
+            placeholder="枚,個など"
+            name={`items.${index}.unit`}
+            label="単位"
           />
         </div>
         <ProductImageInput form={form} index={index} />

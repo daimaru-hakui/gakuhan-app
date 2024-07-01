@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { SubmitRhkButton } from "@/components/form/Buttons";
 import TextAreaInput from "@/components/form/TextAreaInput";
 import { CreateProduct, CreateProductSchema } from "@/utils/schemas";
+import { useStore } from "@/store";
 
 interface Props {
   setIsActive?: (bool: boolean) => void;
@@ -29,7 +30,8 @@ interface Props {
   product: Product;
 }
 
-export default function ProductEditForm({ id, setIsActive, product }: Props) {
+export default function ProductEditForm({ id, product }: Props) {
+  const studentsCount = useStore((state) => state.studentsCount);
   const [pending, startTransaction] = useTransition();
   const form = useForm<CreateProduct>({
     resolver: zodResolver(CreateProductSchema),
@@ -60,6 +62,7 @@ export default function ProductEditForm({ id, setIsActive, product }: Props) {
     append({
       name: "",
       price: 0,
+      unit:"",
       size: [],
       color: [],
       images: {
@@ -115,12 +118,16 @@ export default function ProductEditForm({ id, setIsActive, product }: Props) {
           <Button type="button" variant="outline" className="w-full" asChild>
             <Link href={paths.schoolEdit(id)}>キャンセル</Link>
           </Button>
-          <SubmitRhkButton
-            isValid={pending}
-            isPending={pending}
-            text="商品を更新する"
-            className="w-full"
-          />
+          {studentsCount ? (
+            <Button className="w-full" disabled={true}>編集不可</Button>
+          ) : (
+            <SubmitRhkButton
+              isValid={pending}
+              isPending={pending}
+              text="商品を更新する"
+              className="w-full"
+            />
+          )}
         </div>
       </form>
     </Form>

@@ -18,6 +18,7 @@ export interface Item {
   size: string[];
   color: string[];
   price: number;
+  unit: string;
   images: {
     productUrl: string;
     sizeUrl: string;
@@ -50,17 +51,24 @@ export default function PublicMeasureCard({ product, form, index }: Props) {
   return (
     <div key={product.id} className="p-3 border">
       <header className="flex justify-between mb-3">
-        {product.isRequire
-          ? <Badge variant="destructive">必須</Badge>
-          : <Badge variant="outline">選択</Badge>}
+        {product.isRequire ? (
+          <Badge variant="destructive">必須</Badge>
+        ) : (
+          <Badge variant="outline">選択</Badge>
+        )}
         <span></span>
       </header>
       {product.items.length === 1 ? (
-        <div className="space-y-1 cursor-pointer"
+        <div
+          className="space-y-1 cursor-pointer"
           onClick={() => handleClick(product.items.at(0))}
         >
           <Image
-            src={product.items.at(0)?.images.productUrl || "/images/noImage.png"} alt="" width={200}
+            src={
+              product.items.at(0)?.images.productUrl || "/images/noImage.png"
+            }
+            alt=""
+            width={200}
             height={200}
             className="w-full"
           />
@@ -70,8 +78,11 @@ export default function PublicMeasureCard({ product, form, index }: Props) {
       ) : (
         <div className={cn("grid grid-cols-2 gap-3")}>
           {product.items.map((item) => (
-            <div key={item.name}
-              className={cn("flex flex-col space-y-1 w-full h-full cursor-pointer")}
+            <div
+              key={item.name}
+              className={cn(
+                "flex flex-col space-y-1 w-full h-full cursor-pointer"
+              )}
               onClick={() => handleClick(item)}
             >
               <Image
@@ -79,8 +90,10 @@ export default function PublicMeasureCard({ product, form, index }: Props) {
                 alt=""
                 width={200}
                 height={200}
-                className={cn("border p-1 rounded-md w-full h-full object-contain",
-                  name === item.name ? 'border-black' : "")}
+                className={cn(
+                  "border p-1 rounded-md w-full h-full object-contain",
+                  name === item.name ? "border-black" : ""
+                )}
               />
               <h3 className="font-semibold">{item.name}</h3>
               <div>￥{item.price}</div>
@@ -104,34 +117,58 @@ export default function PublicMeasureCard({ product, form, index }: Props) {
         {form.getValues(`products.${index}.inseam.isFlag`) && (
           <PropertyNumberLabel property={cutLength} text="股下" unit="cm" />
         )}
-        <PropertyNumberLabel property={quantity} text="数量" />
+        <PropertyNumberLabel
+          property={quantity}
+          text="数量"
+          unit={item?.unit}
+        />
       </div>
     </div>
   );
-};
+}
 
-function PropertyStringLabel({ property, text, unit = "" }
-  : { property: string | number; text: string; unit?: string; }) {
+function PropertyStringLabel({
+  property,
+  text,
+  unit = "",
+}: {
+  property: string | number;
+  text: string;
+  unit?: string;
+}) {
   return (
     <div
-      className={cn("border font-semibold text-xs p-1",
+      className={cn(
+        "border font-semibold text-xs p-1",
         property ? "bg-primary text-muted" : ""
-      )}>
-      {(property ? `${property} ${unit}` : text + "未選択")}
+      )}
+    >
+      {property ? `${property} ${unit}` : text + "未選択"}
     </div>
   );
-};
+}
 
-function PropertyNumberLabel({ property, text, unit = "" }
-  : { property: number; text: string; unit?: string; }) {
+function PropertyNumberLabel({
+  property,
+  text,
+  unit = "",
+}: {
+  property: number;
+  text: string;
+  unit?: string;
+}) {
   return (
     <div
-      className={cn("border font-semibold text-xs p-1",
+      className={cn(
+        "border font-semibold text-xs p-1",
         property || property === 0 ? "bg-primary text-muted" : ""
-      )}>
-      {(property
+      )}
+    >
+      {property
         ? `${property} ${unit}`
-        : property === 0 ? text + "不要" : text + "未選択")}
+        : property === 0
+        ? text + "不要"
+        : text + "未選択"}
     </div>
   );
-};;
+}

@@ -1,17 +1,32 @@
 "use client";
 import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
-import { doc, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getCountFromServer,
+  onSnapshot,
+} from "firebase/firestore";
 import { db } from "@/firebase/client";
 import { School } from "@/utils/school.interface";
 import SchoolContent from "@/components/schools/edit//SchoolContent";
 import SchoolSetting from "@/components/schools/edit//SchoolSetting";
-import LoaderIcon from "@/components/LoaderIcon";
 import { notFound } from "next/navigation";
+import LoaderIcon from "@/components/LoaderIcon";
+import { useStore } from "@/store";
 
-export default function SchoolContainer({ id }: { id: string; }) {
+export default function SchoolContainer({ id }: { id: string }) {
   const [school, setSchool] = useState<School>();
-  console.log(id);
+  const setStudentsCount = useStore((state) => state.setStudentsCount);
+
+  useEffect(() => {
+    const getStudentsCount = async () => {
+      const studentsRef = collection(db, "schools", id, "public-students");
+      const snapshot = await getCountFromServer(studentsRef);
+      setStudentsCount(snapshot.data().count)
+    };
+    getStudentsCount();
+  }, [id,setStudentsCount]);
 
   useEffect(() => {
     const docRef = doc(db, "schools", id);

@@ -41,6 +41,7 @@ export default function ProductForm({ setIsActive, setOpen, id }: Props) {
           price: 0,
           size: [],
           color: [],
+          unit: "",
           images: {
             productUrl: "",
             sizeUrl: "",
@@ -90,6 +91,7 @@ export default function ProductForm({ setIsActive, setOpen, id }: Props) {
       price: 0,
       size: [],
       color: [],
+      unit: "",
       images: {
         productUrl: "",
         sizeUrl: "",

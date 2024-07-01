@@ -12,9 +12,8 @@ import { CreateStudent } from "@/utils/schemas";
 import { School } from "@/utils/school.interface";
 import { useTransition } from "react";
 import { LoadingButton } from "../form/Buttons";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import { db } from "@/firebase/client";
-import { Product } from "@/utils/product.interface";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -70,7 +69,8 @@ export default function PublicRegisterConfirm({
       await new Promise((resolve) => setTimeout(resolve, 500));
       const { id } = await createStudentAction(values);
       if (id) {
-        router.push(`/schools/${school.id}/public-students/${id}`);
+        // router.push(`/schools/${school.id}/public-students/${id}`);
+        router.push(`/public-register/${school.id}/public-students/${id}`);
       } else {
         toast.error("登録に失敗しました");
       }

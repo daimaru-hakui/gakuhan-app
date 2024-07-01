@@ -1,21 +1,30 @@
 "use client";
-import React from "react";
+import React, { startTransition, useTransition } from "react";
 import { Form } from "../ui/form";
 import { useForm } from "react-hook-form";
 import { Student } from "@/utils/student.interface";
 import { Product } from "@/utils/product.interface";
 import PublicMeasureCard from "./PublicMeasureCard";
-import { CreateMeasureStudent, CreateMeasureStudentSchema } from "@/utils/schemas";
+import {
+  CreateMeasureStudent,
+  CreateMeasureStudentSchema,
+} from "@/utils/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitRhkButton } from "../form/Buttons";
+import PublicMeasureButtonArea from "./PublicMeasureButtonArea";
+import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import { db } from "@/firebase/client";
+import { toast } from "sonner";
+import { finished } from "stream";
 
 interface Props {
   student: Student;
   products: Product[];
+  id: string;
 }
 
-export default function PublicMeasureForm({ student, products }: Props) {
-  const defaultValues = products.map(product => {
+export default function PublicMeasureForm({ student, products, id }: Props) {
+  const [pending, startTransition] = useTransition();
+  const defaultValues = products.map((product) => {
     const oneItem = product.items.length === 1;
     const item = product.items.at(0);
 
@@ -53,7 +62,7 @@ export default function PublicMeasureForm({ student, products }: Props) {
       color = "";
     }
 
-    // スソ上げ 
+    // スソ上げ
     let cutLength;
     if (oneItem) {
       cutLength = item?.inseam.isFlag ? "" : 0;
@@ -64,7 +73,7 @@ export default function PublicMeasureForm({ student, products }: Props) {
     const inseam = {
       price: 0,
       base: 0,
-      isFlag: false
+      isFlag: false,
     };
 
     if (oneItem) {
@@ -74,7 +83,7 @@ export default function PublicMeasureForm({ student, products }: Props) {
     } else {
       inseam.price = 0;
       inseam.base = 0;
-      inseam.isFlag = product.items.some(item => item.inseam.isFlag);
+      inseam.isFlag = product.items.some((item) => item.inseam.isFlag);
     }
 
     let quantity;
@@ -91,8 +100,8 @@ export default function PublicMeasureForm({ student, products }: Props) {
       inseam: {
         price: inseam.price,
         base: inseam.base,
-        isFlag: inseam.isFlag
-      }
+        isFlag: inseam.isFlag,
+      },
     };
   });
   const form = useForm<CreateMeasureStudent>({
@@ -100,17 +109,46 @@ export default function PublicMeasureForm({ student, products }: Props) {
     defaultValues: { products: defaultValues },
   });
 
-  function onSubmit(data: CreateMeasureStudent) {
-    console.log(data);
+  async function onSubmit(data: CreateMeasureStudent) {
+    startTransition(async () => {
+      const { status, message } = await updateStudent(data);
+      if (status === "success") {
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
+    });
   }
 
   function onError(data: any) {
     console.log(data);
   }
 
+  async function updateStudent(data: CreateMeasureStudent) {
+    const studentRef = doc(db, "schools", id, "public-students", student.id);
+    try {
+      await updateDoc(studentRef, {
+        products: { ...data.products },
+        finishedAt: serverTimestamp(),
+      });
+      return {
+        status: "success",
+        message: "登録しました。",
+      };
+    } catch (e) {
+      return {
+        status: "error",
+        message: "登録に失敗しました。",
+      };
+    }
+  }
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit, onError)}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit, onError)}
+        className="relative"
+      >
         <div className="grid grid-cols-1 gap-6 px-3">
           {products.map((product, index) => (
             <PublicMeasureCard
@@ -121,9 +159,11 @@ export default function PublicMeasureForm({ student, products }: Props) {
             />
           ))}
         </div>
-        <div className="w-ful mt-3">
-          <SubmitRhkButton text="登録" />
-        </div>
+        <PublicMeasureButtonArea
+          form={form}
+          totalCount={products.length}
+          pending={pending}
+        />
       </form>
     </Form>
   );

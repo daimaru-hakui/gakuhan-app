@@ -17,8 +17,8 @@ import { db } from "@/firebase/client";
 import { cn } from "@/lib/utils";
 import GenderBadge from "../GenderBadge";
 import { SubmitRhkButton } from "../form/Buttons";
-import LoaderIcon from "../LoaderIcon";
 import { toast } from "sonner";
+import LoaderIcon from "../LoaderIcon";
 
 interface Props {
   id: string;

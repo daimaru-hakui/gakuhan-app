@@ -16,10 +16,9 @@ import ProductEditWithDeleteButton from "./ProductEditWithDeleteButton";
 interface Props {
   id: string;
   products: Product[];
-  studentCount: number;
 }
 
-export default function ProductsList({ id, products, studentCount }: Props) {
+export default function ProductsList({ id, products }: Props) {
   if (products.length === 0) return <EmptyList text="商品が未登録です。" />;
 
   return (
@@ -63,11 +62,7 @@ export default function ProductsList({ id, products, studentCount }: Props) {
             <TableRow key={product.id}>
               <TableCell>{product.sortNum}</TableCell>
               <TableCell className="flex gap-2">
-                {studentCount === 0 ? (
-                  <ProductEditWithDeleteButton id={id} product={product} />
-                ) : (
-                  "編集不可"
-                )}
+                <ProductEditWithDeleteButton id={id} product={product} />
               </TableCell>
               <TableCell className="text-center">
                 <GenderBadge gender={product.gender} />

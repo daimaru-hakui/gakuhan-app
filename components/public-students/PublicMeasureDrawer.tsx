@@ -1,6 +1,14 @@
 "use client";
 import { Button } from "../ui/button";
-import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "../ui/drawer";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "../ui/drawer";
 import { Item } from "./PublicMeasureCard";
 import Image from "next/image";
 import { UseFormReturn } from "react-hook-form";
@@ -22,8 +30,15 @@ interface Props {
 }
 
 export default function PublicMeasureDrawer({
-  open, setOpen, product, item, form, index, isNoInseam, setIsNoInseam }: Props
-) {
+  open,
+  setOpen,
+  product,
+  item,
+  form,
+  index,
+  isNoInseam,
+  setIsNoInseam,
+}: Props) {
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
   const [quantity, setQuantity] = useState(0);
@@ -89,42 +104,51 @@ export default function PublicMeasureDrawer({
                   <DrawerTitle>選択してください</DrawerTitle>
                 </DrawerHeader>
                 <DrawerDescription></DrawerDescription>
-                <div className="space-y-4 px-4">
-                  <div className="w-full mx-auto space-y-5 p-5">
-                    <Image
-                      src={item.images.productUrl ? item.images.productUrl : "/images/noImage.png"} width={150} height={150} alt={item.name}
+                <div className="space-y-4 px-4 py-1 overflow-auto max-h-[calc(100vh-200px)]">
+                    <div className="w-full mx-auto space-y-5 p-5">
+                      <Image
+                        src={
+                          item.images.productUrl
+                            ? item.images.productUrl
+                            : "/images/noImage.png"
+                        }
+                        width={150}
+                        height={150}
+                        alt={item.name}
+                        className="mx-auto w-full object-cover"
+                      />
+                    </div>
+                    <PublicMeasureSelect
+                      value={color}
+                      setValue={setColor}
+                      array={item.color}
+                      label="カラー"
                     />
-                  </div>
-                  <PublicMeasureSelect
-                    value={color}
-                    setValue={setColor}
-                    array={item.color}
-                    label="カラー"
-                  />
-                  <PublicMeasureSelect
-                    value={size}
-                    setValue={setSize}
-                    array={item.size}
-                    label="サイズ"
-                  />
-                  <PublicMeasureInseam
-                    item={item}
-                    value={cutLength}
-                    setValue={setCutLength}
-                    min={item.inseam.min}
-                    max={item.inseam.max}
-                    label="股下"
-                    unit="cm"
-                    check={isNoInseam}
-                    setCheck={setIsNoInseam}
-                  />
-                  <PublicMeasureQuantity
-                    value={quantity}
-                    setValue={setQuantity}
-                    min={product.quantity.min}
-                    max={product.quantity.max}
-                    label="数量"
-                  />
+                    <PublicMeasureSelect
+                      value={size}
+                      setValue={setSize}
+                      array={item.size}
+                      label="サイズ"
+                    />
+                    <PublicMeasureInseam
+                      item={item}
+                      value={cutLength}
+                      setValue={setCutLength}
+                      min={item.inseam.min}
+                      max={item.inseam.max}
+                      label="股下"
+                      unit="cm"
+                      check={isNoInseam}
+                      setCheck={setIsNoInseam}
+                    />
+                    <PublicMeasureQuantity
+                      value={quantity}
+                      setValue={setQuantity}
+                      min={product.quantity.min}
+                      max={product.quantity.max}
+                      label="数量"
+                      unit={item.unit}
+                    />
                 </div>
                 <DrawerFooter className="grid grid-cols-2 gap-3 mt-6 ">
                   <Button
@@ -133,19 +157,22 @@ export default function PublicMeasureDrawer({
                     onClick={() => {
                       setOpen(false);
                       setIsNoInseam(
-                        item?.inseam.isFlag && form.getValues(`products.${index}.cutLength`) === 0 ? true : false);
+                        item?.inseam.isFlag &&
+                          form.getValues(`products.${index}.cutLength`) === 0
+                          ? true
+                          : false
+                      );
                     }}
                   >
                     戻る
                   </Button>
-                  <Button onClick={handleClick}>
-                    選択する
-                  </Button>
+                  <Button onClick={handleClick}>選択する</Button>
                 </DrawerFooter>
               </div>
             </DrawerContent>
           </Drawer>
-        </>)}
+        </>
+      )}
     </>
   );
 }

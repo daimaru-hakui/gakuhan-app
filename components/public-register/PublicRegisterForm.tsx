@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { FormInput } from "../form/FormInput";
 import FormAddressSelect from "../form/FormAddressSelect";
 import { Button } from "../ui/button";
-import GenderSelect from "../public-students/GenderSelect";
+import GenderSelect from "./GenderSelect";
 import { CreateStudent, CreateStudentSchema } from "@/utils/schemas";
 import { School } from "@/utils/school.interface";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,8 +33,9 @@ export default function PublicRegisterForm({ school }: Props) {
         prefecture: school.isAddress ? "大阪府" : "-",
         city: school.isAddress ? "" : "-",
         street: school.isAddress ? "" : "-",
-        building: school.isAddress ? "" : "-",
+        building: school.isAddress ? "" : "",
       },
+      tel: school.isAddress ? "" : "-"
     },
   });
 

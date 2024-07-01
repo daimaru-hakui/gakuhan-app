@@ -13,8 +13,8 @@ import {
   where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import LoaderIcon from "../LoaderIcon";
 import EmptyList from "../EmptyList";
+import LoaderIcon from "../LoaderIcon";
 
 export default function SchoolsContainer() {
   const [schools, setSchools] = useState<School[]>();

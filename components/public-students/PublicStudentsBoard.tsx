@@ -3,9 +3,9 @@ import { db } from "@/firebase/client";
 import { Student } from "@/utils/student.interface";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import LoaderIcon from "../LoaderIcon";
 import EmptyList from "../EmptyList";
 import { cn } from "@/lib/utils";
+import LoaderIcon from "../LoaderIcon";
 
 interface Props {
   id: string;
