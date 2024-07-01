@@ -1,9 +1,6 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { db } from "@/firebase/client";
-import { cn } from "@/lib/utils";
 import { School } from "@/utils/school.interface";
 import { collection, doc, getCountFromServer, updateDoc } from "firebase/firestore";
 import { useState } from "react";

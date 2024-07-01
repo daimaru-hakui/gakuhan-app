@@ -23,7 +23,7 @@ export default async function PublicRegisterPage({ params }: Props) {
 
   return (
     <div>
-      <PublicRagisterContainer school={school} />
+      <PublicRagisterContainer id={school.id} />
     </div>
   );
 }

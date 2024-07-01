@@ -14,6 +14,7 @@ import { calcDifferenceTime } from "@/utils/calc";
 import { School } from "@/utils/school.interface";
 import PublicEditWithDeleteButton from "./PublicEditWithDeleteButton";
 import { useStore } from "@/store";
+import EmptyList from "../EmptyList";
 
 interface Props {
   students: Student[];
@@ -22,16 +23,15 @@ interface Props {
 }
 
 export default function PublicStudentsList({ students, count, school }: Props) {
-  const studentsCheckList = useStore((state) => state.studentsCheckList);
-  const addStudentsCheckList = useStore((state) => state.addStudentsCheckList);
   const resetStudentsCheckList = useStore(
     (state) => state.resetStudentsCheckList
   );
-  console.log(studentsCheckList)
 
   useEffect(() => {
     resetStudentsCheckList();
   }, []);
+
+  if (students.length === 0) return <EmptyList />;
 
   return (
     <Table className="text-xs">
@@ -54,13 +54,13 @@ export default function PublicStudentsList({ students, count, school }: Props) {
           <TableHead className="min-w-[200px]">登録時間</TableHead>
           <TableHead className="min-w-[200px]">採寸完了時間</TableHead>
           <TableHead className="min-w-[100px]">経過時間</TableHead>
-          <TableHead className="min-w-[100px]">Email</TableHead>
           {school.isAddress && (
             <>
-              <TableHead className="min-w-[100px]">住所</TableHead>
-              <TableHead className="min-w-[100px]">TEL</TableHead>
+              <TableHead className="min-w-[350px]">住所</TableHead>
+              <TableHead className="min-w-[150px]">TEL</TableHead>
             </>
           )}
+          <TableHead className="min-w-[250px]">Email</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -102,8 +102,6 @@ export default function PublicStudentsList({ students, count, school }: Props) {
                   new Date(student?.startedAt?.toDate())
                 )}
             </TableCell>
-            <TableCell>{student.email}</TableCell>
-            <TableCell>{student.email}</TableCell>
             {school.isAddress && (
               <>
                 <TableCell>
@@ -117,6 +115,7 @@ export default function PublicStudentsList({ students, count, school }: Props) {
                 <TableCell>{student.tel}</TableCell>
               </>
             )}
+            <TableCell>{student.email}</TableCell>
           </TableRow>
         ))}
       </TableBody>

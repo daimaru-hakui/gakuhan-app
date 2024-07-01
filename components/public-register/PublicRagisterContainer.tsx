@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import PublicRegisterForm from "../public-register/PublicRegisterForm";
 import { School } from "@/utils/school.interface";
 import {
@@ -8,12 +8,28 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { useEffect, useState } from "react";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "@/firebase/client";
+import LoaderIcon from "../LoaderIcon";
 
 interface Props {
-  school: School;
+  id: string;
 }
 
-export default function PublicRagisterContainer({  school }: Props) {
+export default function PublicRagisterContainer({ id }: Props) {
+  const [school, setSchool] = useState<School>();
+
+  useEffect(() => {
+    const schoolRef = doc(db, "schools", id);
+    onSnapshot(schoolRef, {
+      next: (snapshot) => {
+        setSchool({ ...snapshot.data(), id: snapshot.id } as School);
+      },
+    });
+  }, [id]);
+
+  if (!school) return <LoaderIcon/>;
 
   return (
     <div className="w-full md:max-w-[500px] mx-auto">
