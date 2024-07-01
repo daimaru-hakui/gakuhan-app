@@ -13,6 +13,7 @@ import { RxDotFilled } from "react-icons/rx";
 import SchoolsEditWithDeleteButon from "./SchoolsEditWithDeleteButon";
 import { School } from "@/utils/school.interface";
 import { format } from "date-fns";
+import SchoolsDropDownMenu from "./SchoolsDropDownMenu";
 
 interface Props {
   schools: School[];
@@ -23,6 +24,9 @@ export default function SchoolsList({ schools }: Props) {
     <Table className="min-w-[500px]">
       <TableHeader>
         <TableRow>
+          <TableHead className="min-w-[300px]">
+
+          </TableHead>
           <TableHead className="min-w-[300px]">学校名</TableHead>
           <TableHead className="min-w-[150px]">採寸日</TableHead>
           <TableHead className="min-w-[120px] text-center">
@@ -41,9 +45,12 @@ export default function SchoolsList({ schools }: Props) {
       <TableBody>
         {schools.map((school) => (
           <TableRow key={school.id}>
+            <TableCell>
+              <SchoolsDropDownMenu id={school.id} />
+            </TableCell>
             <TableCell className="font-medium">{school.title}</TableCell>
             <TableCell className="font-medium">
-              {format(school?.scheduledDate.toDate(), "yyyy年MM月dd日")}
+              {school.scheduledDate && format(school?.scheduledDate?.toDate(), "yyyy年MM月dd日")}
             </TableCell>
 
             <TableCell>
@@ -74,7 +81,7 @@ export default function SchoolsList({ schools }: Props) {
               </div>
             </TableCell>
             <TableCell className="font-medium">
-              {format(school?.createdAt.toDate(), "yyyy年MM月dd日")}
+              {school.createdAt && format(school?.createdAt.toDate(), "yyyy年MM月dd日")}
             </TableCell>
             <TableCell className="text-right">
               <SchoolsEditWithDeleteButon school={school} />
