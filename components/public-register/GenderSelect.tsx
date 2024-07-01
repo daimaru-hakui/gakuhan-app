@@ -6,10 +6,10 @@ import { CreateStudent } from "@/utils/schemas";
 
 interface Props {
   form: UseFormReturn<CreateStudent, any, undefined>;
-  require?:boolean
+  require?: boolean;
 }
 
-export default function GenderSelect({ form,require }: Props) {
+export default function GenderSelect({ form, require }: Props) {
   const genders: { id: "man" | "woman"; label: string; }[] = [
     {
       id: "man",
@@ -36,7 +36,6 @@ export default function GenderSelect({ form,require }: Props) {
                 : "",
               "w-24 h-12"
             )}
-            // asChild
             onClick={() => form.setValue("gender", gender.id, { shouldValidate: true })}
           >
             <div>{gender.label}</div>

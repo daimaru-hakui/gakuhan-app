@@ -1,5 +1,5 @@
 "use client";
-import { db, storage } from "@/firebase/client";
+import { db, storage } from "@/lib/firebase/client";
 import { useStore } from "@/store";
 import { format } from "date-fns";
 import { addDoc, collection } from "firebase/firestore";
@@ -54,7 +54,7 @@ export default function MediaHeader() {
         className="w-36 h-8 bg-primary flex gap-3 justify-center items-center cursor-pointer "
       >
         {loading ? (
-           <LuLoader2 className="mr-2 h-4 w-4 animate-spin text-muted" />
+          <LuLoader2 className="mr-2 h-4 w-4 animate-spin text-muted" />
         ) : (
           <>
             <LuPlus className="text-muted" />

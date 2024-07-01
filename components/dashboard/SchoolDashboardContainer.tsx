@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import SchoolDashboardList from "./SchoolDashboardList";
 import { collection, onSnapshot } from "firebase/firestore";
-import { db } from "@/firebase/client";
+import { db } from "@/lib/firebase/client";
 import { Student } from "@/utils/student.interface";
 import LoaderIcon from "../LoaderIcon";
 

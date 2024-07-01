@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { db } from "@/firebase/client";
+import { db } from "@/lib/firebase/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   collection,
@@ -62,7 +62,7 @@ export default function ProductEditForm({ id, product }: Props) {
     append({
       name: "",
       price: 0,
-      unit:"",
+      unit: "",
       size: [],
       color: [],
       images: {

@@ -1,20 +1,20 @@
-import { auth } from "@/firebase/server";
+import { auth as firebaseAuth } from "@/lib/firebase/server";
 import React from "react";
 import AdminList from "./AdminList";
+import { auth } from "@/auth";
 
-interface Props {
-  params: {
-    id: string;
-  };
-}
 
-export default async function AdminPage({ params }: Props) {
-  const uid = params.id;
+export default async function AdminPage() {
 
-  const user = await auth.getUser(uid);
+  const session = await auth();
+  console.log(session);
+
+  if (!session) return null;
+
+  const user = await firebaseAuth.getUser(session?.user.uid);
   if (user.customClaims?.role !== "admin") return;
 
-  const admin = await auth.listUsers(100);
+  const admin = await firebaseAuth.listUsers(100);
 
   const users = admin.users.map((user) => {
     return {
@@ -26,7 +26,7 @@ export default async function AdminPage({ params }: Props) {
   });
   return (
     <div className="flex justify-center w-full">
-      <AdminList users={users} id={uid} />
+      <AdminList users={users} id={session.user.uid} />
     </div>
   );
 }

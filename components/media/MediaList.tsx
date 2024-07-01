@@ -17,7 +17,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { db } from "@/firebase/client";
+import { db } from "@/lib/firebase/client";
 import { useStore } from "@/store";
 import { format } from "date-fns";
 import { getfileCapacity } from "@/utils/calc";

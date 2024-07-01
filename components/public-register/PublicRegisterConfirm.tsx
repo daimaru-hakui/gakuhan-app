@@ -13,7 +13,7 @@ import { School } from "@/utils/school.interface";
 import { useTransition } from "react";
 import { LoadingButton } from "../form/Buttons";
 import { addDoc, collection } from "firebase/firestore";
-import { db } from "@/firebase/client";
+import { db } from "@/lib/firebase/client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -79,7 +79,7 @@ export default function PublicRegisterConfirm({
 
   async function createStudentAction(
     data: CreateStudent
-  ): Promise<{ id: string | null }> {
+  ): Promise<{ id: string | null; }> {
     try {
       // const productsRef = collection(db, "schools", school.id, "products");
       // const products = (await getDocs(productsRef)).docs

@@ -1,5 +1,5 @@
 import PublicMesaureContainer from "@/components/public-students/PublicMeasureContainer";
-import { db } from "@/firebase/server";
+import { db } from "@/lib/firebase/server";
 import { Product } from "@/utils/product.interface";
 import { School } from "@/utils/school.interface";
 import { Student } from "@/utils/student.interface";

@@ -1,5 +1,5 @@
 import PublicStudentsContainer from "@/components/public-students/PublicStudentsContainer";
-import { db } from "@/firebase/server";
+import { db } from "@/lib/firebase/server";
 import { Product } from "@/utils/product.interface";
 import { School } from "@/utils/school.interface";
 

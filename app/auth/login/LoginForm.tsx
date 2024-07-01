@@ -3,11 +3,12 @@ import { SubmitRhkButton } from "@/components/form/Buttons";
 import { FormInput } from "@/components/form/FormInput";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
-import { auth } from "@/firebase/client";
+import { auth } from "@/lib/firebase/client";
 import { useStore } from "@/store";
 import { LoginInputs, LoginSchema } from "@/utils/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -33,6 +34,9 @@ export default function LoginForm() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
+        user.getIdToken().then((token) => {
+          signIn("credentials", { token, callbackUrl: "/" });
+        });
         setUser(user);
       })
       .catch((error) => {

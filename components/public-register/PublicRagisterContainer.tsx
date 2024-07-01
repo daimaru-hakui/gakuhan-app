@@ -10,7 +10,7 @@ import {
 } from "../ui/card";
 import { useEffect, useState } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
-import { db } from "@/firebase/client";
+import { db } from "@/lib/firebase/client";
 import LoaderIcon from "../LoaderIcon";
 
 interface Props {
@@ -29,7 +29,7 @@ export default function PublicRagisterContainer({ id }: Props) {
     });
   }, [id]);
 
-  if (!school) return <LoaderIcon/>;
+  if (!school) return <LoaderIcon />;
 
   return (
     <div className="w-full md:max-w-[500px] mx-auto">
