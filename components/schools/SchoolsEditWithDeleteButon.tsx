@@ -4,7 +4,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import Link from "next/link";
 import React, { useTransition } from "react";
 import { LuLoader2 } from "react-icons/lu";
-import { RiDeleteBin6Line, RiEditLine } from "react-icons/ri";
+import { RiDeleteBin6Line } from "react-icons/ri";
 import { LuSettings } from "react-icons/lu";
 import { toast } from "sonner";
 

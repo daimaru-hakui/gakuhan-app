@@ -8,7 +8,7 @@ export default function MenuList() {
     <ul className="flex items-center gap-6">
       <MenuItem href="/schools">学校一覧</MenuItem>
       <MenuItem href="/">home</MenuItem>
-      <MenuItem href={`/admin/${user?.uid}`}>admin</MenuItem>
+      <MenuItem href={`/admin`}>admin</MenuItem>
     </ul>
   );
 }

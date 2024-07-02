@@ -1,6 +1,7 @@
 "use client";
 import { SubmitRhkButton } from "@/components/form/Buttons";
 import { FormInput } from "@/components/form/FormInput";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import { auth } from "@/lib/firebase/client";
@@ -17,7 +18,7 @@ import { FaSchool } from "react-icons/fa";
 
 export default function LoginForm() {
   const router = useRouter();
-  const setUser = useStore(state => state.setUser);
+  const setUser = useStore((state) => state.setUser);
   const form = useForm<LoginInputs>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -43,6 +44,10 @@ export default function LoginForm() {
         console.log(error.message);
       });
   }
+
+  useEffect(() => {
+    auth.signOut();
+  }, []);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
@@ -75,26 +80,17 @@ export default function LoginForm() {
                 name="password"
                 label="Password"
               />
-              <p>
+              {/* <p>
                 <Link href="/" className="text-xs text-primary font-semibold">
                   パスワードをお忘れですか?
                 </Link>
-              </p>
+              </p> */}
             </div>
             <SubmitRhkButton
               isValid={!form.formState.isValid}
               text="ログイン"
               className="w-full mt-5"
             />
-            <p className="text-xs mt-3">
-              アカウントが未登録ですか？
-              <Link
-                href="/auth/register"
-                className=" text-primary font-semibold"
-              >
-                アカウントの作成
-              </Link>
-            </p>
           </form>
         </Form>
       </CardContent>

@@ -16,12 +16,13 @@ export default function SchoolHeader({ id }: Props) {
             <Link href="/schools">一覧へ戻る</Link>
           </Button>
           <Button asChild>
-            <Link href={`/schools/${id}/public-students/board`}>
-              ダッシュボード
-            </Link>
+            <Link href={`/schools/${id}/students`}>一覧</Link>
           </Button>
           <Button asChild>
-            <Link href={`/public-register/${id}`}>採寸ページ</Link>
+            <Link href={`/schools/${id}/students/board`}>ダッシュボード</Link>
+          </Button>
+          <Button asChild>
+            <Link href={`/auth/${id}/login`}>採寸ページ</Link>
           </Button>
         </div>
       </div>

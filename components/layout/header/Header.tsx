@@ -11,11 +11,11 @@ import { useStore } from "@/store";
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
-  const pattern = RegExp('(auth|public-register).*', 'g');
-  const user = useStore(state => state.user);
-  const setUser = useStore(state => state.setUser);
+  const pattern = RegExp("(auth|student-register).*", "g");
+  const setUser = useStore((state) => state.setUser);
 
   useEffect(() => {
+    if (pattern.exec(pathname)) return;
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log(user);
@@ -26,7 +26,7 @@ export default function Header() {
       }
     });
     return () => unsub();
-  }, [router, setUser]);
+  }, [router, setUser, pathname, pattern]);
 
   return (
     <>

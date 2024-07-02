@@ -25,7 +25,7 @@ export default function SchoolSettingSwitch({
 
   async function handleUpdateSwitch() {
     const docRef = doc(db, "schools", school.id);
-    const studentsRef = collection(db, "schools", school.id, "public-students");
+    const studentsRef = collection(db, "schools", school.id, "students");
     const studentsSnap = await getCountFromServer(studentsRef);
     const count = studentsSnap.data().count;
     try {

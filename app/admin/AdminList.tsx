@@ -37,7 +37,7 @@ export default function AdminList({ users, id }: Props) {
           {users.map((user) => (
             <TableRow key={user.uid}>
               <TableCell>{user.uid}</TableCell>
-              <TableCell>{user.email}</TableCell>
+              <TableCell>{user.email ? user.email : "匿名ユーザー"}</TableCell>
               <TableCell>{user.displayName}</TableCell>
               <TableCell>{user.role}</TableCell>
             </TableRow>

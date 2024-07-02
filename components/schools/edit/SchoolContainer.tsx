@@ -21,7 +21,7 @@ export default function SchoolContainer({ id }: { id: string; }) {
 
   useEffect(() => {
     const getStudentsCount = async () => {
-      const studentsRef = collection(db, "schools", id, "public-students");
+      const studentsRef = collection(db, "schools", id, "students");
       const snapshot = await getCountFromServer(studentsRef);
       setStudentsCount(snapshot.data().count);
     };

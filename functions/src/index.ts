@@ -19,7 +19,6 @@ export const processSignUp = functions.auth.user().onCreate(async (user) => {
   const customClaims = {
     role: "user",
   };
-
   if (user.email && user.email === "mukai@daimaru-hakui.co.jp") {
     customClaims.role = "admin";
   } else if (user.email && user.email.endsWith("@daimaru-hakui.co.jp")) {
@@ -29,6 +28,7 @@ export const processSignUp = functions.auth.user().onCreate(async (user) => {
   }
   try {
     await getAuth().setCustomUserClaims(user.uid, customClaims);
+    if (user.providerData.length === 0) return;
     const userRef = db.doc(`users/${user.uid}`);
     await userRef.set({
       createdAt: new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" }),
