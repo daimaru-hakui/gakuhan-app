@@ -124,7 +124,11 @@ export const CreateStudentSchema = z.object({
       .max(50, { message: "50文字以内で入力してください" })
       .nullish(),
   }),
-  tel: z.string().max(11).nullable(),
+  tel: z
+    .string()
+    .min(1, { message: "電話番号を入力してください" })
+    .max(13, { message: "正しい電話番号を入力してください" })
+    .nullable(),
 });
 export type CreateStudent = z.infer<typeof CreateStudentSchema>;
 
@@ -146,3 +150,18 @@ export const CreateMeasureStudentSchema = z.object({
     .array(),
 });
 export type CreateMeasureStudent = z.infer<typeof CreateMeasureStudentSchema>;
+
+import { ZodSchema } from 'zod';
+
+export function validateWithZodSchema<T>(schema: ZodSchema<T>, data: unknown): T {
+  const result = schema.safeParse(data);
+  console.log(result);
+
+  if (!result.success) {
+    console.log(result.error);
+    const errors = result.error.errors.map(error => error.message);
+    console.log(errors);
+    throw new Error(errors.join(','));
+  }
+  return result.data;
+};

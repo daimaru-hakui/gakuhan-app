@@ -17,6 +17,7 @@ import { db } from "@/lib/firebase/client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useStore } from "@/store";
+import * as actions from "@/actions";
 
 interface Props {
   open: boolean;
@@ -68,19 +69,21 @@ export default function StudentRegisterConfirm({
 
   const handleClick = () => {
     startTransaction(async () => {
+      console.log(values);
       await new Promise((resolve) => setTimeout(resolve, 500));
-      const { id } = await createStudentAction(values);
-      if (id) {
-        router.push(`/student-register/${school.id}/students/${id}`);
+      const result = await actions.createStudent(values, school, school.id);
+      // const { id } = await createStudentAction(values);
+      if (result.status === "success") {
+        toast.success(result.message);
       } else {
-        toast.error("登録に失敗しました");
+        toast.error(result.message);
       }
     });
   };
 
   async function createStudentAction(
     data: CreateStudent
-  ): Promise<{ id: string | null }> {
+  ): Promise<{ id: string | null; }> {
     if (!user?.uid) return { id: null };
     try {
       // const productsRef = collection(db, "schools", school.id, "products");
@@ -144,10 +147,10 @@ export default function StudentRegisterConfirm({
                       subValue={
                         values?.address?.prefecture &&
                         values.address.prefecture +
-                          (values.address.city && values.address.city) +
-                          (values.address.street && values.address.street) +
-                          "\n" +
-                          (values.address.building && values.address.building)
+                        (values.address.city && values.address.city) +
+                        (values.address.street && values.address.street) +
+                        "\n" +
+                        (values.address.building && values.address.building)
                       }
                     />
                   )}

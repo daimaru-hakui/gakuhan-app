@@ -1,3 +1,4 @@
+import NotFound from "@/app/not-found";
 import { auth } from "@/auth";
 import StudentRagisterContainer from "@/components/student-register/StudentRagisterContainer";
 import { db } from "@/lib/firebase/server";
@@ -13,16 +14,17 @@ interface Props {
 
 export default async function StudentRegisterPage({ params }: Props) {
   const { id } = params;
+
   const session = await auth();
-  const snapshot = await db.collection("schools").doc(id).get();
-  const rawData = { ...snapshot.data(), id: snapshot.id } as School;
-  const JsonData = JSON.stringify(rawData);
-  const school = JSON.parse(JsonData) as School;
+  if (!session) return <NotFound />;
+
+  const schoolSnap = await db.collection("schools").doc(id).get();
+  const schoolRaw = JSON.stringify({ ...schoolSnap.data(), id: schoolSnap.id });
+  const school = JSON.parse(schoolRaw) as School;
 
   if (!school) return;
   if (!school.isPublic) return notFound();
   if (school.isDeleted) return notFound();
-  if (!session) return;
 
   const studentSnap = await db
     .collection("schools")
@@ -37,7 +39,7 @@ export default async function StudentRegisterPage({ params }: Props) {
 
   return (
     <div>
-      <StudentRagisterContainer id={school.id} />
+      <StudentRagisterContainer school={school} />
     </div>
   );
 }

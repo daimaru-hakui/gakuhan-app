@@ -22,6 +22,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="ja">
       <body className={cn(inter.className, "min-h-screen")}>
