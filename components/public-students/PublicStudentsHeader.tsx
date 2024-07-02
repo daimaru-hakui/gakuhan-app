@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "../ui/button";
 import { useStore } from "@/store";
 import { deleteDoc, doc } from "firebase/firestore";
-import { db } from "@/firebase/client";
+import { db } from "@/lib/firebase/client";
 
 interface Props {
   id: string;

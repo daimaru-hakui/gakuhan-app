@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import ProductGenderSelectButton from "../ProductGenderSelectButton";
 import ProductRequireSwitch from "../ProductRequireSwitch";
 import { addDoc, collection, getCountFromServer } from "firebase/firestore";
-import { db } from "@/firebase/client";
+import { db } from "@/lib/firebase/client";
 import { SubmitRhkButton } from "../../form/Buttons";
 import TextAreaInput from "../../form/TextAreaInput";
 

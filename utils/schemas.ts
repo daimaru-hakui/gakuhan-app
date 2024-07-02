@@ -99,24 +99,32 @@ export const CreateStudentSchema = z.object({
     .min(1, { message: "名前を入力してください" })
     .max(20, { message: "20文字以内で入力してください" }),
   address: z.object({
-    zipCode: z.string().max(8, { message: "文字数を確認してください" }),
+    zipCode: z
+      .string()
+      .min(1, { message: "郵便番号を入力してください" })
+      .regex(/^(?!.*-).+$/, { message: "ﾊｲﾌﾝ無しで入力してくだい" })
+      .max(7, { message: "文字数を確認してください" })
+      .nullable(),
     prefecture: z
       .string({ message: "都道府県を選択してください" })
-      .max(20, { message: "20文字以内で入力してください" }),
+      .max(20, { message: "20文字以内で入力してください" })
+      .nullable(),
     city: z
       .string()
       .min(1, { message: "市区町村を入力してください" })
-      .max(50, { message: "50文字以内で入力してください" }),
+      .max(50, { message: "50文字以内で入力してください" })
+      .nullable(),
     street: z
       .string()
       .min(1, { message: "番地を入力してください" })
-      .max(50, { message: "50文字以内で入力してください" }),
+      .max(50, { message: "50文字以内で入力してください" })
+      .nullable(),
     building: z
       .string()
       .max(50, { message: "50文字以内で入力してください" })
-      .optional(),
+      .nullish(),
   }),
-  tel: z.string().max(11),
+  tel: z.string().max(11).nullable(),
 });
 export type CreateStudent = z.infer<typeof CreateStudentSchema>;
 
@@ -124,7 +132,7 @@ export const CreateMeasureStudentSchema = z.object({
   products: z
     .object({
       name: z.string().min(1, { message: "商品を選択してください" }),
-      color: z.string(),
+      color: z.string().nullable(),
       size: z.string(),
       price: z.number(),
       quantity: z.coerce.number().int(),

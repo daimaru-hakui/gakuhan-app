@@ -1,4 +1,4 @@
-import { db } from "@/firebase/client";
+import { db } from "@/lib/firebase/client";
 import { School } from "@/utils/school.interface";
 import { doc, updateDoc } from "firebase/firestore";
 import Link from "next/link";

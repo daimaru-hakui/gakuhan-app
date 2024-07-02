@@ -14,7 +14,7 @@ import {
   query,
   updateDoc,
 } from "firebase/firestore";
-import { db } from "@/firebase/client";
+import { db } from "@/lib/firebase/client";
 import paths from "@/utils/paths";
 import { useStore } from "@/store";
 

@@ -1,5 +1,5 @@
 import PublicRagisterContainer from "@/components/public-register/PublicRagisterContainer";
-import { db } from "@/firebase/server";
+import { db } from "@/lib/firebase/server";
 import { School } from "@/utils/school.interface";
 import { notFound } from "next/navigation";
 import React from "react";

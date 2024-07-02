@@ -18,7 +18,7 @@ import { School } from "@/utils/school.interface";
 import { Form } from "../../ui/form";
 import { useState, useTransition } from "react";
 import { doc, updateDoc } from "firebase/firestore";
-import { db } from "@/firebase/client";
+import { db } from "@/lib/firebase/client";
 import FormCalendarInput from "../../form/FormCalendarInput";
 import { toast } from "sonner";
 import { SubmitRhkButton } from "../../form/Buttons";

@@ -21,7 +21,6 @@ interface Props {
 
 export default function AdminList({ users, id }: Props) {
   const user = useStore((state) => state.user);
-  if (user?.uid !== id) return;
 
   return (
     <div className="max-w-[900px]">

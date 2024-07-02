@@ -1,6 +1,6 @@
 "use client";
 import { Switch } from "@/components/ui/switch";
-import { db } from "@/firebase/client";
+import { db } from "@/lib/firebase/client";
 import { School } from "@/utils/school.interface";
 import { collection, doc, getCountFromServer, updateDoc } from "firebase/firestore";
 import { useState } from "react";

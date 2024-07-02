@@ -1,5 +1,5 @@
 "use client";
-import React, { startTransition, useTransition } from "react";
+import React, { useTransition } from "react";
 import { Form } from "../ui/form";
 import { useForm } from "react-hook-form";
 import { Student } from "@/utils/student.interface";
@@ -12,9 +12,8 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import PublicMeasureButtonArea from "./PublicMeasureButtonArea";
 import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
-import { db } from "@/firebase/client";
+import { db } from "@/lib/firebase/client";
 import { toast } from "sonner";
-import { finished } from "stream";
 
 interface Props {
   student: Student;
@@ -50,7 +49,7 @@ export default function PublicMeasureForm({ student, products, id }: Props) {
     if (oneItem) {
       switch (item?.color.length) {
         case 0:
-          color = "-";
+          color = null;
           break;
         case 1:
           color = item.color.join();

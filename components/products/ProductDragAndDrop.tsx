@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import { doc, updateDoc } from "firebase/firestore";
-import { db } from "@/firebase/client";
+import { db } from "@/lib/firebase/client";
 import { cn } from "@/lib/utils";
 import GenderBadge from "../GenderBadge";
 import { SubmitRhkButton } from "../form/Buttons";

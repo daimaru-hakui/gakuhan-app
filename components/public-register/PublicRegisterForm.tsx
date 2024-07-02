@@ -29,13 +29,13 @@ export default function PublicRegisterForm({ school }: Props) {
       firstName: "",
       gender: school.isGender ? "" : "other",
       address: {
-        zipCode: school.isAddress ? "" : "-",
-        prefecture: school.isAddress ? "大阪府" : "-",
-        city: school.isAddress ? "" : "-",
-        street: school.isAddress ? "" : "-",
-        building: school.isAddress ? "" : "",
+        zipCode: school.isAddress ? "" : null,
+        prefecture: school.isAddress ? "大阪府" : null,
+        city: school.isAddress ? "" : null,
+        street: school.isAddress ? "" : null,
+        building: school.isAddress ? "" : null,
       },
-      tel: school.isAddress ? "" : "-"
+      tel: school.isAddress ? "" : null
     },
   });
 
@@ -48,11 +48,12 @@ export default function PublicRegisterForm({ school }: Props) {
     console.log(data);
   }
 
-  async function handleClickGetAddress(zipCode: string) {
+  async function handleClickGetAddress(zipCode: string | null) {
+    if (!zipCode) return;
     setLoading(true);
     try {
       const data = await getAddress(zipCode);
-      console.log(data)
+      console.log(data);
       if (!data) return;
       form.setValue("address.prefecture", data.results?.at(0)?.address1 || "", {
         shouldValidate: true,
@@ -99,6 +100,7 @@ export default function PublicRegisterForm({ school }: Props) {
               <div className="grid grid-cols-2 gap-3 mt-1">
                 <div className="flex gap-1">
                   <FormInput
+                    type="tel"
                     form={form}
                     name="address.zipCode"
                     label="〒番号"
@@ -138,6 +140,7 @@ export default function PublicRegisterForm({ school }: Props) {
               require
             />
             <FormInput form={form} name="address.building" label="建物" />
+            <FormInput type="tel" form={form} name="tel" label="Tel" require />
           </>
         )}
         <div className="text-center">

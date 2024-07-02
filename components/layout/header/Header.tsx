@@ -4,7 +4,7 @@ import MenuTitle from "./MenuTitle";
 import MenuList from "./MenuList";
 import LogoutButton from "./LogoutButton";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/firebase/client";
+import { auth } from "@/lib/firebase/client";
 import { usePathname, useRouter } from "next/navigation";
 import { useStore } from "@/store";
 

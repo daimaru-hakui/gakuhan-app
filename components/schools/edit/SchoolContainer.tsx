@@ -7,7 +7,7 @@ import {
   getCountFromServer,
   onSnapshot,
 } from "firebase/firestore";
-import { db } from "@/firebase/client";
+import { db } from "@/lib/firebase/client";
 import { School } from "@/utils/school.interface";
 import SchoolContent from "@/components/schools/edit//SchoolContent";
 import SchoolSetting from "@/components/schools/edit//SchoolSetting";
@@ -15,7 +15,7 @@ import { notFound } from "next/navigation";
 import LoaderIcon from "@/components/LoaderIcon";
 import { useStore } from "@/store";
 
-export default function SchoolContainer({ id }: { id: string }) {
+export default function SchoolContainer({ id }: { id: string; }) {
   const [school, setSchool] = useState<School>();
   const setStudentsCount = useStore((state) => state.setStudentsCount);
 
@@ -23,10 +23,10 @@ export default function SchoolContainer({ id }: { id: string }) {
     const getStudentsCount = async () => {
       const studentsRef = collection(db, "schools", id, "public-students");
       const snapshot = await getCountFromServer(studentsRef);
-      setStudentsCount(snapshot.data().count)
+      setStudentsCount(snapshot.data().count);
     };
     getStudentsCount();
-  }, [id,setStudentsCount]);
+  }, [id, setStudentsCount]);
 
   useEffect(() => {
     const docRef = doc(db, "schools", id);

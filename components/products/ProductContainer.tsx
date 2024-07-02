@@ -9,13 +9,13 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
-import { db } from "@/firebase/client";
+import { db } from "@/lib/firebase/client";
 import { Product } from "@/utils/product.interface";
 import ProductsList from "./ProductsList";
 import ProductDragAndDrop from "./ProductDragAndDrop";
 import { useStore } from "@/store";
 
-export default function ProductContainer({ id }: { id: string }) {
+export default function ProductContainer({ id }: { id: string; }) {
   const [products, setProducts] = useState<Product[]>();
   const studentsCount = useStore((state) => state.studentsCount);
 

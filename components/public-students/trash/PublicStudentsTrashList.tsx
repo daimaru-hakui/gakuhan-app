@@ -7,16 +7,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../ui/table";
+} from "../../ui/table";
 import { Student } from "@/utils/student.interface";
 import { format } from "date-fns";
 import { calcDifferenceTime } from "@/utils/calc";
 import { School } from "@/utils/school.interface";
-import PublicEditWithDeleteButton from "./PublicEditWithDeleteButton";
 import { useStore } from "@/store";
-import EmptyList from "../EmptyList";
 import { cn } from "@/lib/utils";
 import { getGenderDisplay } from "@/utils/display";
+import EmptyList from "@/components/EmptyList";
 
 interface Props {
   id: string;
@@ -25,7 +24,7 @@ interface Props {
   school: School;
 }
 
-export default function PublicStudentsList({ id, students, count, school }: Props) {
+export default function PublicStudentsTrashList({ id, students, count, school }: Props) {
   const resetStudentsCheckList = useStore(
     (state) => state.resetStudentsCheckList
   );
@@ -74,7 +73,7 @@ export default function PublicStudentsList({ id, students, count, school }: Prop
             className={cn(student.finishedAt ? "" : "bg-red-400 hover:bg-red-500 w-full")}
           >
             <TableCell>
-              <PublicEditWithDeleteButton id={id} studentId={student.id} />
+
             </TableCell>
             <TableCell>{student.studentNumber}</TableCell>
             <TableCell>{`${student.lastName} ${student.firstName}`}</TableCell>

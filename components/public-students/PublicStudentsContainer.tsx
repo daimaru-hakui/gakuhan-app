@@ -1,5 +1,5 @@
 "use client";
-import { db } from "@/firebase/client";
+import { db } from "@/lib/firebase/client";
 import { Student } from "@/utils/student.interface";
 import { collection, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
@@ -36,7 +36,12 @@ export default function PublicStudentsContainer({ id, count, school }: Props) {
   return (
     <div className="px-6">
       <PublicStudentsHeader id={id} />
-      <PublicStudentsList students={students} count={count} school={school} />
+      <PublicStudentsList
+        id={id}
+        students={students}
+        count={count}
+        school={school}
+      />
     </div>
   );
 }

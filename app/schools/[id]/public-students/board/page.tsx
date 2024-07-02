@@ -1,5 +1,5 @@
-import PublicStudentsBoard from "@/components/public-students/PublicStudentsBoard";
-import { db } from "@/firebase/server";
+import PublicStudentsBoard from "@/components/public-students/board/PublicStudentsBoard";
+import { db } from "@/lib/firebase/server";
 import { School } from "@/utils/school.interface";
 import { notFound } from "next/navigation";
 

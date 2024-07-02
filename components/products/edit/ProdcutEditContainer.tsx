@@ -1,6 +1,6 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { db } from "@/firebase/client";
+import { db } from "@/lib/firebase/client";
 import { doc, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import ProductEditForm from "./ProductEditForm";
@@ -26,7 +26,7 @@ export default function ProdcutEditContainer({ id, productId }: Props) {
     });
   }, [id, productId]);
 
-  if(!product) return <LoaderIcon/>
+  if (!product) return <LoaderIcon />;
 
   return (
     <Card className="w-full">

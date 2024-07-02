@@ -2,7 +2,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import SchoolsHeader from "./SchoolsHeader";
 import SchoolsList from "./SchoolsList";
-import { db } from "@/firebase/client";
+import { db } from "@/lib/firebase/client";
 import { School } from "@/utils/school.interface";
 import { format } from "date-fns";
 import {
