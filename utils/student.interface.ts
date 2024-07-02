@@ -7,6 +7,8 @@ export interface Student {
   gender: string;
   lastName: string;
   firstName: string;
+  schoolName: string;
+  studentId: string;
   totalAmount: number;
   address: {
     zipCode: string;

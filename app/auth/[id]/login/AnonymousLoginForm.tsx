@@ -23,7 +23,7 @@ export default function AnonymousLoginForm({ id }: Props) {
       .then((userCredential) => {
         const user = userCredential.user;
         user.getIdToken().then((token) => {
-          signIn("credentials", { token, callbackUrl: "/" });
+          signIn("credentials", { token });
         });
         setUser(user);
         console.log(user);

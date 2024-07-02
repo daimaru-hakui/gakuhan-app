@@ -22,7 +22,9 @@ export default async function StudentPage({ params }: Props) {
   if (!session) return <NotFound />;
 
   const schoolSnap = await db.collection("schools").doc(id).get();
-  const school = schoolSnap.data() as School;
+  const schoolRaw = schoolSnap.data() as School;
+  const schoolData = JSON.stringify(schoolRaw);
+  const school = JSON.parse(schoolData) as School;
 
   if (!school) return;
   if (!school.isPublic) return notFound();
@@ -60,7 +62,12 @@ export default async function StudentPage({ params }: Props) {
 
   return (
     <div className="w-full">
-      <MesaureContainer student={student} products={products} id={id} />
+      <MesaureContainer
+        school={school}
+        products={products}
+        student={student}
+        id={id}
+      />
     </div>
   );
 }

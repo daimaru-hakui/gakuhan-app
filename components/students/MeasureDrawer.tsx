@@ -55,7 +55,7 @@ export default function MeasureDrawer({
     form.setValue(`products.${index}.name`, item.name);
 
     if (item.color.length === 0) {
-      form.setValue(`products.${index}.color`, null);//
+      form.setValue(`products.${index}.color`, null); //
     } else if (item.color.length === 1) {
       form.setValue(`products.${index}.color`, item.color.join());
     } else {
@@ -105,50 +105,52 @@ export default function MeasureDrawer({
                 </DrawerHeader>
                 <DrawerDescription></DrawerDescription>
                 <div className="space-y-4 px-4 py-1 overflow-auto max-h-[calc(100vh-200px)]">
-                    <div className="w-full mx-auto space-y-5 p-5">
-                      <Image
-                        src={
-                          item.images.productUrl
-                            ? item.images.productUrl
-                            : "/images/noImage.png"
-                        }
-                        width={150}
-                        height={150}
-                        alt={item.name}
-                        className="mx-auto w-full object-cover"
-                      />
-                    </div>
-                    <PublicMeasureSelect
-                      value={color}
-                      setValue={setColor}
-                      array={item.color}
-                      label="カラー"
+                  <div className="w-full mx-auto space-y-5 p-5">
+                    <Image
+                      src={
+                        item.images.productUrl
+                          ? item.images.productUrl
+                          : "/images/noImage.png"
+                      }
+                      width={150}
+                      height={150}
+                      alt={item.name}
+                      className="mx-auto w-full object-cover"
                     />
-                    <PublicMeasureSelect
-                      value={size}
-                      setValue={setSize}
-                      array={item.size}
-                      label="サイズ"
-                    />
-                    <PublicMeasureInseam
-                      item={item}
-                      value={cutLength}
-                      setValue={setCutLength}
-                      min={item.inseam.min}
-                      max={item.inseam.max}
-                      label="股下"
-                      unit="cm"
-                      check={isNoInseam}
-                      setCheck={setIsNoInseam}
-                    />
-                    <PublicMeasureQuantity
-                      value={quantity}
-                      setValue={setQuantity}
-                      min={product.quantity.min}
-                      max={product.quantity.max}
-                      label="数量"
-                      unit={item.unit}
-                    />
+                  </div>
+                  <PublicMeasureSelect
+                    value={color}
+                    setValue={setColor}
+                    array={item.color}
+                    label="カラー"
+                  />
+                  <PublicMeasureSelect
+                    value={size}
+                    setValue={setSize}
+                    array={item.size}
+                    label="サイズ"
+                  />
+                  <PublicMeasureInseam
+                    item={item}
+                    value={cutLength}
+                    setValue={setCutLength}
+                    min={item.inseam.min}
+                    max={item.inseam.max}
+                    label={`股下カット  ${
+                      item.inseam.price > 0 ? `(${item.inseam.price}円)` : ""
+                    }`}
+                    unit="cm"
+                    check={isNoInseam}
+                    setCheck={setIsNoInseam}
+                  />
+                  <PublicMeasureQuantity
+                    value={quantity}
+                    setValue={setQuantity}
+                    min={product.quantity.min}
+                    max={product.quantity.max}
+                    label="数量"
+                    unit={item.unit}
+                  />
                 </div>
                 <DrawerFooter className="grid grid-cols-2 gap-3 mt-6 ">
                   <Button

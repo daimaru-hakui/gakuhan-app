@@ -98,10 +98,12 @@ export default function StudentRegisterConfirm({
         startedAt: new Date(),
         finishedAt: null,
         isDeleted: false,
+        schoolName: school.title,
+        studentId: user.uid,
       });
       return { id: user.uid };
     } catch (e) {
-      console.log(e)
+      console.log(e);
       return { id: null };
     }
   }
@@ -148,6 +150,9 @@ export default function StudentRegisterConfirm({
                           (values.address.building && values.address.building)
                       }
                     />
+                  )}
+                  {school.isAddress && (
+                    <ValueComponent title="Tel" value={values.tel || ""} />
                   )}
                 </div>
                 <DrawerFooter>

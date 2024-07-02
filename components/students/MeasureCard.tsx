@@ -6,6 +6,8 @@ import PublicMeasureDrawer from "./MeasureDrawer";
 import { UseFormReturn } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { Badge } from "../ui/badge";
+import { Switch } from "../ui/switch";
+import { Label } from "../ui/label";
 
 interface Props {
   product: Product;
@@ -35,6 +37,7 @@ export interface Item {
 
 export default function MeasureCard({ product, form, index }: Props) {
   const [open, setOpen] = useState(false);
+  const [noItem, setNoItem] = useState(false);
   const [item, setItem] = useState<Item>();
   const [isNoInseam, setIsNoInseam] = useState(false);
   const name = form.getValues(`products.${index}.name`) as string;
@@ -43,25 +46,50 @@ export default function MeasureCard({ product, form, index }: Props) {
   const cutLength = form.getValues(`products.${index}.cutLength`) as number;
   const quantity = form.getValues(`products.${index}.quantity`) as number;
 
-  function handleClick(value: Item | undefined) {
+  function handleOpenClick(value: Item | undefined) {
     if (!value) return;
     setOpen(true);
     setItem(value);
   }
+
+  function handleNoItemClick() {
+    if (noItem) {
+      setNoItem(false);
+      form.setValue(`products.${index}.name`, "");
+      form.setValue(`products.${index}.color`, "");
+      form.setValue(`products.${index}.size`, "");
+      form.setValue(`products.${index}.cutLength`, "");
+      form.setValue(`products.${index}.quantity`, "");
+    } else {
+      setNoItem(true);
+      form.setValue(`products.${index}.name`, null);
+      form.setValue(`products.${index}.color`, null);
+      form.setValue(`products.${index}.size`, null);
+      form.setValue(`products.${index}.cutLength`, 0);
+      form.setValue(`products.${index}.quantity`, 0);
+    }
+  }
+
   return (
     <div key={product.id} className="p-3 border">
       <header className="flex justify-between mb-3">
         {product.isRequire ? (
           <Badge variant="destructive">必須</Badge>
         ) : (
-          <Badge variant="outline">選択</Badge>
+          <div className="flex items-center space-x-2">
+            <Switch
+              checked={noItem}
+              id="airplane-mode"
+              onClick={handleNoItemClick}
+            />
+            <Label htmlFor="airplane-mode">不要の場合はチェック</Label>
+          </div>
         )}
-        <span></span>
       </header>
       {product.items.length === 1 ? (
         <div
-          className="space-y-1 cursor-pointer"
-          onClick={() => handleClick(product.items.at(0))}
+          className={cn("space-y-1 cursor-pointer", noItem && "opacity-10")}
+          onClick={() => handleOpenClick(product.items.at(0))}
         >
           <Image
             src={
@@ -70,20 +98,20 @@ export default function MeasureCard({ product, form, index }: Props) {
             alt=""
             width={200}
             height={200}
-            className="w-full"
+            className={cn("w-full")}
           />
           <h3 className="font-semibold">{product.items.at(0)?.name}</h3>
           <div>￥{product.items.at(0)?.price}</div>
         </div>
       ) : (
-        <div className={cn("grid grid-cols-2 gap-3")}>
+        <div className={cn("grid grid-cols-2 gap-3", noItem && "opacity-10")}>
           {product.items.map((item) => (
             <div
               key={item.name}
               className={cn(
                 "flex flex-col space-y-1 w-full h-full cursor-pointer"
               )}
-              onClick={() => handleClick(item)}
+              onClick={() => handleOpenClick(item)}
             >
               <Image
                 src={item.images.productUrl || "/images/noImage.png"}
@@ -101,6 +129,26 @@ export default function MeasureCard({ product, form, index }: Props) {
           ))}
         </div>
       )}
+      {!noItem && (
+        <div className="mt-3 flex gap-1">
+          {form.getValues(`products.${index}.color`) !== null && (
+            <PropertyStringLabel property={color} text="カラー" />
+          )}
+
+          {form.getValues(`products.${index}.size`) !== null && (
+            <PropertyStringLabel property={size} text="サイズ" />
+          )}
+
+          {form.getValues(`products.${index}.inseam.isFlag`) && (
+            <PropertyNumberLabel property={cutLength} text="股下" unit="cm" />
+          )}
+          <PropertyNumberLabel
+            property={quantity}
+            text="数量"
+            unit={item?.unit}
+          />
+        </div>
+      )}
       <PublicMeasureDrawer
         open={open}
         setOpen={setOpen}
@@ -111,20 +159,6 @@ export default function MeasureCard({ product, form, index }: Props) {
         isNoInseam={isNoInseam}
         setIsNoInseam={setIsNoInseam}
       />
-      <div className="mt-3 flex gap-1">
-        {form.getValues(`products.${index}.color`) !== null && (
-          <PropertyStringLabel property={color} text="カラー" />
-        )}
-        <PropertyStringLabel property={size} text="サイズ" />
-        {form.getValues(`products.${index}.inseam.isFlag`) && (
-          <PropertyNumberLabel property={cutLength} text="股下" unit="cm" />
-        )}
-        <PropertyNumberLabel
-          property={quantity}
-          text="数量"
-          unit={item?.unit}
-        />
-      </div>
     </div>
   );
 }

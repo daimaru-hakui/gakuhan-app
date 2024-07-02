@@ -10,7 +10,7 @@ import {
   CreateMeasureStudentSchema,
 } from "@/utils/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import PublicMeasureButtonArea from "./MeasureButtonArea";
+import MeasureButtonArea from "./MeasureButtonArea";
 import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase/client";
 import { toast } from "sonner";
@@ -114,18 +114,24 @@ export default function MeasureForm({ student, products, id }: Props) {
   async function onSubmit(data: CreateMeasureStudent) {
     setOpen(true);
     setValues(data);
-    // startTransition(async () => {
-    //   const { status, message } = await updateStudent(data);
-    //   if (status === "success") {
-    //     toast.success(message);
-    //   } else {
-    //     toast.error(message);
-    //   }
-    // });
+    console.log(data);
   }
 
   function onError(data: any) {
     console.log(data);
+  }
+
+  async function handleClickRegister(data: CreateMeasureStudent) {
+    const result = confirm("登録して宜しいでしょうか");
+    if (!result) return;
+    startTransition(async () => {
+      const { status, message } = await updateStudent(data);
+      if (status === "success") {
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
+    });
   }
 
   async function updateStudent(data: CreateMeasureStudent) {
@@ -153,22 +159,31 @@ export default function MeasureForm({ student, products, id }: Props) {
         onSubmit={form.handleSubmit(onSubmit, onError)}
         className="relative"
       >
-        <div className="grid grid-cols-1 gap-6 px-3">
-          {products.map((product, index) => (
-            <PublicMeasureCard
-              key={product.id}
-              product={product}
-              form={form}
-              index={index}
-            />
-          ))}
-        </div>
-        <PublicMeasureButtonArea
+        {!open ? (
+          <>
+            <div className="grid grid-cols-1 gap-6">
+              {products.map((product, index) => (
+                <PublicMeasureCard
+                  key={product.id}
+                  product={product}
+                  form={form}
+                  index={index}
+                />
+              ))}
+            </div>
+          </>
+        ) : (
+          <MeasureConfirm values={values} />
+        )}
+        <MeasureButtonArea
           form={form}
           totalCount={products.length}
           pending={pending}
+          open={open}
+          setOpen={setOpen}
+          onStudentRegister={handleClickRegister}
+          data={values}
         />
-        <MeasureConfirm open={open} setOpen={setOpen} />
       </form>
     </Form>
   );
