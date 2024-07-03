@@ -22,7 +22,7 @@ export default async function StudentPage({ params }: Props) {
   if (!session) return <NotFound />;
 
   const schoolSnap = await db.collection("schools").doc(id).get();
-  const schoolRaw = JSON.stringify(schoolSnap.data());
+  const schoolRaw = JSON.stringify({ ...schoolSnap.data(), id: schoolSnap.id });
   const school = JSON.parse(schoolRaw) as School;
 
   if (!school) return;
@@ -38,7 +38,10 @@ export default async function StudentPage({ params }: Props) {
 
   if (!studentSnap.exists) return <NotFound />;
 
-  const studentRaw = JSON.stringify({ ...studentSnap.data(), id: studentSnap.id });
+  const studentRaw = JSON.stringify({
+    ...studentSnap.data(),
+    id: studentSnap.id,
+  });
   const student = JSON.parse(studentRaw) as Student;
 
   const productsSnap = await db
@@ -47,10 +50,12 @@ export default async function StudentPage({ params }: Props) {
     .collection("products")
     .get();
 
-  const filterProductsSnap = productsSnap.docs.map(
-    doc => ({ ...doc.data(), id: doc.id } as Product)
-  ).filter(product => product.gender === "other" || product.gender === student.gender
-  );
+  const filterProductsSnap = productsSnap.docs
+    .map((doc) => ({ ...doc.data(), id: doc.id } as Product))
+    .filter(
+      (product) =>
+        product.gender === "other" || product.gender === student.gender
+    );
 
   const productsRaw = JSON.stringify(filterProductsSnap);
   const products = JSON.parse(productsRaw) as Product[];

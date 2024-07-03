@@ -2,6 +2,7 @@
 import { SubmitRhkButton } from "@/components/form/Buttons";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { auth } from "@/lib/firebase/client";
+import { useStore } from "@/store";
 import { School } from "@/utils/school.interface";
 import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
 import { signIn } from "next-auth/react";
@@ -15,6 +16,7 @@ interface Props {
 
 export default function AnonymousLoginForm({ id, school }: Props) {
   const [pending, startTransaction] = useTransition();
+  const setUser = useStore((state) => state.setUser);
 
   function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -23,7 +25,7 @@ export default function AnonymousLoginForm({ id, school }: Props) {
         const userCredential = await signInAnonymously(auth);
         const user = userCredential.user;
         const token = await user.getIdToken();
-        await auth.signOut();
+        setUser(user);
         await signIn("credentials", { token });
       });
     } catch (e) {

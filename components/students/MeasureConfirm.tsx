@@ -19,8 +19,8 @@ export default function MeasureConfirm({ values }: Props) {
     const product = quantity * price;
     const cut = quantity * cutPrice;
     return (
-      `￥${product.toLocaleString()} ` +
-      (cut > 0 && ` (内裾上代 ￥${cut.toLocaleString()})`)
+      `￥${product.toLocaleString()} ` 
+      // (cut > 0 && ` (内裾上代 ￥${cut.toLocaleString()})`)
     );
   }
 

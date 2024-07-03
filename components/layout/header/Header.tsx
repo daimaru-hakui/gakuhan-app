@@ -18,7 +18,6 @@ export default function Header() {
     if (pattern.exec(pathname)) return;
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user);
         setUser(user);
       } else {
         router.push("/auth/login");
@@ -26,7 +25,7 @@ export default function Header() {
       }
     });
     return () => unsub();
-  }, [router, setUser, pathname, pattern]);
+  }, [router,setUser, pathname, pattern]);
 
   return (
     <>

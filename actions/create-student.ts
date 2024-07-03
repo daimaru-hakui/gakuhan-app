@@ -8,8 +8,6 @@ import {
 } from "@/utils/schemas";
 import { School } from "@/utils/school.interface";
 import { FieldValue } from "firebase-admin/firestore";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 export async function createStudent(
   data: CreateStudent,
@@ -39,6 +37,11 @@ export async function createStudent(
       schoolName: school.title,
       studentId: session.user.uid,
     });
+    return {
+      status: "success",
+      message: "",
+      id: session.user.uid,
+    };
   } catch (e: unknown) {
     console.log(e);
     return {
@@ -46,11 +49,4 @@ export async function createStudent(
       message: e instanceof Error ? e.message : "登録が失敗しました",
     };
   }
-  // revalidatePath("/student-register");
-  return {
-    status: "success",
-    message: "",
-    id: session.user.uid,
-  };
-  // redirect(`/student-register/${school.id}/students/${session.user.uid}`);
 }
