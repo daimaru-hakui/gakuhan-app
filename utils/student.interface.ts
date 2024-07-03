@@ -25,9 +25,9 @@ export interface Student {
     color: string;
     price: number;
     quantity: number;
+    cutLength: number;
     inseam: {
       isUnNeededItem: boolean;
-      cutLength: number;
       price: number;
       base: number;
     };

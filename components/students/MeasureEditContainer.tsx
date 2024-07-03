@@ -4,6 +4,7 @@ import { Student } from "@/utils/student.interface";
 import { Product } from "@/utils/product.interface";
 import MeasureHeader from "./MeasureHeader";
 import { School } from "@/utils/school.interface";
+import MeasureEditForm from "./MeasureEditForm";
 
 interface Props {
   school: School;
@@ -12,7 +13,7 @@ interface Props {
   id: string;
 }
 
-export default function MeasureContainer({
+export default function MeasureEditContainer({
   school,
   student,
   products,
@@ -21,7 +22,7 @@ export default function MeasureContainer({
   return (
     <div className="max-w-[650px] mx-auto mb-12">
       <MeasureHeader id={id} studentId={student.id} />
-      <MeasureForm student={student} products={products} id={school.id} />
+      <MeasureEditForm student={student} products={products} id={school.id} />
     </div>
   );
 }

@@ -1,3 +1,4 @@
+"use client"
 import {
   Drawer,
   DrawerContent,
@@ -32,7 +33,6 @@ export default function StudentRegisterConfirm({
   values,
   school,
 }: Props) {
-  const user = useStore((state) => state.user);
   const [pending, startTransaction] = useTransition();
   const router = useRouter();
 
@@ -71,45 +71,16 @@ export default function StudentRegisterConfirm({
     startTransaction(async () => {
       console.log(values);
       await new Promise((resolve) => setTimeout(resolve, 500));
-      const result = await actions.createStudent(values, school, school.id);
-      // const { id } = await createStudentAction(values);
+      const result = await actions.createStudent(values, school);
       if (result.status === "success") {
         toast.success(result.message);
+
+        router.push(`/student-register/${school.id}/students/${result.id}`);
       } else {
         toast.error(result.message);
       }
     });
   };
-
-  async function createStudentAction(
-    data: CreateStudent
-  ): Promise<{ id: string | null; }> {
-    if (!user?.uid) return { id: null };
-    try {
-      // const productsRef = collection(db, "schools", school.id, "products");
-      // const products = (await getDocs(productsRef)).docs
-      //   .map((doc) => ({ ...doc.data() } as Product))
-      //   .filter((product) => {
-      //     if (product.gender === values?.gender || product.gender === "other") {
-      //       return product;
-      //     }
-      //   });
-      const studentRef = doc(db, "schools", school.id, "students", user?.uid);
-      await setDoc(studentRef, {
-        ...data,
-        schoolId: school.id,
-        startedAt: new Date(),
-        finishedAt: null,
-        isDeleted: false,
-        schoolName: school.title,
-        studentId: user.uid,
-      });
-      return { id: user.uid };
-    } catch (e) {
-      console.log(e);
-      return { id: null };
-    }
-  }
 
   return (
     <>
@@ -147,10 +118,10 @@ export default function StudentRegisterConfirm({
                       subValue={
                         values?.address?.prefecture &&
                         values.address.prefecture +
-                        (values.address.city && values.address.city) +
-                        (values.address.street && values.address.street) +
-                        "\n" +
-                        (values.address.building && values.address.building)
+                          (values.address.city && values.address.city) +
+                          (values.address.street && values.address.street) +
+                          "\n" +
+                          (values.address.building && values.address.building)
                       }
                     />
                   )}

@@ -10,6 +10,7 @@ export interface School {
   isShipping: boolean;
   shippingFee: number;
   createdAt: Timestamp;
+  isPayment: boolean;
   isPublic: boolean;
   isDeleted: boolean;
   deletedAt: Timestamp;

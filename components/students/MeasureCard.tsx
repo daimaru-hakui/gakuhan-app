@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { Badge } from "../ui/badge";
 import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
+import MeasureLabel from "./MeasureLabel";
 
 interface Props {
   product: Product;
@@ -132,21 +133,17 @@ export default function MeasureCard({ product, form, index }: Props) {
       {!noItem && (
         <div className="mt-3 flex gap-1">
           {form.getValues(`products.${index}.color`) !== null && (
-            <PropertyStringLabel property={color} text="カラー" />
+            <MeasureLabel property={color} text="カラー" />
           )}
 
           {form.getValues(`products.${index}.size`) !== null && (
-            <PropertyStringLabel property={size} text="サイズ" />
+            <MeasureLabel property={size} text="サイズ" />
           )}
 
           {form.getValues(`products.${index}.inseam.isFlag`) && (
-            <PropertyNumberLabel property={cutLength} text="股下" unit="cm" />
+            <MeasureLabel property={cutLength} text="股下" unit="cm" />
           )}
-          <PropertyNumberLabel
-            property={quantity}
-            text="数量"
-            unit={item?.unit}
-          />
+          <MeasureLabel property={quantity} text="数量" unit={item?.unit} />
         </div>
       )}
       <PublicMeasureDrawer

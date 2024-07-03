@@ -4,7 +4,6 @@ import { Form } from "../ui/form";
 import { useForm } from "react-hook-form";
 import { Student } from "@/utils/student.interface";
 import { Product } from "@/utils/product.interface";
-import PublicMeasureCard from "./MeasureCard";
 import {
   CreateMeasureStudent,
   CreateMeasureStudentSchema,
@@ -15,6 +14,7 @@ import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase/client";
 import { toast } from "sonner";
 import MeasureConfirm from "./MeasureConfirm";
+import MeasureCard from "./MeasureCard";
 
 interface Props {
   student: Student;
@@ -67,9 +67,9 @@ export default function MeasureForm({ student, products, id }: Props) {
     // スソ上げ
     let cutLength;
     if (oneItem) {
-      cutLength = item?.inseam.isFlag ? "" : 0;
+      cutLength = item?.inseam.isFlag ? undefined : 0;
     } else {
-      cutLength = "";
+      cutLength = undefined;
     }
 
     const inseam = {
@@ -99,6 +99,7 @@ export default function MeasureForm({ student, products, id }: Props) {
       size,
       color,
       quantity,
+      cutLength,
       inseam: {
         price: inseam.price,
         base: inseam.base,
@@ -106,6 +107,7 @@ export default function MeasureForm({ student, products, id }: Props) {
       },
     };
   });
+
   const form = useForm<CreateMeasureStudent>({
     resolver: zodResolver(CreateMeasureStudentSchema),
     defaultValues: { products: defaultValues },
@@ -163,7 +165,7 @@ export default function MeasureForm({ student, products, id }: Props) {
           <>
             <div className="grid grid-cols-1 gap-6">
               {products.map((product, index) => (
-                <PublicMeasureCard
+                <MeasureCard
                   key={product.id}
                   product={product}
                   form={form}
