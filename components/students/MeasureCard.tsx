@@ -38,7 +38,8 @@ export interface Item {
 
 export default function MeasureCard({ product, form, index }: Props) {
   const [open, setOpen] = useState(false);
-  const [noItem, setNoItem] = useState(false);
+  const [isNoItem, setIsNoItem] =
+    useState(form.getValues(`products.${index}.name`) === null ? true : false);
   const [item, setItem] = useState<Item>();
   const [isNoInseam, setIsNoInseam] = useState(false);
   const name = form.getValues(`products.${index}.name`) as string;
@@ -54,15 +55,15 @@ export default function MeasureCard({ product, form, index }: Props) {
   }
 
   function handleNoItemClick() {
-    if (noItem) {
-      setNoItem(false);
+    if (isNoItem) {
+      setIsNoItem(false);
       form.setValue(`products.${index}.name`, "");
       form.setValue(`products.${index}.color`, "");
       form.setValue(`products.${index}.size`, "");
       form.setValue(`products.${index}.cutLength`, "");
       form.setValue(`products.${index}.quantity`, "");
     } else {
-      setNoItem(true);
+      setIsNoItem(true);
       form.setValue(`products.${index}.name`, null);
       form.setValue(`products.${index}.color`, null);
       form.setValue(`products.${index}.size`, null);
@@ -79,7 +80,7 @@ export default function MeasureCard({ product, form, index }: Props) {
         ) : (
           <div className="flex items-center space-x-2">
             <Switch
-              checked={noItem}
+              checked={isNoItem}
               id="airplane-mode"
               onClick={handleNoItemClick}
             />
@@ -89,7 +90,7 @@ export default function MeasureCard({ product, form, index }: Props) {
       </header>
       {product.items.length === 1 ? (
         <div
-          className={cn("space-y-1 cursor-pointer", noItem && "opacity-10")}
+          className={cn("space-y-1 cursor-pointer", isNoItem && "opacity-10")}
           onClick={() => handleOpenClick(product.items.at(0))}
         >
           <Image
@@ -105,7 +106,7 @@ export default function MeasureCard({ product, form, index }: Props) {
           <div>￥{product.items.at(0)?.price}</div>
         </div>
       ) : (
-        <div className={cn("grid grid-cols-2 gap-3", noItem && "opacity-10")}>
+        <div className={cn("grid grid-cols-2 gap-3", isNoItem && "opacity-10")}>
           {product.items.map((item) => (
             <div
               key={item.name}
@@ -130,7 +131,7 @@ export default function MeasureCard({ product, form, index }: Props) {
           ))}
         </div>
       )}
-      {!noItem && (
+      {!isNoItem && (
         <div className="mt-3 flex gap-1">
           {form.getValues(`products.${index}.color`) !== null && (
             <MeasureLabel property={color} text="カラー" />
@@ -156,52 +157,6 @@ export default function MeasureCard({ product, form, index }: Props) {
         isNoInseam={isNoInseam}
         setIsNoInseam={setIsNoInseam}
       />
-    </div>
-  );
-}
-
-function PropertyStringLabel({
-  property,
-  text,
-  unit = "",
-}: {
-  property: string | number;
-  text: string;
-  unit?: string;
-}) {
-  return (
-    <div
-      className={cn(
-        "border font-semibold text-xs p-1",
-        property ? "bg-primary text-muted" : ""
-      )}
-    >
-      {property ? `${property} ${unit}` : text + "未選択"}
-    </div>
-  );
-}
-
-function PropertyNumberLabel({
-  property,
-  text,
-  unit = "",
-}: {
-  property: number;
-  text: string;
-  unit?: string;
-}) {
-  return (
-    <div
-      className={cn(
-        "border font-semibold text-xs p-1",
-        property || property === 0 ? "bg-primary text-muted" : ""
-      )}
-    >
-      {property
-        ? `${property} ${unit}`
-        : property === 0
-        ? text + "不要"
-        : text + "未選択"}
     </div>
   );
 }

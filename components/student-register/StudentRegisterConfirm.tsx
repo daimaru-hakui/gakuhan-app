@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   Drawer,
   DrawerContent,
@@ -13,11 +13,8 @@ import { CreateStudent } from "@/utils/schemas";
 import { School } from "@/utils/school.interface";
 import { useTransition } from "react";
 import { LoadingButton } from "../form/Buttons";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase/client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useStore } from "@/store";
 import * as actions from "@/actions";
 
 interface Props {
@@ -74,8 +71,6 @@ export default function StudentRegisterConfirm({
       const result = await actions.createStudent(values, school);
       if (result.status === "success") {
         toast.success(result.message);
-
-        router.push(`/student-register/${school.id}/students/${result.id}`);
       } else {
         toast.error(result.message);
       }
@@ -118,10 +113,10 @@ export default function StudentRegisterConfirm({
                       subValue={
                         values?.address?.prefecture &&
                         values.address.prefecture +
-                          (values.address.city && values.address.city) +
-                          (values.address.street && values.address.street) +
-                          "\n" +
-                          (values.address.building && values.address.building)
+                        (values.address.city && values.address.city) +
+                        (values.address.street && values.address.street) +
+                        "\n" +
+                        (values.address.building && values.address.building)
                       }
                     />
                   )}

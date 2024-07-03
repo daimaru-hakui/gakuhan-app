@@ -1,10 +1,12 @@
 import { CreateMeasureStudent } from "@/utils/schemas";
+import { School } from "@/utils/school.interface";
 
 interface Props {
   values?: CreateMeasureStudent;
+  school: School;
 }
 
-export default function MeasureConfirm({ values }: Props) {
+export default function MeasureConfirm({ values, school }: Props) {
   if (!values) return;
 
   function calcSubTotalPrice({
@@ -18,9 +20,9 @@ export default function MeasureConfirm({ values }: Props) {
   }) {
     const product = quantity * price;
     const cut = quantity * cutPrice;
+    const sum = product + cut;
     return (
-      `￥${product.toLocaleString()} ` 
-      // (cut > 0 && ` (内裾上代 ￥${cut.toLocaleString()})`)
+      `${sum.toLocaleString()}円`
     );
   }
 
@@ -28,8 +30,9 @@ export default function MeasureConfirm({ values }: Props) {
     const result = values.products.reduce((total, product) => {
       total +=
         product.quantity * product.price +
-        product.quantity * product.inseam.price;
-      return total;
+        product.quantity * (product.cutLength > 0 ? product.inseam.price : 0);
+      const shippingFee = school.isShipping ? school.shippingFee : 0;
+      return total + shippingFee;
     }, 0);
     return result;
   }
@@ -55,52 +58,72 @@ export default function MeasureConfirm({ values }: Props) {
             <div className="text-4xl font-semibold">
               {calcTotalPrice(values).toLocaleString()}
             </div>
-            <span className="text-xl mt-2">円（税込）</span>
+            <span className="text-xl font-semibold mt-2">円（税込）</span>
           </div>
         </div>
       )}
+      {school.isShipping && school.shippingFee > 0 &&
+        <div className="flex justify-center gap-3 text-sm mt-2">
+          <div>内送料</div>
+          <div className="mr-12">{school.shippingFee} 円</div>
+        </div>
+      }
       <article className="text-xs space-y-1 mt-6">
         {values.products.map((product, index) => (
-          <div key={index} className="border p-2 space-y-1">
-            <div className="grid grid-cols-[80px_1fr]">
-              <div className="font-semibold">商品名</div>
-              <div>{product.name}</div>
-            </div>
-            {product.color && (
-              <div className="grid grid-cols-[80px_1fr]">
-                <div className="font-semibold">カラー</div>
-                <div>{product.color}</div>
+          product.name && (
+            <div key={index} className="border p-2 space-y-1">
+              <div className="grid grid-cols-[90px_1fr]">
+                <div className="font-semibold">商品名</div>
+                <div>{product.name}</div>
               </div>
-            )}
-            <div className="grid grid-cols-[80px_1fr]">
-              <div className="font-semibold">サイズ</div>
-              <div>{product.size}</div>
-            </div>
-            {product.cutLength > 0 && (
-              <div className="grid grid-cols-[80px_1fr]">
-                <div className="font-semibold">股下カット</div>
-                <div>{`${product.cutLength}cm 股下修理代金${product.inseam.price}`}</div>
-              </div>
-            )}
-            {product.quantity > 0 && (
-              <div className="grid grid-cols-[80px_1fr]">
-                <div className="font-semibold">数量</div>
-                <div>{product.quantity}</div>
-              </div>
-            )}
-            {product.quantity * product.price > 0 && (
-              <div className="grid grid-cols-[80px_1fr]">
-                <div className="font-semibold">小計</div>
-                <div>
-                  {calcSubTotalPrice({
-                    quantity: product.quantity,
-                    price: product.price,
-                    cutPrice: product.inseam.price,
-                  })}
+              {product.color && (
+                <div className="grid grid-cols-[90px_1fr]">
+                  <div className="font-semibold">カラー</div>
+                  <div>{product.color}</div>
                 </div>
+              )}
+              <div className="grid grid-cols-[90px_1fr]">
+                <div className="font-semibold">サイズ</div>
+                <div>{product.size}</div>
               </div>
-            )}
-          </div>
+              {product.cutLength > 0 && (
+                <div className="grid grid-cols-[90px_1fr]">
+                  <div className="font-semibold">股下カット</div>
+                  <div>{`${product.cutLength}cm`}</div>
+                </div>
+              )}
+              {product.inseam.price > 0 && (
+                <div className="grid grid-cols-[90px_1fr]">
+                  <div className="font-semibold">股下代金</div>
+                  <div>{`${product.inseam.price}円`}</div>
+                </div>
+              )}
+              {product.price > 0 && (
+                <div className="grid grid-cols-[90px_1fr]">
+                  <div className="font-semibold">価格</div>
+                  <div>{`${product.price}円`}</div>
+                </div>
+              )}
+              {product.quantity > 0 && (
+                <div className="grid grid-cols-[90px_1fr]">
+                  <div className="font-semibold">数量</div>
+                  <div>{product.quantity}</div>
+                </div>
+              )}
+              {product.quantity * product.price > 0 && (
+                <div className="grid grid-cols-[90px_1fr]">
+                  <div className="font-semibold">小計</div>
+                  <div>
+                    {calcSubTotalPrice({
+                      quantity: product.quantity,
+                      price: product.price,
+                      cutPrice: product.inseam.price,
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          )
         ))}
       </article>
     </div>

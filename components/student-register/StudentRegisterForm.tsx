@@ -36,7 +36,8 @@ export default function StudentRegisterForm({ school }: Props) {
         street: school.isAddress ? "" : null,
         building: school.isAddress ? "" : null,
       },
-      tel: school.isAddress ? "" : null
+      tel: school.isAddress ? "" : null,
+      email: ""
     },
   });
 
@@ -143,6 +144,13 @@ export default function StudentRegisterForm({ school }: Props) {
             <FormInput type="tel" form={form} name="tel" label="Tel" require />
           </>
         )}
+        <FormInput
+          type="email"
+          form={form}
+          name="email"
+          label="Email"
+          placeholder="確認メールが必要な場合は入力してください"
+        />
         <div className="text-center">
           <Button disabled={!form.formState.isValid}>確認する</Button>
         </div>

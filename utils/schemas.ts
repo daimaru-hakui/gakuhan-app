@@ -129,6 +129,10 @@ export const CreateStudentSchema = z.object({
     .min(1, { message: "電話番号を入力してください" })
     .max(13, { message: "正しい電話番号を入力してください" })
     .nullable(),
+  email: z
+    .string()
+    // .email({ message: "email形式で入力してください" })
+    .optional()
 });
 export type CreateStudent = z.infer<typeof CreateStudentSchema>;
 
@@ -155,7 +159,6 @@ import { ZodSchema } from 'zod';
 
 export function validateWithZodSchema<T>(schema: ZodSchema<T>, data: unknown): T {
   const result = schema.safeParse(data);
-  console.log(result);
 
   if (!result.success) {
     console.log(result.error);

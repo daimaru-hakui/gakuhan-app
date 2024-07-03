@@ -8,11 +8,12 @@ import {
 } from "@/utils/schemas";
 import { School } from "@/utils/school.interface";
 import { FieldValue } from "firebase-admin/firestore";
+import { redirect } from "next/navigation";
 
 export async function createStudent(
   data: CreateStudent,
   school: School
-): Promise<{ status: string; message: string; id?: string }> {
+): Promise<{ status: string; message: string; }> {
   const id = school.id;
   const session = await auth();
   try {
@@ -27,7 +28,7 @@ export async function createStudent(
       .doc(id)
       .collection("students")
       .doc(session.user.uid);
-    console.log(result);
+
     await snapshot.set({
       ...result,
       schoolId: session.user.uid,
@@ -37,11 +38,7 @@ export async function createStudent(
       schoolName: school.title,
       studentId: session.user.uid,
     });
-    return {
-      status: "success",
-      message: "",
-      id: session.user.uid,
-    };
+
   } catch (e: unknown) {
     console.log(e);
     return {
@@ -49,4 +46,5 @@ export async function createStudent(
       message: e instanceof Error ? e.message : "登録が失敗しました",
     };
   }
+  redirect(`/student-register/${id}/students/${session.user.uid}`);
 }

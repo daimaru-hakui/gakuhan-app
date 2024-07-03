@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { auth } from "@/lib/firebase/client";
 import { useStore } from "@/store";
 import { School } from "@/utils/school.interface";
-import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
+import { signInAnonymously } from "firebase/auth";
 import { signIn } from "next-auth/react";
 import { useTransition } from "react";
 import { FaSchool } from "react-icons/fa";

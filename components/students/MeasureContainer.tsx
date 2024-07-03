@@ -21,7 +21,7 @@ export default function MeasureContainer({
   return (
     <div className="max-w-[650px] mx-auto mb-12">
       <MeasureHeader id={id} studentId={student.id} />
-      <MeasureForm student={student} products={products} id={school.id} />
+      <MeasureForm student={student} products={products} school={school} />
     </div>
   );
 }

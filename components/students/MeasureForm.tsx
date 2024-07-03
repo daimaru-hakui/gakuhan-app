@@ -10,19 +10,19 @@ import {
 } from "@/utils/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import MeasureButtonArea from "./MeasureButtonArea";
-import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase/client";
 import { toast } from "sonner";
 import MeasureConfirm from "./MeasureConfirm";
 import MeasureCard from "./MeasureCard";
+import * as actions from '@/actions';
+import { School } from "@/utils/school.interface";
 
 interface Props {
   student: Student;
   products: Product[];
-  id: string;
+  school: School;
 }
 
-export default function MeasureForm({ student, products, id }: Props) {
+export default function MeasureForm({ student, products, school }: Props) {
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState<CreateMeasureStudent>();
   const [pending, startTransition] = useTransition();
@@ -127,32 +127,13 @@ export default function MeasureForm({ student, products, id }: Props) {
     const result = confirm("登録して宜しいでしょうか");
     if (!result) return;
     startTransition(async () => {
-      const { status, message } = await updateStudent(data);
+      const { status, message } = await actions.createMeasureStudent(
+        data, { schoolId: school.id, studentId: student.id });
       if (status === "success") {
-        toast.success(message);
       } else {
         toast.error(message);
       }
     });
-  }
-
-  async function updateStudent(data: CreateMeasureStudent) {
-    const studentRef = doc(db, "schools", id, "students", student.id);
-    try {
-      await updateDoc(studentRef, {
-        products: { ...data.products },
-        finishedAt: serverTimestamp(),
-      });
-      return {
-        status: "success",
-        message: "登録しました。",
-      };
-    } catch (e) {
-      return {
-        status: "error",
-        message: "登録に失敗しました。",
-      };
-    }
   }
 
   return (
@@ -175,7 +156,7 @@ export default function MeasureForm({ student, products, id }: Props) {
             </div>
           </>
         ) : (
-          <MeasureConfirm values={values} />
+          <MeasureConfirm values={values} school={school} />
         )}
         <MeasureButtonArea
           form={form}
