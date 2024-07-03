@@ -1,0 +1,1 @@
+export { createStudent } from '@/actions/create-student';

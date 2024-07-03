@@ -22,9 +22,8 @@ export default async function StudentPage({ params }: Props) {
   if (!session) return <NotFound />;
 
   const schoolSnap = await db.collection("schools").doc(id).get();
-  const schoolRaw = schoolSnap.data() as School;
-  const schoolData = JSON.stringify(schoolRaw);
-  const school = JSON.parse(schoolData) as School;
+  const schoolRaw = JSON.stringify(schoolSnap.data());
+  const school = JSON.parse(schoolRaw) as School;
 
   if (!school) return;
   if (!school.isPublic) return notFound();
@@ -39,9 +38,8 @@ export default async function StudentPage({ params }: Props) {
 
   if (!studentSnap.exists) return <NotFound />;
 
-  const studentRaw = { ...studentSnap.data(), id: studentSnap.id } as Student;
-  const studentData = JSON.stringify(studentRaw);
-  const student = JSON.parse(studentData) as Student;
+  const studentRaw = JSON.stringify({ ...studentSnap.data(), id: studentSnap.id });
+  const student = JSON.parse(studentRaw) as Student;
 
   const productsSnap = await db
     .collection("schools")
@@ -49,24 +47,21 @@ export default async function StudentPage({ params }: Props) {
     .collection("products")
     .get();
 
-  const productsRaw = productsSnap.docs.map(
-    (doc) => ({ ...doc.data(), id: doc.id } as Product)
+  const filterProductsSnap = productsSnap.docs.map(
+    doc => ({ ...doc.data(), id: doc.id } as Product)
+  ).filter(product => product.gender === "other" || product.gender === student.gender
   );
 
-  const filterProductsRow = productsRaw.filter(
-    (product) => product.gender === "other" || product.gender === student.gender
-  );
-
-  const productsData = JSON.stringify(filterProductsRow);
-  const products = JSON.parse(productsData) as Product[];
+  const productsRaw = JSON.stringify(filterProductsSnap);
+  const products = JSON.parse(productsRaw) as Product[];
 
   return (
     <div className="w-full">
       <MesaureContainer
+        id={id}
         school={school}
         products={products}
         student={student}
-        id={id}
       />
     </div>
   );

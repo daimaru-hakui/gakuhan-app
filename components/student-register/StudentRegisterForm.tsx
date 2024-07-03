@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { Form } from "../ui/form";
 import { useForm } from "react-hook-form";
@@ -10,7 +11,7 @@ import { School } from "@/utils/school.interface";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { getAddress } from "@/utils/fetch";
-import PublicRegisterConfirm from "./StudentRegisterConfirm";
+import StudentRegisterConfirm from "./StudentRegisterConfirm";
 
 interface Props {
   school: School;
@@ -30,7 +31,7 @@ export default function StudentRegisterForm({ school }: Props) {
       gender: school.isGender ? "" : "other",
       address: {
         zipCode: school.isAddress ? "" : null,
-        prefecture: school.isAddress ? "大阪府" : null,
+        prefecture: school.isAddress ? "" : null,
         city: school.isAddress ? "" : null,
         street: school.isAddress ? "" : null,
         building: school.isAddress ? "" : null,
@@ -145,7 +146,7 @@ export default function StudentRegisterForm({ school }: Props) {
         <div className="text-center">
           <Button disabled={!form.formState.isValid}>確認する</Button>
         </div>
-        <PublicRegisterConfirm
+        <StudentRegisterConfirm
           open={open}
           setOpen={setOpen}
           values={values}
