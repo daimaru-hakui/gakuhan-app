@@ -6,7 +6,7 @@ import React from "react";
 
 export default function LogoutButton() {
   async function handleLogout() {
-    signOut();
+    await signOut();
   }
 
   return (
