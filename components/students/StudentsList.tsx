@@ -48,6 +48,7 @@ export default function StudentsList({ id, students, count, school }: Props) {
 
   useEffect(() => {
     resetStudentsCheckList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (students.length === 0) return <EmptyList />;

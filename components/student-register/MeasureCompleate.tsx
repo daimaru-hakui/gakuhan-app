@@ -19,6 +19,7 @@ export default function MeasureCompleate() {
 
   useEffect(() => {
     logOut();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
