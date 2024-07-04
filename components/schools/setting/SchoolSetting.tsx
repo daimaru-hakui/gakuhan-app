@@ -1,7 +1,7 @@
 import React from 'react';
-import SchoolSettingSwitch from '@/components/schools/edit/SchoolSettingSwitch';
+import SchoolSettingSwitch from '@/components/schools/setting/SchoolSettingSwitch';
 import { School } from '@/utils/school.interface';
-import SchoolShippinFeeInput from '@/components/schools/edit/SchoolShippinFeeInput';
+import SchoolShippinFeeInput from '@/components/schools/setting/SchoolShippinFeeInput';
 
 interface Props {
   school: School;
@@ -35,6 +35,13 @@ export default function SchoolSetting({ school }: Props) {
       {school.isShipping && (
         <SchoolShippinFeeInput school={school} />
       )}
+      <SchoolSettingSwitch
+        title="決済機能の有無"
+        description="クレジット決済を利用する場合はチェック"
+        school={school}
+        prop="isPayment"
+        value={school.isPayment}
+      />
     </div>
   );
 }

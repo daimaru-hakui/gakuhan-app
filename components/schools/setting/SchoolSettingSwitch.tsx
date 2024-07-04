@@ -2,7 +2,14 @@
 import { Switch } from "@/components/ui/switch";
 import { db } from "@/lib/firebase/client";
 import { School } from "@/utils/school.interface";
-import { collection, doc, getCountFromServer, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getCountFromServer,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -26,7 +33,8 @@ export default function SchoolSettingSwitch({
   async function handleUpdateSwitch() {
     const docRef = doc(db, "schools", school.id);
     const studentsRef = collection(db, "schools", school.id, "students");
-    const studentsSnap = await getCountFromServer(studentsRef);
+    const q = query(studentsRef, where("isDeleted", "==", false));
+    const studentsSnap = await getCountFromServer(q);
     const count = studentsSnap.data().count;
     try {
       if (count > 0) throw new Error("採寸中のため失敗しました");

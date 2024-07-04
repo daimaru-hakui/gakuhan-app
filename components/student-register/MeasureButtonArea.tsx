@@ -42,7 +42,9 @@ export default function MeasureButtonArea({
     >
       {!open ? (
         <>
-          <div className="text-center">
+          <div
+            className="text-center border rounded-md p-1"
+          >
             {count}/{totalCount}
           </div>
           <Button

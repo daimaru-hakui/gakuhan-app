@@ -11,11 +11,17 @@ const paths = {
   }) {
     return `/schools/${schoolId}/products/${productId}/edit`;
   },
+  schoolAll() {
+    return `/schools`;
+  },
   schoolShow(id: string) {
     return `/schools/${id}`;
   },
   schoolEdit(id: string) {
     return `/schools/${id}/edit`;
+  },
+  adminAll() {
+    return `/admin`;
   },
 };
 

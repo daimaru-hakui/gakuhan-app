@@ -23,7 +23,7 @@ export default function ProductsList({ id, products }: Props) {
 
   return (
     <div className="overflow-auto">
-      <Table className="min-w-[900px]">
+      <Table className="">
         <TableHeader>
           <TableRow>
             <TableHead>行</TableHead>
@@ -33,9 +33,9 @@ export default function ProductsList({ id, products }: Props) {
               選択必須
             </TableHead>
             <TableHead className="text-center min-w-[100px]">数量</TableHead>
-            <TableHead className="text-center min-w-[100px]">商品名</TableHead>
-            <TableHead className="text-center min-w-[100px]"> サイズ</TableHead>
-            <TableHead className="text-center min-w-[100px]">カラー</TableHead>
+            <TableHead className="text-center min-w-[100px] max-w-[500px]">商品名</TableHead>
+            <TableHead className="text-center min-w-[100px] max-w-[500px]"> サイズ</TableHead>
+            <TableHead className="text-center min-w-[100px] max-w-[500px]">カラー</TableHead>
             <TableHead className="text-center min-w-[100px]">
               商品画像
             </TableHead>
@@ -79,14 +79,14 @@ export default function ProductsList({ id, products }: Props) {
                   ? product.quantity.min
                   : `${product.quantity.min} ~ ${product.quantity.max}`}
               </TableCell>
-              <TableCell className="text-center">
+              <TableCell className="text-center whitespace-nowrap">
                 {product.items?.map((item) => (
                   <div key={item.name}>{item.name}</div>
                 ))}
               </TableCell>
               <TableCell className="text-center">
                 {product.items?.map((item) => (
-                  <div key={item.name} className="flex justify-center">
+                  <div key={item.name} className="flex justify-center whitespace-nowrap">
                     {item.size.length === 0 ? (
                       <RxDotFilled className="text-muted" />
                     ) : (
@@ -97,7 +97,7 @@ export default function ProductsList({ id, products }: Props) {
               </TableCell>
               <TableCell className="text-center">
                 {product.items?.map((item) => (
-                  <div key={item.name} className="flex justify-center">
+                  <div key={item.name} className="flex justify-center whitespace-nowrap">
                     {item.color.length === 0 ? (
                       <RxDotFilled className="text-muted" />
                     ) : (

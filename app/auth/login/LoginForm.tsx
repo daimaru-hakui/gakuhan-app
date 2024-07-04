@@ -1,7 +1,6 @@
 "use client";
 import { SubmitRhkButton } from "@/components/form/Buttons";
 import { FormInput } from "@/components/form/FormInput";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import { auth } from "@/lib/firebase/client";
@@ -10,14 +9,14 @@ import { LoginInputs, LoginSchema } from "@/utils/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { signIn } from "next-auth/react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaSchool } from "react-icons/fa";
 
 export default function LoginForm() {
   const router = useRouter();
+  const [pending, setPending] = useState(false);
   const setUser = useStore((state) => state.setUser);
   const form = useForm<LoginInputs>({
     resolver: zodResolver(LoginSchema),
@@ -32,27 +31,32 @@ export default function LoginForm() {
   };
 
   function handleLogin({ email, password }: LoginInputs) {
+    setPending(true);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         user.getIdToken().then((token) => {
-          signIn("credentials", { token, callbackUrl: "/" });
+          signIn("credentials", { token, callbackUrl: "/schools" });
         });
         setUser(user);
       })
       .catch((error) => {
         console.log(error.message);
+      })
+      .finally(() => {
+        setPending(false);
       });
   }
 
   useEffect(() => {
-    auth.signOut();
-  }, []);
+    auth.signOut().then(() => {
+      setUser(null)
+    });
+  }, [setUser]);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user);
         router.push("/schools");
       } else {
         console.log(user);
@@ -88,6 +92,7 @@ export default function LoginForm() {
             </div>
             <SubmitRhkButton
               isValid={!form.formState.isValid}
+              isPending={pending}
               text="ログイン"
               className="w-full mt-5"
             />

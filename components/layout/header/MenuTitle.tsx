@@ -1,7 +1,10 @@
-import React from 'react'
+import Link from "next/link";
+import React from "react";
 
 export default function MenuTitle() {
   return (
-    <div>Gakuhan App</div>
-  )
+    <Link href={`/schools`}>
+      <div>Gakuhan App</div>
+    </Link>
+  );
 }

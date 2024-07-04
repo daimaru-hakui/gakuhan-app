@@ -1,3 +1,4 @@
+import { Student } from "@/utils/student.interface";
 import { User } from "firebase/auth";
 import { create } from "zustand";
 
@@ -10,6 +11,7 @@ interface State {
   addStudentsCheckList: (check: string) => void;
   removeStudentsCheckList: (check: string) => void;
   resetStudentsCheckList: () => void;
+  allCheckStudentsCheckList: (checks: Student[]) => void;
 }
 
 export const useStore = create<State>((set) => ({
@@ -28,4 +30,11 @@ export const useStore = create<State>((set) => ({
       return { studentsCheckList: newCheckList };
     }),
   resetStudentsCheckList: () => set(() => ({ studentsCheckList: [] })),
+  allCheckStudentsCheckList: (students) =>
+    set(() => {
+      const studentIds = students.map((student) => student.id);
+      return {
+        studentsCheckList: studentIds,
+      };
+    }),
 }));

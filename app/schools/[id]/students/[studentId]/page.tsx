@@ -9,15 +9,5 @@ interface Props {
   };
 }
 export default async function PublicStudentShowPage({ params }: Props) {
-  // const { id, studentId } = params;
-  // const session = await auth();
-  // if (!session) return <NotFound />;
-  // const studentSnap = await db
-  //   .collection("schools")
-  //   .doc(id)
-  //   .collection("students")
-  //   .doc(studentId)
-  //   .get();
-  // if (!studentSnap.exists) return <NotFound />;
   return <div>PublicStudentP</div>;
 }

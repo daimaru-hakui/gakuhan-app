@@ -95,7 +95,7 @@ export default function MediaList({ mediaImage, setMediaImage }: Props) {
               <TableCell>{image.fileName}</TableCell>
               <TableCell>{image.contentType}</TableCell>
               <TableCell>{getfileCapacity(image.size)}</TableCell>
-              <TableCell className="text-right">{image.createdBy}</TableCell>
+              <TableCell>{image.createdBy}</TableCell>
               <TableCell>
                 {image.createdAt &&
                   format(

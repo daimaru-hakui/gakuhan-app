@@ -1,19 +1,14 @@
 import * as functions from "firebase-functions";
 
-import { onRequest } from "firebase-functions/v2/https";
-import * as logger from "firebase-functions/logger";
+import { onDocumentDeleted } from "firebase-functions/v2/firestore";
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
+import { getStorage } from "firebase-admin/storage";
 import { initializeApp } from "firebase-admin/app";
 
 initializeApp();
 
 const db = getFirestore();
-
-export const helloWorld = onRequest((request, response) => {
-  logger.info("Hello logs!", { structuredData: true });
-  response.send("Hello from Firebase!");
-});
 
 export const processSignUp = functions.auth.user().onCreate(async (user) => {
   const customClaims = {
@@ -37,4 +32,13 @@ export const processSignUp = functions.auth.user().onCreate(async (user) => {
   } catch (e) {
     console.log(e);
   }
+});
+
+export const deleteImage = onDocumentDeleted("media/{docId}", (event) => {
+  const snapshot = event.data;
+  if (!snapshot) {
+    console.log("No data");
+  }
+  const data = snapshot?.data() as { path: string };
+  getStorage().bucket().file(data.path).delete();
 });

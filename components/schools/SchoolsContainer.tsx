@@ -4,7 +4,6 @@ import SchoolsHeader from "./SchoolsHeader";
 import SchoolsList from "./SchoolsList";
 import { db } from "@/lib/firebase/client";
 import { School } from "@/utils/school.interface";
-import { format } from "date-fns";
 import {
   collection,
   onSnapshot,
@@ -15,9 +14,11 @@ import {
 import { useEffect, useState } from "react";
 import EmptyList from "../EmptyList";
 import LoaderIcon from "../LoaderIcon";
+import { useRouter } from "next/navigation";
 
 export default function SchoolsContainer() {
   const [schools, setSchools] = useState<School[]>();
+  const router = useRouter()
 
   useEffect(() => {
     const schoolsRef = collection(db, "schools");
@@ -34,12 +35,13 @@ export default function SchoolsContainer() {
       },
       error: (e) => {
         console.log(e.message);
+        router.push("/auth/login")
       },
     });
     return () => unsub();
-  }, []);
+  }, [router]);
 
-  if (!schools) return <LoaderIcon />;
+  if (!schools) return null
 
   return (
     <div className="w-full md:max-w-[1200px] mx-auto">

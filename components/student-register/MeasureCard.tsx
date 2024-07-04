@@ -1,14 +1,15 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Product } from "@/utils/product.interface";
-import PublicMeasureDrawer from "./MeasureDrawer";
 import { UseFormReturn } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { Badge } from "../ui/badge";
 import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
 import MeasureLabel from "./MeasureLabel";
+import { Separator } from "../ui/separator";
+import MeasureDrawer from "./MeasureDrawer";
 
 interface Props {
   product: Product;
@@ -38,10 +39,12 @@ export interface Item {
 
 export default function MeasureCard({ product, form, index }: Props) {
   const [open, setOpen] = useState(false);
-  const [isNoItem, setIsNoItem] =
-    useState(form.getValues(`products.${index}.name`) === null ? true : false);
+  const [isNoItem, setIsNoItem] = useState(
+    form.getValues(`products.${index}.name`) === null ? true : false
+  );
   const [item, setItem] = useState<Item>();
   const [isNoInseam, setIsNoInseam] = useState(false);
+  const [compleate, setCompleate] = useState(false);
   const name = form.getValues(`products.${index}.name`) as string;
   const color = form.getValues(`products.${index}.color`) as string;
   const size = form.getValues(`products.${index}.size`) as string;
@@ -72,8 +75,20 @@ export default function MeasureCard({ product, form, index }: Props) {
     }
   }
 
+  useEffect(() => {
+    const n = name ? true : name === null ? true : false;
+    const c = color ? true : color === null ? true : false;
+    const s = size ? true : size === null ? true : false;
+    const l = cutLength || cutLength === 0 ? true : false;
+    const q = quantity || quantity === 0 ? true : false;
+    setCompleate([n, c, s, l, q].filter((v) => v).length === 5);
+  }, [name, color, size, cutLength, quantity]);
+
   return (
-    <div key={product.id} className="p-3 border">
+    <div
+      key={product.id}
+      className={cn("p-3 border", compleate ? "border-primary" : "")}
+    >
       <header className="flex justify-between mb-3">
         {product.isRequire ? (
           <Badge variant="destructive">必須</Badge>
@@ -88,9 +103,13 @@ export default function MeasureCard({ product, form, index }: Props) {
           </div>
         )}
       </header>
+      <Separator />
       {product.items.length === 1 ? (
         <div
-          className={cn("space-y-1 cursor-pointer", isNoItem && "opacity-10")}
+          className={cn(
+            "p-3 space-y-1 cursor-pointer",
+            isNoItem && "opacity-10"
+          )}
           onClick={() => handleOpenClick(product.items.at(0))}
         >
           <Image
@@ -104,6 +123,7 @@ export default function MeasureCard({ product, form, index }: Props) {
           />
           <h3 className="font-semibold">{product.items.at(0)?.name}</h3>
           <div>￥{product.items.at(0)?.price}</div>
+          <p>{product.description}</p>
         </div>
       ) : (
         <div className={cn("grid grid-cols-2 gap-3", isNoItem && "opacity-10")}>
@@ -127,10 +147,12 @@ export default function MeasureCard({ product, form, index }: Props) {
               />
               <h3 className="font-semibold">{item.name}</h3>
               <div>￥{item.price}</div>
+              <p>{product.description}</p>
             </div>
           ))}
         </div>
       )}
+      <Separator />
       {!isNoItem && (
         <div className="mt-3 flex gap-1">
           {form.getValues(`products.${index}.color`) !== null && (
@@ -140,14 +162,13 @@ export default function MeasureCard({ product, form, index }: Props) {
           {form.getValues(`products.${index}.size`) !== null && (
             <MeasureLabel property={size} text="サイズ" />
           )}
-
-          {form.getValues(`products.${index}.inseam.isFlag`) && (
+          {form.getValues(`products.${index}.inseam.isFlag`) !== false && (
             <MeasureLabel property={cutLength} text="股下" unit="cm" />
           )}
           <MeasureLabel property={quantity} text="数量" unit={item?.unit} />
         </div>
       )}
-      <PublicMeasureDrawer
+      <MeasureDrawer
         open={open}
         setOpen={setOpen}
         product={product}

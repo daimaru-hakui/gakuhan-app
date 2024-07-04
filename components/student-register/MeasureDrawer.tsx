@@ -14,9 +14,10 @@ import Image from "next/image";
 import { UseFormReturn } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { Product } from "@/utils/product.interface";
-import PublicMeasureSelect from "./MeasureSelect";
-import PublicMeasureQuantity from "./MeasureQuantity";
-import PublicMeasureInseam from "./MeasureInseam";
+import MeasureSelect from "./MeasureSelect";
+import MeasureQuantity from "./MeasureQuantity";
+import MeasureInseam from "./MeasureInseam";
+import MeasureSizeImage from "./MeasureSizeImage";
 
 interface Props {
   open: boolean;
@@ -42,11 +43,33 @@ export default function MeasureDrawer({
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
   const [quantity, setQuantity] = useState(0);
-  const [cutLength, setCutLength] = useState(
-    form.getValues(`products.${index}.cutLength`)
-      ? form.getValues(`products.${index}.cutLength`)
-      : 0
-  );
+  const [cutLength, setCutLength] = useState(0);
+
+  useEffect(() => {
+    setColor(
+      item?.color.includes(form.getValues(`products.${index}.color`))
+        ? form.getValues(`products.${index}.color`)
+        : ""
+    );
+
+    setSize(
+      item?.size.includes(form.getValues(`products.${index}.size`))
+        ? form.getValues(`products.${index}.size`)
+        : ""
+    );
+
+    setQuantity(
+      form.getValues(`products.${index}.quantity`) > product.quantity
+        ? 0
+        : form.getValues(`products.${index}.quantity`) ?? 0
+    );
+
+    setCutLength(
+      form.getValues(`products.${index}.cutLength`)
+        ? form.getValues(`products.${index}.cutLength`)
+        : 0
+    );
+  }, [item, index]);
 
   function handleClick() {
     if (!open) return;
@@ -100,8 +123,9 @@ export default function MeasureDrawer({
             <DrawerTrigger>Open</DrawerTrigger>
             <DrawerContent>
               <div className="w-full max-w-[600px] mx-auto">
-                <DrawerHeader>
+                <DrawerHeader className="flex justify-between items-center">
                   <DrawerTitle>選択してください</DrawerTitle>
+                  <MeasureSizeImage url={item.images.sizeUrl} />
                 </DrawerHeader>
                 <DrawerDescription></DrawerDescription>
                 <div className="space-y-4 px-4 py-1 overflow-auto max-h-[calc(100vh-200px)]">
@@ -118,19 +142,19 @@ export default function MeasureDrawer({
                       className="mx-auto w-full object-cover"
                     />
                   </div>
-                  <PublicMeasureSelect
+                  <MeasureSelect
                     value={color}
                     setValue={setColor}
                     array={item.color}
                     label="カラー"
                   />
-                  <PublicMeasureSelect
+                  <MeasureSelect
                     value={size}
                     setValue={setSize}
                     array={item.size}
                     label="サイズ"
                   />
-                  <PublicMeasureInseam
+                  <MeasureInseam
                     item={item}
                     value={cutLength}
                     setValue={setCutLength}
@@ -143,7 +167,7 @@ export default function MeasureDrawer({
                     check={isNoInseam}
                     setCheck={setIsNoInseam}
                   />
-                  <PublicMeasureQuantity
+                  <MeasureQuantity
                     value={quantity}
                     setValue={setQuantity}
                     min={product.quantity.min}

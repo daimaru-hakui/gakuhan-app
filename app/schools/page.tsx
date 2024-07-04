@@ -1,4 +1,4 @@
-import SchoolsContainer from "../../components/schools/SchoolsContainer";
+import SchoolsContainer from "@/components/schools/SchoolsContainer";
 
 export default function SchoolsPage() {
   return (

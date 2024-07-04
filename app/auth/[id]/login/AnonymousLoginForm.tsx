@@ -15,18 +15,21 @@ interface Props {
 }
 
 export default function AnonymousLoginForm({ id, school }: Props) {
-  const [pending, startTransaction] = useTransition();
+  const [pending, startTransition] = useTransition();
   const setUser = useStore((state) => state.setUser);
 
   function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      startTransaction(async () => {
+      startTransition(async () => {
         const userCredential = await signInAnonymously(auth);
         const user = userCredential.user;
         const token = await user.getIdToken();
         setUser(user);
-        await signIn("credentials", { token });
+        await signIn("credentials", {
+          token,
+          callbackUrl: `/student-register/${id}`,
+        });
       });
     } catch (e) {
       console.log(e);

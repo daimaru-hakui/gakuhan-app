@@ -13,7 +13,8 @@ export default async function PublicStudentsPage({ params }: Props) {
   const { id } = params;
 
   const schoolSnap = await db.collection("schools").doc(id).get();
-  const school = schoolSnap.data() as School;
+  const schoolData= JSON.stringify({ ...schoolSnap.data(), id: schoolSnap.id })
+  const school = JSON.parse(schoolData);
 
   const productsSnap = await db
     .collection("schools")
@@ -41,12 +42,9 @@ export default async function PublicStudentsPage({ params }: Props) {
     count = other.length;
   }
 
-  const jsonSchool = JSON.stringify({ ...school });
-  const parseSchool = JSON.parse(jsonSchool);
-
   return (
     <div className="w-full">
-      <StudentsContainer id={id} count={count} school={parseSchool} />
+      <StudentsContainer id={id} count={count} school={school} />
     </div>
   );
 }

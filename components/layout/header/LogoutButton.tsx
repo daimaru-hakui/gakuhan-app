@@ -1,11 +1,12 @@
 "use client";
+import { auth, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
-import { auth } from "@/lib/firebase/client";
+// import { auth } from "@/lib/firebase/client";
 import React from "react";
 
 export default function LogoutButton() {
   async function handleLogout() {
-    await auth.signOut();
+    signOut();
   }
 
   return (

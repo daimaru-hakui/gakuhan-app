@@ -45,7 +45,7 @@ export default function SchoolCreateForm() {
       isDeleted: false,
       deletedAt: null,
     });
-    router.push(`/schools/${id}/edit`);
+    router.push(`/schools/${id}`);
   };
 
   return (

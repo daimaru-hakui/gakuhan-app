@@ -116,7 +116,7 @@ export default function ProductEditForm({ id, product }: Props) {
         </div>
         <div className="flex justify-between gap-3 pr-7">
           <Button type="button" variant="outline" className="w-full" asChild>
-            <Link href={paths.schoolEdit(id)}>キャンセル</Link>
+            <Link href={paths.schoolShow(id)}>キャンセル</Link>
           </Button>
           {studentsCount ? (
             <Button className="w-full" disabled={true}>編集不可</Button>

@@ -29,9 +29,6 @@ export default function MediaTarget({
     try {
       const mediaRef = doc(db, "media", mediaImage.id);
       await deleteDoc(mediaRef);
-      const desertRef = ref(storage, mediaImage.path);
-      await deleteObject(desertRef);
-      new Promise((resolve) => setTimeout(resolve, 2000));
       setMediaImage(null);
     } catch (e) {
       console.log(e);

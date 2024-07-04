@@ -1,12 +1,11 @@
 import NotFound from "@/app/not-found";
 import { auth } from "@/auth";
-import MesaureContainer from "@/components/students/MeasureContainer";
 import { db } from "@/lib/firebase/server";
 import { Product } from "@/utils/product.interface";
 import { School } from "@/utils/school.interface";
 import { Student } from "@/utils/student.interface";
 import { notFound } from "next/navigation";
-import React from "react";
+import MeasureEditContainer from "@/components/student-register/MeasureEditContainer";
 
 interface Props {
   params: {
@@ -62,7 +61,7 @@ export default async function StudentEditPage({ params }: Props) {
 
   return (
     <div className="w-full">
-      <MesaureContainer
+      <MeasureEditContainer
         id={id}
         school={school}
         products={products}

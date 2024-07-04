@@ -14,7 +14,6 @@ interface Props {
 export default async function AnoonymousLoginPage({ params }: Props) {
   const { id } = params;
 
-
   const schoolSnap = await db.collection("schools").doc(id).get();
   const schoolRaw = JSON.stringify(schoolSnap.data());
   const school = JSON.parse(schoolRaw) as School;
