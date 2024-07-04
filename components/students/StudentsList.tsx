@@ -48,11 +48,11 @@ export default function StudentsList({ id, students, count, school }: Props) {
           <TableHead className="min-w-[80px]">金額</TableHead>
           {Array.from(new Array(count), (_, index) => (
             <React.Fragment key={index}>
-              <TableHead className="min-w-[200px]">商品名</TableHead>
-              <TableHead className="min-w-[120px]">カラー</TableHead>
-              <TableHead className="min-w-[80px]">サイズ</TableHead>
-              <TableHead className="min-w-[80px]">数量</TableHead>
-              <TableHead className="min-w-[80px]">股下修理</TableHead>
+              <TableHead className="min-w-[200px]">商品名{index + 1}</TableHead>
+              <TableHead className="min-w-[120px]">カラー{index + 1}</TableHead>
+              <TableHead className="min-w-[80px]">サイズ{index + 1}</TableHead>
+              <TableHead className="min-w-[80px]">数量{index + 1}</TableHead>
+              <TableHead className="min-w-[80px]">股下修理{index + 1}</TableHead>
             </React.Fragment>
           ))}
           <TableHead className="min-w-[200px]">登録時間</TableHead>
@@ -81,13 +81,27 @@ export default function StudentsList({ id, students, count, school }: Props) {
             <TableCell>{getGenderDisplay(student.gender)}</TableCell>
             <TableCell>合計</TableCell>
             {student?.products && Object.values(student?.products).map((product, index) => (
+
               <React.Fragment key={index}>
-                <TableCell>{product.name}</TableCell>
-                <TableCell>{product.color}</TableCell>
-                <TableCell>{product.size}</TableCell>
-                <TableCell>{product.quantity}</TableCell>
-                <TableCell></TableCell>
+                {product.name ? (
+                  <>
+                    <TableCell>{product.name}</TableCell>
+                    <TableCell>{product.color}</TableCell>
+                    <TableCell>{product.size}</TableCell>
+                    <TableCell>{product.quantity}</TableCell>
+                    <TableCell>{product.cutLength === 0 ? "" : `${product.cutLength}cm`}</TableCell>
+                  </>
+                ) : (
+                  <>
+                    <TableCell></TableCell>
+                    <TableCell></TableCell>
+                    <TableCell></TableCell>
+                    <TableCell></TableCell>
+                    <TableCell></TableCell>
+                  </>
+                )}
               </React.Fragment>
+
             ))}
             {!student.products && Array.from(new Array(count), (_, index) => (
               <React.Fragment key={index}>

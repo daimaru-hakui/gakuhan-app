@@ -31,14 +31,16 @@ export default function MeasureHeader({ id, studentId }: Props) {
     <>
       <h1 className="text-center font-bold">{student.schoolName}</h1>
       <div className="border mt-2 mb-6 p-6 space-y-3 ">
-        <div className="flex gap-6">
-          <div>
-            <div className="text-sm font-semibold">学籍番号</div>
-            <div>{student?.studentNumber}</div>
-          </div>
-          <div>
-            <div className="text-sm font-semibold">氏名</div>
-            <div>{`${student?.lastName} ${student.firstName}`}</div>
+        <div className="flex justify-between gap-6">
+          <div className="flex gap-6">
+            <div>
+              <div className="text-sm font-semibold">学籍番号</div>
+              <div>{student?.studentNumber}</div>
+            </div>
+            <div>
+              <div className="text-sm font-semibold">氏名</div>
+              <div>{`${student?.lastName} ${student.firstName}`}</div>
+            </div>
           </div>
           {student.gender !== "other" && (
             <div>

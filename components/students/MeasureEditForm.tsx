@@ -11,14 +11,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Student } from "@/utils/student.interface";
 import { Product } from "@/utils/product.interface";
 import MeasureCard from "./MeasureCard";
+import { School } from "@/utils/school.interface";
 
 interface Props {
   student: Student;
   products: Product[];
+  school: School;
   id: string;
 }
 
-export default function MeasureEditForm({ student, products, id }: Props) {
+export default function MeasureEditForm({ student, products, id, school }: Props) {
   const [open, setOpen] = useState(false);
 
   const defaultValues = student.products.map((product) => {
@@ -42,7 +44,7 @@ export default function MeasureEditForm({ student, products, id }: Props) {
 
   const form = useForm<CreateMeasureStudent>({
     resolver: zodResolver(CreateMeasureStudentSchema),
-    defaultValues:{products:defaultValues}
+    defaultValues: { products: defaultValues }
   });
 
   async function onSubmit(data: CreateMeasureStudent) {
@@ -75,7 +77,7 @@ export default function MeasureEditForm({ student, products, id }: Props) {
             </div>
           </>
         ) : (
-          <MeasureConfirm values={values} />
+          <MeasureConfirm school={school} values={values} />
         )}
         {/* <MeasureButtonArea
           form={form}
