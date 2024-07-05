@@ -19,9 +19,8 @@ import { CreateStudent } from "@/utils/schemas";
 
 interface Props<T> {
   form: UseFormReturn<CreateStudent, any, any>;
-  name: string;
-  type?: string;
   label?: string;
+  name:string
   defaultValue?: string;
   placeholder?: string;
   description?: string;
@@ -32,14 +31,11 @@ interface Props<T> {
 
 export default function FormAddressSelect<T>({
   form,
-  name,
-  type,
   label,
+  name,
   defaultValue,
   placeholder,
-  description,
   require,
-  className,
   InputProps,
 }: Props<T>) {
   return (

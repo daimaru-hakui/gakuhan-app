@@ -1,11 +1,11 @@
-import { CreateProduct, UpdateProduct } from "@/utils/schemas";
+import { CreateProduct } from "@/utils/schemas";
 import { UseFormReturn } from "react-hook-form";
 import { RiCloseCircleFill } from "react-icons/ri";
 import MediaModal from "../media/MediaModal";
 import Image from "next/image";
 
 interface Props {
-  form: UseFormReturn<CreateProduct | UpdateProduct, any, undefined>;
+  form: UseFormReturn<CreateProduct, any, undefined>;
   index: number;
 }
 export default function ProductImageInput({ form, index }: Props) {
