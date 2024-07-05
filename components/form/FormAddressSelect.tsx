@@ -52,7 +52,7 @@ export default function FormAddressSelect<T>({
             {label}
             {require && <span className="text-red-500 text-xs ml-1">*</span>}
           </FormLabel>
-          <Select onValueChange={field.onChange} value={field.value}>
+          <Select onValueChange={field.onChange} value={field.value || ""}>
             <FormControl>
               <SelectTrigger>
                 <SelectValue>{field.value}</SelectValue>
