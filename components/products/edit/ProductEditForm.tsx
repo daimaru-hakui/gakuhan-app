@@ -32,10 +32,19 @@ interface Props {
 
 export default function ProductEditForm({ id, product }: Props) {
   const studentsCount = useStore((state) => state.studentsCount);
-  const [pending, startTransaction] = useTransition();
+  const [pending, startTransition] = useTransition();
+
+  const defaultValues = product.items.map(item => ({
+    ...item,
+    size: item.size.join(','),
+    color: item.color.join(',')
+  }));
+
+  console.log(product);
+
   const form = useForm<CreateProduct>({
     resolver: zodResolver(CreateProductSchema),
-    defaultValues: product,
+    defaultValues: product
   });
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -44,7 +53,7 @@ export default function ProductEditForm({ id, product }: Props) {
 
   async function onSubmit(data: CreateProduct) {
     try {
-      startTransaction(async () => {
+      startTransition(async () => {
         await updateProduct(data);
       });
     } catch (e) {

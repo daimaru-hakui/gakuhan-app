@@ -57,7 +57,7 @@ export default function StudentsList({ id, students, count, school }: Props) {
     <Table className="text-xs">
       <TableHeader>
         <TableRow>
-          <TableHead className="min-w-[100px]">
+          <TableHead className="min-w-[80px]">
             <Checkbox
               id="terms"
               checked={studentsCheckList.length > 0}
@@ -72,7 +72,7 @@ export default function StudentsList({ id, students, count, school }: Props) {
           <TableHead className="min-w-[80px]">金額</TableHead>
           {Array.from(new Array(count), (_, index) => (
             <React.Fragment key={index}>
-              <TableHead className="min-w-[100px] max-w-[500px]">
+              <TableHead className="w-full min-w-[200px] max-w-[500px]">
                 商品名{index + 1}
               </TableHead>
               <TableHead className="min-w-[100px] max-w-[500px]">
@@ -90,7 +90,7 @@ export default function StudentsList({ id, students, count, school }: Props) {
           <TableHead className="min-w-[120px]">経過時間</TableHead>
           {school.isAddress && (
             <>
-              <TableHead className="w-full min-w-[300px] max-w-[500px]">
+              <TableHead className="w-full min-w-[400px] max-w-[500px]">
                 住所
               </TableHead>
               <TableHead className="min-w-[150px]">TEL</TableHead>
@@ -107,7 +107,7 @@ export default function StudentsList({ id, students, count, school }: Props) {
               student.finishedAt ? "" : "bg-red-400 hover:bg-red-500 w-full"
             )}
           >
-            <TableCell className="flex">
+            <TableCell>
               <StudentEditWithDeleteButton
                 id={id}
                 studentId={student.id}

@@ -11,7 +11,8 @@ interface Props {
   defaultvalue?: string[];
 }
 export default function ProductSizeInput({ form, index, label }: Props) {
-  const [value, setValue] = useState([].join(","));
+  const sizes = form.getValues(`items.${index}.size`);
+  const [value, setValue] = useState(sizes.join(","));
 
   useEffect(() => {
     const array = value

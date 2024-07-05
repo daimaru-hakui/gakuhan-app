@@ -80,7 +80,7 @@ export default function ProductInseamInput({ form, index }: Props) {
                         : true,
                     }}
                   />
-                  <span className="h-9">~</span>
+                  <span className="mt-1">~</span>
                   <FormInput
                     type="number"
                     form={form}
