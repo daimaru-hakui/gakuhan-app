@@ -6,6 +6,8 @@ import {
   doc,
   getCountFromServer,
   onSnapshot,
+  query,
+  where,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase/client";
 import { School } from "@/utils/school.interface";
@@ -16,14 +18,15 @@ import LoaderIcon from "@/components/LoaderIcon";
 import { useStore } from "@/store";
 import SchoolHeader from "./SchoolHeader";
 
-export default function SchoolContainer({ id }: { id: string; }) {
+export default function SchoolContainer({ id }: { id: string }) {
   const [school, setSchool] = useState<School>();
   const setStudentsCount = useStore((state) => state.setStudentsCount);
 
   useEffect(() => {
     const getStudentsCount = async () => {
       const studentsRef = collection(db, "schools", id, "students");
-      const snapshot = await getCountFromServer(studentsRef);
+      const q = query(studentsRef, where("isDeleted", "==", false));
+      const snapshot = await getCountFromServer(q);
       setStudentsCount(snapshot.data().count);
     };
     getStudentsCount();

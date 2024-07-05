@@ -1,7 +1,7 @@
 "use client";
 import { db } from "@/lib/firebase/client";
 import { Student } from "@/utils/student.interface";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import LoaderIcon from "@/components/LoaderIcon";
@@ -16,7 +16,8 @@ export default function PublicStudentsBoard({ id }: Props) {
 
   useEffect(() => {
     const studentsRef = collection(db, "schools", id, "students");
-    const unsub = onSnapshot(studentsRef, {
+    const q = query(studentsRef, where("isDeleted", "==", false));
+    const unsub = onSnapshot(q, {
       next: (snapshot) => {
         setStudents(
           snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id } as Student))
