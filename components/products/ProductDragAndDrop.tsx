@@ -95,8 +95,8 @@ export default function ProductDragAndDrop({ id, products }: Props) {
           ))}
         </Reorder.Group>
         <DialogFooter className="sm:justify-start">
-          <DialogClose>
-            <Button type="button" variant="secondary">
+          <DialogClose className="w-full">
+            <Button type="button" variant="secondary" className="w-full">
               閉じる
             </Button>
           </DialogClose>
@@ -109,6 +109,6 @@ export default function ProductDragAndDrop({ id, products }: Props) {
           />
         </DialogFooter>
       </DialogContent>
-    </Dialog >
+    </Dialog>
   );
 }

@@ -14,8 +14,9 @@ import { Product } from "@/utils/product.interface";
 import ProductsList from "./ProductsList";
 import ProductDragAndDrop from "./ProductDragAndDrop";
 import { useStore } from "@/store";
+import ProductCheckSort from "./ProductCheckSort";
 
-export default function ProductContainer({ id }: { id: string; }) {
+export default function ProductContainer({ id }: { id: string }) {
   const [products, setProducts] = useState<Product[]>();
   const studentsCount = useStore((state) => state.studentsCount);
 
@@ -42,9 +43,12 @@ export default function ProductContainer({ id }: { id: string; }) {
       <CardHeader className="flex flex-row justify-between items-center">
         <CardTitle className="whitespace-pre-line">商品</CardTitle>
         {studentsCount === 0 && (
-          <div className="flex justify-end items-center gap-3 mb-3">
+          <div className="flex justify-end items-center gap-2 mb-3">
             {products.length > 1 && (
-              <ProductDragAndDrop id={id} products={products} />
+              <>
+                <ProductDragAndDrop id={id} products={products} />
+                <ProductCheckSort products={products} />
+              </>
             )}
             <ProductCreateModal id={id} />
           </div>
