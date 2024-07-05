@@ -16,7 +16,7 @@ import LoaderIcon from "@/components/LoaderIcon";
 import { useStore } from "@/store";
 import SchoolHeader from "./SchoolHeader";
 
-export default function SchoolContainer({ id }: { id: string }) {
+export default function SchoolContainer({ id }: { id: string; }) {
   const [school, setSchool] = useState<School>();
   const setStudentsCount = useStore((state) => state.setStudentsCount);
 

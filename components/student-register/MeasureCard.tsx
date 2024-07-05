@@ -81,7 +81,7 @@ export default function MeasureCard({ product, form, index }: Props) {
     const s = size ? true : size === null ? true : false;
     const l = cutLength || cutLength === 0 ? true : false;
     const q = quantity || quantity === 0 ? true : false;
-    setCompleate([n, c, s, l, q].filter((v) => v).length === 5);
+    setCompleate([n, c, s, l, q].every((v) => v));
   }, [name, color, size, cutLength, quantity]);
 
   return (

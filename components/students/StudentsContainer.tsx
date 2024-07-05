@@ -27,7 +27,7 @@ export default function StudentsContainer({ id, count, school }: Props) {
           .sort((a, b) => {
             const numberA = a.studentNumber.replace(/[^0-9０-９]/g, "");
             const numberB = b.studentNumber.replace(/[^0-9０-９]/g, "");
-            if (numberA < numberB) {
+            if (+numberA < +numberB) {
               return -1;
             } else {
               return 1;
