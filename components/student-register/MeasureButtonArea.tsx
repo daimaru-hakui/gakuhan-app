@@ -34,7 +34,6 @@ export default function MeasureButtonArea({
     const result = array.every((value) => value);
     return result;
   }).length;
-
   return (
     <div
       style={{ boxShadow: "1px 1px 5px 5px rgba(0,0,0,.1)" }}

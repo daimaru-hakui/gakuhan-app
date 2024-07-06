@@ -7,10 +7,10 @@ import { RiEditLine } from "react-icons/ri";
 interface Props {
   id: string;
   studentId: string;
-  flag:boolean
+  flag: boolean;
 }
 
-export default function StudentEditWithDeleteButton({ id, studentId ,flag}: Props) {
+export default function StudentEditWithDeleteButton({ id, studentId, flag }: Props) {
   const [checked, setChecked] = useState(false);
   const studentsCheckList = useStore((state) => state.studentsCheckList);
   const addStudentsCheckList = useStore((state) => state.addStudentsCheckList);
@@ -22,9 +22,9 @@ export default function StudentEditWithDeleteButton({ id, studentId ,flag}: Prop
     if (studentsCheckList.includes(studentId)) {
       setChecked(true);
     } else {
-      setChecked(false)
+      setChecked(false);
     }
-  }, [flag]);
+  }, [flag, studentId]);
 
   function handleCheck(e: boolean) {
     if (e) {
@@ -37,7 +37,7 @@ export default function StudentEditWithDeleteButton({ id, studentId ,flag}: Prop
   }
 
   return (
-    <div className="flex items-center gap-5">
+    <div className="grid grid-cols-2 gap-2">
       <Checkbox id="terms" checked={checked} onCheckedChange={handleCheck} />
       <Link href={`/schools/${id}/students/${studentId}/edit`}>
         <RiEditLine size={18} />

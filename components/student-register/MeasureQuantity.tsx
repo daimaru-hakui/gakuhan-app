@@ -1,5 +1,4 @@
 "use client";
-import { Product } from "@/utils/product.interface";
 import {
   Select,
   SelectContent,
@@ -42,8 +41,8 @@ export default function MeasureQuantity({
             onValueChange={(e) => setValue(+e)}
           >
             <SelectTrigger>
-              <SelectValue>
-                {value !== 0 ? value + unit : "選択してください"}
+              <SelectValue placeholder={value !== 0 ? value + unit : "選択してください"}>
+                {value !== 0 && value + unit}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>

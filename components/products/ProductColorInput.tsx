@@ -11,7 +11,8 @@ interface Props {
   defaultvalue?: string[];
 }
 export default function ProductColorInput({ form, index, label }: Props) {
-  const [value, setValue] = useState([].join(","));
+  const colors = form.getValues(`items.${index}.color`);
+  const [value, setValue] = useState(colors.join(","));
 
   useEffect(() => {
     const array = value

@@ -72,14 +72,16 @@ export default function MeasureInseam({
               </Select>
             </div>
           )}
-          <div className={cn("flex items-center space-x-2", check ? "" : "mt-6")}>
-            <Switch
-              checked={check}
-              id="airplane-mode"
-              onClick={(e) => handleSwitch(e)}
-            />
-            <Label htmlFor="airplane-mode">股下不要</Label>
-          </div>
+          {item.inseam.isUnNeededItem && (
+            <div className={cn("flex items-center space-x-2", check ? "" : "mt-6")}>
+              <Switch
+                checked={check}
+                id="airplane-mode"
+                onClick={(e) => handleSwitch(e)}
+              />
+              <Label htmlFor="airplane-mode">股下不要</Label>
+            </div>
+          )}
         </div>
       ))}
     </>

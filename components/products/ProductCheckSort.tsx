@@ -30,10 +30,10 @@ export default function ProductCheckSort({ products }: Props) {
           <DialogTitle>順番確認</DialogTitle>
         </DialogHeader>
         <DialogDescription>
-            採寸時の商品掲載順序の確認
+          採寸時の商品掲載順序の確認
         </DialogDescription>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs whitespace-nowrap text-ellipsis">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-2 text-xs whitespace-nowrap text-ellipsis">
           <div className="space-y-2">
             <h3>性別記入無し</h3>
             {products
