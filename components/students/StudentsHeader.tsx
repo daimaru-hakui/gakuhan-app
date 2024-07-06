@@ -18,9 +18,9 @@ export default function StudentsHeader({ id }: Props) {
   }
 
   function deleteStudents() {
+    const result = confirm("削除して宜しいでしょうか");
+    if (!result) return;
     studentsCheckList.forEach(async (studentId) => {
-      const result = confirm("削除して宜しいでしょうか");
-      if (!result) return;
       const studentRef = doc(db, "schools", id, "students", studentId);
       // await deleteDoc(studentRef);
       await updateDoc(studentRef, {

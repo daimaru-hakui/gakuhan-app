@@ -33,7 +33,7 @@ export default function ProductsList({ id, products }: Props) {
               選択必須
             </TableHead>
             <TableHead className="text-center min-w-[100px]">数量</TableHead>
-            <TableHead className="text-center min-w-[100px] max-w-[500px]">商品名</TableHead>
+            <TableHead className="min-w-[100px] max-w-[500px]">商品名</TableHead>
             <TableHead className="text-center min-w-[100px] max-w-[500px]"> サイズ</TableHead>
             <TableHead className="text-center min-w-[100px] max-w-[500px]">カラー</TableHead>
             <TableHead className="text-center min-w-[100px]">

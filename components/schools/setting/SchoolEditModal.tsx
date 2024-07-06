@@ -22,6 +22,7 @@ import { db } from "@/lib/firebase/client";
 import FormCalendarInput from "../../form/FormCalendarInput";
 import { toast } from "sonner";
 import { SubmitRhkButton } from "../../form/Buttons";
+import { RiEditLine } from "react-icons/ri";
 
 interface Props {
   school: School;
@@ -90,8 +91,12 @@ export default function SchoolEditModal({ school }: Props) {
       }}
     >
       <DialogTrigger asChild>
-        <Button size="sm" className="h-6" onClick={() => setOpen(true)}>
-          編集
+        <Button variant="outline" className="p-1.5" asChild>
+          <RiEditLine
+            size={18}
+            onClick={() => setOpen(true)}
+            className="h-8 w-8 cursor-pointer"
+          />
         </Button>
       </DialogTrigger>
       <DialogContent>

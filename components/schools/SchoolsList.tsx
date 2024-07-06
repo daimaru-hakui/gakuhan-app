@@ -16,12 +16,15 @@ import SchoolsDropDownMenu from "./SchoolsDropDownMenu";
 import SchoolsQRCodeModal from "./SchoolsQRCodeModal";
 import Link from "next/link";
 import paths from "@/utils/paths";
+import SchoolsPublicChangeButton from "./SchoolsPublicChangeButton";
+import { cn } from "@/lib/utils";
 
 interface Props {
   schools: School[];
 }
 
 export default function SchoolsList({ schools }: Props) {
+
   return (
     <Table className="min-w-[500px]">
       <TableHeader>
@@ -40,23 +43,28 @@ export default function SchoolsList({ schools }: Props) {
           </TableHead>
           <TableHead className="min-w-[120px] text-center">決済機能</TableHead>
           <TableHead className="min-w-[150px]">登録日</TableHead>
+          <TableHead className="min-w-[120px]">状態</TableHead>
           <TableHead className="min-w-[80px] max-w-[80px]">QRコード</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {schools.map((school) => (
-          <TableRow key={school.id}>
+          <TableRow key={school.id} className={cn(!school.isPublic && "opacity-50")}>
             <TableCell className="text-center">
               <SchoolsDropDownMenu id={school.id} />
             </TableCell>
             <TableCell className="font-medium">
-              <Link href={paths.schoolShow(school.id)}>{school.title}</Link>
+              <Link
+                href={paths.schoolShow(school.id)}
+                className="hover:underline"
+              >
+                {school.title}
+              </Link>
             </TableCell>
             <TableCell className="font-medium">
               {school.scheduledDate &&
                 format(school?.scheduledDate?.toDate(), "yyyy年MM月dd日")}
             </TableCell>
-
             <TableCell>
               <div className="flex justify-center">
                 {school?.isGender ? (
@@ -96,6 +104,9 @@ export default function SchoolsList({ schools }: Props) {
             <TableCell className="font-medium">
               {school.createdAt &&
                 format(school?.createdAt.toDate(), "yyyy年MM月dd日")}
+            </TableCell>
+            <TableCell className="text-center">
+              <SchoolsPublicChangeButton school={school} />
             </TableCell>
             <TableCell className="flex justify-center">
               <SchoolsQRCodeModal school={school} />
