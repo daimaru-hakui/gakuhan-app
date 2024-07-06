@@ -1,3 +1,4 @@
+import { calcTotalPrice } from "@/utils/calc";
 import { CreateMeasureStudent } from "@/utils/schemas";
 import { School } from "@/utils/school.interface";
 
@@ -26,17 +27,6 @@ export default function MeasureConfirm({ values, school }: Props) {
     );
   }
 
-  function calcTotalPrice(values: CreateMeasureStudent): number {
-    const result = values.products.reduce((total, product) => {
-      total +=
-        product.quantity * product.price +
-        product.quantity * (product.cutLength > 0 ? product.inseam.price : 0);
-      const shippingFee = school.isShipping ? school.shippingFee : 0;
-      return total + shippingFee;
-    }, 0);
-    return result;
-  }
-
   return (
     <div>
       <header>
@@ -51,12 +41,12 @@ export default function MeasureConfirm({ values, school }: Props) {
           ※下記、登録ボタンを押して完了してください。
         </p>
       </header>
-      {calcTotalPrice(values) > 0 && (
+      {calcTotalPrice(values, school) > 0 && (
         <div className="mt-4 flex gap-3 items-center justify-center">
           <div className="text-xl font-semibold mt-2">合計</div>
           <div className="flex items-center gap-2">
             <div className="text-4xl font-semibold">
-              {calcTotalPrice(values).toLocaleString()}
+              {calcTotalPrice(values, school).toLocaleString()}
             </div>
             <span className="text-xl font-semibold mt-2">円（税込）</span>
           </div>

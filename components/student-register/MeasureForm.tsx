@@ -15,6 +15,9 @@ import MeasureConfirm from "./MeasureConfirm";
 import MeasureCard from "./MeasureCard";
 import * as actions from '@/actions';
 import { School } from "@/utils/school.interface";
+import { useRouter } from "next/navigation";
+import { sendEmail } from "@/utils/send-email";
+import { calcTotalPrice } from "@/utils/calc";
 
 interface Props {
   student: Student;
@@ -26,6 +29,7 @@ export default function MeasureForm({ student, products, school }: Props) {
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState<CreateMeasureStudent>();
   const [pending, startTransition] = useTransition();
+  const router = useRouter();
   const defaultValues = products.map((product) => {
     const oneItem = product.items.length === 1;
     const item = product.items.at(0);
@@ -127,9 +131,12 @@ export default function MeasureForm({ student, products, school }: Props) {
     const result = confirm("登録して宜しいでしょうか");
     if (!result) return;
     startTransition(async () => {
-      const { status, message } = await actions.createMeasureStudent(
-        data, { schoolId: school.id, studentId: student.id });
+      const { status, message } =
+        await actions.createMeasureStudent(
+          data, { schoolId: school.id, studentId: student.id });
       if (status === "success") {
+        await sendEmail(data, student, school);
+        router.push(`/student-register/{schoolId}/students/${student.id}/compleate`);
       } else {
         toast.error(message);
       }

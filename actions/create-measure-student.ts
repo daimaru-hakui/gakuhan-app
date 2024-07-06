@@ -33,12 +33,15 @@ export async function createMeasureStudent(
       products: result.products,
       finishedAt: FieldValue.serverTimestamp()
     });
-
+    return {
+      status: "success",
+      message: "登録に成功しました"
+    };
   } catch (e: unknown) {
     return {
       status: "error",
       message: e instanceof Error ? e.message : "登録に失敗しました"
     };
   }
-  redirect(`/student-register/{schoolId}/students/${studentId}/compleate`);
+  // redirect(`/student-register/{schoolId}/students/${studentId}/compleate`);
 }
