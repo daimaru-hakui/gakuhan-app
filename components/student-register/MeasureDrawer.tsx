@@ -59,9 +59,9 @@ export default function MeasureDrawer({
     );
 
     setQuantity(
-      form.getValues(`products.${index}.quantity`) > product.quantity
-        ? 0
-        : form.getValues(`products.${index}.quantity`) ?? 0
+      form.getValues(`products.${index}.quantity`) < product.quantity.max
+        ? form.getValues(`products.${index}.quantity`) ?? 0
+        : 0
     );
 
     setCutLength(
@@ -69,6 +69,7 @@ export default function MeasureDrawer({
         ? form.getValues(`products.${index}.cutLength`)
         : 0
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item, index]);
 
   function handleClick() {
@@ -96,7 +97,7 @@ export default function MeasureDrawer({
     if (product.quantity.min === product.quantity.max) {
       form.setValue(`products.${index}.quantity`, product.quantity.min);
     } else if (quantity !== 0) {
-      form.setValue(`products.${index}.quantity`, quantity);
+      form.setValue(`products.${index}.quantity`, +quantity);
     }
 
     if (item.inseam.min === item.inseam.max) {
@@ -128,7 +129,7 @@ export default function MeasureDrawer({
                   <MeasureSizeImage url={item.images.sizeUrl} />
                 </DrawerHeader>
                 <DrawerDescription></DrawerDescription>
-                <div className="space-y-4 px-4 py-1 overflow-auto max-h-[calc(100vh-200px)]">
+                <div className="space-y-4 px-4 pt-1 pb-2 overflow-auto max-h-[calc(100vh-200px)]">
                   <div className="w-full mx-auto space-y-5 p-5">
                     <Image
                       src={
@@ -160,9 +161,8 @@ export default function MeasureDrawer({
                     setValue={setCutLength}
                     min={item.inseam.min}
                     max={item.inseam.max}
-                    label={`股下カット  ${
-                      item.inseam.price > 0 ? `(${item.inseam.price}円)` : ""
-                    }`}
+                    label={`股下カット  ${item.inseam.price > 0 ? `(${item.inseam.price}円)` : ""
+                      }`}
                     unit="cm"
                     check={isNoInseam}
                     setCheck={setIsNoInseam}
