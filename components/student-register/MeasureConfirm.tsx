@@ -1,4 +1,4 @@
-import { calcTotalPrice } from "@/utils/calc";
+import { calcSubTotalPrice, calcTotalPrice } from "@/utils/calc";
 import { CreateMeasureStudent } from "@/utils/schemas";
 import { School } from "@/utils/school.interface";
 
@@ -9,23 +9,6 @@ interface Props {
 
 export default function MeasureConfirm({ values, school }: Props) {
   if (!values) return;
-
-  function calcSubTotalPrice({
-    quantity,
-    price,
-    cutPrice,
-  }: {
-    quantity: number;
-    price: number;
-    cutPrice: number;
-  }) {
-    const product = quantity * price;
-    const cut = quantity * cutPrice;
-    const sum = product + cut;
-    return (
-      `${sum.toLocaleString()}円`
-    );
-  }
 
   return (
     <div>

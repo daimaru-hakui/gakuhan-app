@@ -32,3 +32,20 @@ export function calcTotalPrice(data: CreateMeasureStudent, school: School): numb
   }, 0);
   return result;
 }
+
+export function calcSubTotalPrice({
+  quantity,
+  price,
+  cutPrice,
+}: {
+  quantity: number;
+  price: number;
+  cutPrice: number;
+}) {
+  const product = quantity * price;
+  const cut = quantity * cutPrice;
+  const sum = product + cut;
+  return (
+    `${sum.toLocaleString()}円`
+  );
+}

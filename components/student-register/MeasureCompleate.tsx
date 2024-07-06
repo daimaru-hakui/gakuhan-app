@@ -24,7 +24,7 @@ export default function MeasureCompleate() {
     if (!user) return;
     const getLogout = async () => {
       reward();
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 3000));
       logOut().then(() => {
         if (session) {
           signOut();
