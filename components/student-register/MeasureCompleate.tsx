@@ -1,21 +1,18 @@
 "use client";
-import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { IoIosCheckmarkCircle } from "react-icons/io";
 import { useEffect } from "react";
-import { auth as firebaseAuth } from "@/lib/firebase/client";
-import { signOut, useSession } from "next-auth/react";
+import { auth } from "@/lib/firebase/client";
 import { useStore } from "@/store";
 import { useReward } from "react-rewards";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default function MeasureCompleate() {
   const { reward, isAnimating } = useReward("rewardId", "confetti");
   const setUser = useStore(state => state.setUser);
-  const session = useSession();
   const user = useStore(state => state.user);
 
   async function logOut() {
-    firebaseAuth.signOut().then(() => {
+    auth.signOut().then(() => {
       setUser(null);
     });
   };
@@ -26,14 +23,23 @@ export default function MeasureCompleate() {
       reward();
       await new Promise(resolve => setTimeout(resolve, 3000));
       logOut().then(() => {
-        if (session) {
-          signOut();
-        }
+        console.log("logout");
       });
     };
     getLogout();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+    return () => unsub();
+  }, [setUser]);
 
   return (
     <Card className="mx-auto text-center">

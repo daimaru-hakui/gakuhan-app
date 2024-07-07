@@ -1,4 +1,3 @@
-"use client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,14 +11,18 @@ import Link from "next/link";
 import paths from "@/utils/paths";
 import { AiOutlineSetting } from "react-icons/ai";
 import { signOut } from "next-auth/react";
+import { useStore } from "@/store";
+
 
 export default function MenuButton() {
+  const setUser = useStore(state => state.setUser);
   async function handleLogout() {
-    signOut().then(async() => {
-      await auth.signOut();
+    await signOut();
+    await auth.signOut().then(() => {
+      setUser(null);
     });
   }
-  
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>

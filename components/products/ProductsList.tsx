@@ -79,7 +79,7 @@ export default function ProductsList({ id, products }: Props) {
                   ? product.quantity.min
                   : `${product.quantity.min} ~ ${product.quantity.max}`}
               </TableCell>
-              <TableCell className="text-center whitespace-nowrap">
+              <TableCell className="whitespace-nowrap">
                 {product.items?.map((item) => (
                   <div key={item.name}>{item.name}</div>
                 ))}

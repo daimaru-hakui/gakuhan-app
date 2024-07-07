@@ -15,18 +15,17 @@ export default async function AnoonymousLoginPage({ params }: Props) {
   const { id } = params;
 
   const schoolSnap = await db.collection("schools").doc(id).get();
+
+  if (!schoolSnap.exists) return notFound();
   const schoolRaw = JSON.stringify(schoolSnap.data());
   const school = JSON.parse(schoolRaw) as School;
 
-  if (!school) return;
-  if (!school.isPublic) return notFound();
-  if (school.isDeleted) return notFound();
+  if (!school.isPublic || school.isDeleted) return notFound();
 
   const session = await auth();
   if (session) {
     redirect(`/student-register/${id}`);
   }
-
   return (
     <div className="w-full flex justify-center items-center min-h-[100vh]">
       <AnonymousLoginForm id={id} school={school} />

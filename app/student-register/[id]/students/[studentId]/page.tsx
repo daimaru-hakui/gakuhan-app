@@ -21,12 +21,11 @@ export default async function StudentPage({ params }: Props) {
   if (!session) return <NotFound />;
 
   const schoolSnap = await db.collection("schools").doc(id).get();
+  if (!schoolSnap.exists) return notFound();
   const schoolRaw = JSON.stringify({ ...schoolSnap.data(), id: schoolSnap.id });
   const school = JSON.parse(schoolRaw) as School;
 
-  if (!school) return;
-  if (!school.isPublic) return notFound();
-  if (school.isDeleted) return notFound();
+  if (!school.isPublic || school.isDeleted) return notFound();
 
   const studentSnap = await db
     .collection("schools")
@@ -41,7 +40,9 @@ export default async function StudentPage({ params }: Props) {
     ...studentSnap.data(),
     id: studentSnap.id,
   });
+
   const student = JSON.parse(studentRaw) as Student;
+  if (student.finishedAt) return <NotFound />;
 
   const productsSnap = await db
     .collection("schools")
