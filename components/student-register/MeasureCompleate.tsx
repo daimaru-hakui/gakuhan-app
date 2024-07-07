@@ -18,10 +18,8 @@ export default function MeasureCompleate() {
   };
 
   useEffect(() => {
-    if (!user) return;
     const getLogout = async () => {
       reward();
-      await new Promise(resolve => setTimeout(resolve, 3000));
       logOut().then(() => {
         console.log("logout");
       });

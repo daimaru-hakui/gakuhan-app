@@ -54,17 +54,6 @@ export default function LoginForm() {
     });
   }, [setUser]);
 
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        router.push("/schools");
-      } else {
-        console.log(user);
-      }
-    });
-    return () => unsub();
-  }, [router]);
-
   return (
     <Card className="w-[350px]">
       <CardHeader className="pb-3">
