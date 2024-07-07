@@ -8,7 +8,7 @@ import { useStore } from "@/store";
 import { LoginInputs, LoginSchema } from "@/utils/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -50,7 +50,7 @@ export default function LoginForm() {
 
   useEffect(() => {
     auth.signOut().then(() => {
-      setUser(null)
+      setUser(null);
     });
   }, [setUser]);
 
