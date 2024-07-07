@@ -21,7 +21,7 @@ export default function Header() {
       if (user) {
         setUser(user);
       } else {
-        // router.push("/auth/login");
+        router.push("/auth/login");
         setUser(null);
       }
     });

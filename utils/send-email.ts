@@ -87,16 +87,16 @@ export async function sendEmail(
     address: address.prefecture + address.city + address.street + address.building,
     tel,
     email,
+    totalAmount: calcTotalPrice(data, school),
     contents,
-    totalAmount: calcTotalPrice(data, school)
 
   };
   emailjs.init({
-    publicKey: process.env.NEXT_PUBLIC_PUBLIC_KEY as string,
+    publicKey: process.env.NEXT_PUBLIC_EMAIL_PUBLIC_KEY as string,
   });
   emailjs.send(
-    process.env.NEXT_PUBLIC_SERVICE_ID as string,
-    process.env.NEXT_PUBLIC_TEMPLATE_ID as string,
+    process.env.NEXT_PUBLIC_EMAIL_SERVICE_ID as string,
+    process.env.NEXT_PUBLIC_EMAIL_TEMPLATE_ID as string,
     { ...emailTemplate })
     .then(
       (response) => {

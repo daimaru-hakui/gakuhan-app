@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 
 export default function SchoolsContainer() {
   const [schools, setSchools] = useState<School[]>();
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     const schoolsRef = collection(db, "schools");
@@ -35,23 +35,22 @@ export default function SchoolsContainer() {
       },
       error: (e) => {
         console.log(e.message);
-        router.push("/auth/login")
       },
     });
     return () => unsub();
   }, [router]);
 
-  if (!schools) return null
+  if (!schools) return <LoaderIcon />;
 
   return (
-    <div className="w-full md:max-w-[1200px] mx-auto">
+    <div className="w-full md:max-w-[1400px] mx-auto">
       <SchoolsHeader />
       {schools.length === 0 ? (
         <div className="mt-24">
           <EmptyList />
         </div>
       ) : (
-        <Card className="overflow-auto w-full md:max-w-[1500px]">
+        <Card className="overflow-auto w-full md:max-w-[1400px]">
           <CardContent>
             <SchoolsList schools={schools} />
           </CardContent>
