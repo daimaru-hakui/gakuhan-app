@@ -65,7 +65,7 @@ export default function ProductDragAndDrop({ id, products }: Props) {
           並び替え
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-auto max-w-[800px] min-h-auto max-h-[calc(100vh-10px)] ">
+      <DialogContent className="w-full max-w-[800px] min-h-auto max-h-[calc(100vh-10px)] ">
         <DialogHeader>
           <DialogTitle>並び替え</DialogTitle>
         </DialogHeader>
