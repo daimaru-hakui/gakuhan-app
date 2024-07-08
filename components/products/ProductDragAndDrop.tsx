@@ -88,11 +88,11 @@ export default function ProductDragAndDrop({ id, products }: Props) {
                   gender={item.gender}
                   className="min-w-[80px] flex justify-center"
                 />
-                <p>
+                <p className="overflow-hidden text-ellipsis">
                   {item.items.map((item) => (
                     <span
                       key={item.name}
-                      className="whitespace-nowrap overflow-ellipsis text-xs"
+                      className="whitespace-nowrap text-xs"
                     >
                       {item.name}
                     </span>
