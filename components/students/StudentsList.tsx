@@ -123,8 +123,8 @@ export default function StudentsList({ id, students, count, school }: Props) {
                 <React.Fragment key={index}>
                   {product.name ? (
                     <>
-                      <TableCell>{product.name}</TableCell>
-                      <TableCell>{product.color}</TableCell>
+                      <TableCell className="whitespace-nowrap">{product.name}</TableCell>
+                      <TableCell className="whitespace-nowrap">{product.color}</TableCell>
                       <TableCell>{product.size}</TableCell>
                       <TableCell>{product.quantity}</TableCell>
                       <TableCell>
@@ -176,7 +176,7 @@ export default function StudentsList({ id, students, count, school }: Props) {
             </TableCell>
             {school.isAddress && (
               <>
-                <TableCell>
+                <TableCell className="whitespace-nowrap">
                   {student.address.zipCode +
                     " " +
                     student.address.prefecture +

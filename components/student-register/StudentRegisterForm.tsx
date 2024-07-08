@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { getAddress } from "@/utils/fetch";
 import StudentRegisterConfirm from "./StudentRegisterConfirm";
+import PrivacyText from "./PrivacyText";
 
 interface Props {
   school: School;
@@ -20,6 +21,7 @@ interface Props {
 export default function StudentRegisterForm({ school }: Props) {
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState<CreateStudent>();
+  const [agreement, setAgreement] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const form = useForm<CreateStudent>({
     resolver: zodResolver(CreateStudentSchema),
@@ -37,7 +39,7 @@ export default function StudentRegisterForm({ school }: Props) {
         building: school.isAddress ? "" : null,
       },
       tel: school.isAddress ? "" : null,
-      email: ""
+      email: "",
     },
   });
 
@@ -111,7 +113,9 @@ export default function StudentRegisterForm({ school }: Props) {
                     disabled={loading}
                     type="button"
                     className="w-12 min-w-12 mt-8"
-                    onClick={() => handleClickGetAddress(form.watch("address.zipCode"))}
+                    onClick={() =>
+                      handleClickGetAddress(form.watch("address.zipCode"))
+                    }
                   >
                     {loading ? (
                       <ReloadIcon className="h-4 animate-spin" />
@@ -151,8 +155,9 @@ export default function StudentRegisterForm({ school }: Props) {
           label="Email"
           placeholder="確認メールが必要な場合は入力してください"
         />
+        <PrivacyText agreement={agreement} setAgreement={setAgreement} />
         <div className="text-center">
-          <Button disabled={!form.formState.isValid}>確認する</Button>
+          <Button disabled={!form.formState.isValid || !agreement}>確認する</Button>
         </div>
         <StudentRegisterConfirm
           open={open}
