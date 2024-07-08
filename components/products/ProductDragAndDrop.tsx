@@ -65,36 +65,44 @@ export default function ProductDragAndDrop({ id, products }: Props) {
           並び替え
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-auto max-w-[800px]">
+      <DialogContent className="w-auto max-w-[800px] min-h-auto max-h-[calc(100vh-10px)] ">
         <DialogHeader>
           <DialogTitle>並び替え</DialogTitle>
         </DialogHeader>
-        <Reorder.Group
-          axis="y"
-          values={items}
-          onReorder={setItems}
-          className="flex flex-col space-y-3"
-        >
-          {items.map((item) => (
-            <Reorder.Item
-              key={item.id}
-              value={item}
-              className={cn(
-                "flex items-center gap-3 w-full bg-white border rounded-md p-3 cursor-pointer"
-              )}
-            >
-              <GenderBadge gender={item.gender} className="min-w-[80px] flex justify-center" />
-              <p>
-                {item.items.map((item) => (
-                  <span key={item.name} className="whitespace-nowrap overflow-ellipsis">
-                    {item.name}
-                  </span>
-                ))}
-              </p>
-            </Reorder.Item>
-          ))}
-        </Reorder.Group>
-        <DialogFooter className="sm:justify-start">
+        <div className="min-h-auto max-h-[calc(100vh-200px)] overflow-auto">
+          <Reorder.Group
+            axis="y"
+            values={items}
+            onReorder={setItems}
+            className="flex flex-col space-y-1"
+          >
+            {items.map((item) => (
+              <Reorder.Item
+                key={item.id}
+                value={item}
+                className={cn(
+                  "flex items-center gap-3 w-full bg-white border rounded-md p-1 cursor-pointer"
+                )}
+              >
+                <GenderBadge
+                  gender={item.gender}
+                  className="min-w-[80px] flex justify-center"
+                />
+                <p>
+                  {item.items.map((item) => (
+                    <span
+                      key={item.name}
+                      className="whitespace-nowrap overflow-ellipsis text-xs"
+                    >
+                      {item.name}
+                    </span>
+                  ))}
+                </p>
+              </Reorder.Item>
+            ))}
+          </Reorder.Group>
+        </div>
+        <DialogFooter className="gap-2">
           <DialogClose className="w-full">
             <Button type="button" variant="secondary" className="w-full">
               閉じる
