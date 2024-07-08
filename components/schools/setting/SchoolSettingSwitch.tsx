@@ -28,7 +28,7 @@ export default function SchoolSettingSwitch({
   prop,
   value,
 }: Props) {
-  const [show, setShow] = useState(value || false);
+  // const [show, setShow] = useState(value || false);
 
   async function handleUpdateSwitch() {
     const docRef = doc(db, "schools", school.id);
@@ -39,9 +39,9 @@ export default function SchoolSettingSwitch({
     try {
       if (count > 0) throw new Error("採寸中のため失敗しました");
       await updateDoc(docRef, {
-        [prop]: !show,
+        [prop]: !value,
       });
-      setShow(!show);
+      // setShow(!show);
       toast.success(`${title}を更新しました`);
     } catch (e) {
       const message = e instanceof Error ? e.message : "エラーが発生しました";
@@ -58,7 +58,7 @@ export default function SchoolSettingSwitch({
         </div>
       </div>
       <div className="flex items-center">
-        <Switch checked={show} onClick={handleUpdateSwitch} />
+        <Switch checked={value} onClick={handleUpdateSwitch} />
       </div>
     </div>
   );

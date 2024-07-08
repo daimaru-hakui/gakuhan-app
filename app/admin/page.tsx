@@ -11,12 +11,10 @@ export default async function AdminPage() {
     redirect("/auth/login");
   }
 
-  if (session.user.role !== "admin") {
-    redirect("/auth/login");
-  }
-
   const user = await firebaseAuth.getUser(session?.user.uid);
-  if (user.customClaims?.role !== "admin") return;
+  if (user.customClaims?.role !== "admin") {
+    return <div className="flex justify-center w-full">権限がありません。</div>;
+  }
 
   const admin = await firebaseAuth.listUsers(100);
 
@@ -32,6 +30,7 @@ export default async function AdminPage() {
         role: user.customClaims?.role as "admin" | "user" | "member",
       };
     });
+
   return (
     <div className="flex justify-center w-full">
       <AdminList users={users} id={session.user.uid} />

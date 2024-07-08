@@ -1,8 +1,8 @@
-import emailjs from '@emailjs/browser';
-import { CreateMeasureStudent } from './schemas';
-import { Student } from './student.interface';
-import { calcSubTotalPrice, calcTotalPrice } from './calc';
-import { School } from './school.interface';
+import emailjs from "@emailjs/browser";
+import { CreateMeasureStudent } from "./schemas";
+import { Student } from "./student.interface";
+import { calcSubTotalPrice, calcTotalPrice } from "./calc";
+import { School } from "./school.interface";
 
 export interface TemplateParams {
   studentNumber: string;
@@ -16,6 +16,7 @@ export interface TemplateParams {
   tel: string;
   email: string;
   contents: string;
+  signature: string;
 }
 
 export async function sendEmail(
@@ -23,8 +24,6 @@ export async function sendEmail(
   student: Student,
   school: School
 ): Promise<void> {
-
-
   function divElement(
     label: string,
     value: string | number | null
@@ -37,7 +36,7 @@ export async function sendEmail(
     } else {
       return null;
     }
-  };
+  }
 
   const {
     studentNumber,
@@ -47,22 +46,25 @@ export async function sendEmail(
     schoolName,
     address,
     tel,
-    email
+    email,
   } = student;
-  const contents = data.products.map(product => {
+  const contents = data.products.map((product) => {
     let array = [];
     const name = divElement("商品名", product.name);
     const color = divElement("カラー", product.color);
     const size = divElement("サイズ", product.size);
-    const cutLength = divElement("股下カット", product.cutLength + 'cm');
-    const inseamPrice = divElement("股下修理代", product.inseam.price + '円');
-    const price = divElement("価格", product.price + '円');
+    const cutLength = divElement("股下カット", product.cutLength + "cm");
+    const inseamPrice = divElement("股下修理代", product.inseam.price + "円");
+    const price = divElement("価格", product.price + "円");
     const quantity = divElement("数量", product.quantity);
-    const subTotal = divElement("小計", calcSubTotalPrice({
-      quantity: product.quantity,
-      cutPrice: product.inseam.price,
-      price: product.price
-    }));
+    const subTotal = divElement(
+      "小計",
+      calcSubTotalPrice({
+        quantity: product.quantity,
+        cutPrice: product.inseam.price,
+        price: product.price,
+      })
+    );
 
     array.push("<div style='margin-bottom:5px;'>");
     name ? array.push(name) : null;
@@ -84,26 +86,29 @@ export async function sendEmail(
     firstName,
     schoolName,
     zipCode: address.zipCode,
-    address: address.prefecture + address.city + address.street + address.building,
+    address:
+      address.prefecture + address.city + address.street + address.building,
     tel,
     email,
-    totalAmount: calcTotalPrice(data, school),
+    totalAmount: calcTotalPrice(data.products, school),
     contents,
-
+    signature: school.signature,
   };
   emailjs.init({
     publicKey: process.env.NEXT_PUBLIC_EMAIL_PUBLIC_KEY as string,
   });
-  emailjs.send(
-    process.env.NEXT_PUBLIC_EMAIL_SERVICE_ID as string,
-    process.env.NEXT_PUBLIC_EMAIL_TEMPLATE_ID as string,
-    { ...emailTemplate })
+  emailjs
+    .send(
+      process.env.NEXT_PUBLIC_EMAIL_SERVICE_ID as string,
+      process.env.NEXT_PUBLIC_EMAIL_TEMPLATE_ID as string,
+      { ...emailTemplate }
+    )
     .then(
       (response) => {
-        console.log('SUCCESS!', response.status, response.text);
+        console.log("SUCCESS!", response.status, response.text);
       },
       (error) => {
-        console.log('FAILED...', error);
-      },
+        console.log("FAILED...", error);
+      }
     );
 }

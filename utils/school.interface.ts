@@ -9,6 +9,7 @@ export interface School {
   isAddress: boolean;
   isShipping: boolean;
   shippingFee: number;
+  signature: string;
   createdAt: Timestamp;
   isPayment: boolean;
   isPublic: boolean;

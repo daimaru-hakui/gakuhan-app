@@ -28,6 +28,7 @@ export const processSignUp = functions.auth.user().onCreate(async (user) => {
     await userRef.set({
       createdAt: new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" }),
       email: user.email,
+      signature: "",
     });
   } catch (e) {
     console.log(e);

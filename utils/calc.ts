@@ -22,8 +22,22 @@ export function calcDifferenceTime(base: Date, target: Date) {
   return `${hour}時間 ${min}分 ${sec}秒`;
 }
 
-export function calcTotalPrice(data: CreateMeasureStudent, school: School): number {
-  const result = data.products.reduce((total, product) => {
+interface Product {
+  name: string | null;
+  color: string | null;
+  size: string | null;
+  price: number;
+  quantity: number;
+  cutLength: number;
+  inseam: {
+    price: number;
+    isFlag: boolean;
+    base: number;
+  };
+}
+
+export function calcTotalPrice(products: Product[], school: School): number {
+  const result = products?.reduce((total, product) => {
     total +=
       product.quantity * product.price +
       product.quantity * (product.cutLength > 0 ? product.inseam.price : 0);
@@ -45,7 +59,5 @@ export function calcSubTotalPrice({
   const product = quantity * price;
   const cut = quantity * cutPrice;
   const sum = product + cut;
-  return (
-    `${sum.toLocaleString()}円`
-  );
+  return `${sum.toLocaleString()}円`;
 }

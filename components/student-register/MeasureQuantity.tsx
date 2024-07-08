@@ -25,7 +25,7 @@ export default function MeasureQuantity({
   label,
   unit = "",
 }: Props) {
-  const array = Array.from(Array(max - min), (_, i) => i + min);
+  const array = Array.from(Array(max + 1 - min), (_, i) => i + min);
 
   return (
     <>
@@ -36,12 +36,11 @@ export default function MeasureQuantity({
       ) : (
         <div className="flex-grow">
           <Label>{label}</Label>
-          <Select
-            value={String(value)}
-            onValueChange={(e) => setValue(+e)}
-          >
+          <Select value={String(value)} onValueChange={(e) => setValue(+e)}>
             <SelectTrigger>
-              <SelectValue placeholder={value !== 0 ? value + unit : "選択してください"}>
+              <SelectValue
+                placeholder={value !== 0 ? value + unit : "選択してください"}
+              >
                 {value !== 0 && value + unit}
               </SelectValue>
             </SelectTrigger>

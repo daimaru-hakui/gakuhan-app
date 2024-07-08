@@ -30,7 +30,7 @@ export default function SchoolsList({ schools }: Props) {
       <TableHeader>
         <TableRow>
           <TableHead className="min-w-[50px]">MENU</TableHead>
-          <TableHead className="min-w-[200px] max-w-[500px]">学校名</TableHead>
+          <TableHead className="min-w-[300px] max-w-[500px]">学校名</TableHead>
           <TableHead className="min-w-[150px]">採寸日</TableHead>
           <TableHead className="min-w-[120px] text-center">
             性別記入の表示

@@ -7,7 +7,6 @@ import {
   validateWithZodSchema
 } from "@/utils/schemas";
 import { FieldValue } from "firebase-admin/firestore";
-import { redirect } from "next/navigation";
 
 export async function createMeasureStudent(
   data: CreateMeasureStudent,
@@ -43,5 +42,4 @@ export async function createMeasureStudent(
       message: e instanceof Error ? e.message : "登録に失敗しました"
     };
   }
-  // redirect(`/student-register/{schoolId}/students/${studentId}/compleate`);
 }

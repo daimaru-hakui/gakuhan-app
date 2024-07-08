@@ -27,8 +27,8 @@ export interface Student {
     quantity: number;
     cutLength: number;
     inseam: {
-      isUnNeededItem: boolean;
       price: number;
+      isFlag: boolean;
       base: number;
     };
     subTotal: number;

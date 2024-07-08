@@ -26,34 +26,35 @@ interface Props {
 }
 
 interface Inputs {
-  description: string;
+  signature: string;
 }
 
-export default function SchoolEditDesc({ school }: Props) {
+export default function SchoolEditSignature({ school }: Props) {
   const [open, setOpen] = useState(false);
   const [over, setOver] = useState(false);
   const [pending, startTransition] = useTransition();
   const form = useForm<Inputs>({
     defaultValues: {
-      description: school.description
-    }
+      signature: school.signature,
+    },
   });
 
-  async function updateTitle(data: Inputs)
-    : Promise<{ status: string; message: string; }> {
+  async function updateTitle(
+    data: Inputs
+  ): Promise<{ status: string; message: string }> {
     try {
       const schoolRef = doc(db, "schools", school.id);
       await updateDoc(schoolRef, {
-        description: data.description
+        signature: data.signature,
       });
       return {
         status: "success",
-        message: "更新しました"
+        message: "更新しました",
       };
     } catch (e: unknown) {
       return {
         status: "error",
-        message: e instanceof Error ? e.message : "エラーが発生しました"
+        message: e instanceof Error ? e.message : "エラーが発生しました",
       };
     }
   }
@@ -67,7 +68,7 @@ export default function SchoolEditDesc({ school }: Props) {
         toast.error(message);
       }
     });
-  };
+  }
 
   return (
     <Dialog
@@ -77,18 +78,18 @@ export default function SchoolEditDesc({ school }: Props) {
       }}
     >
       <DialogTrigger asChild>
-        <div className={
-          cn("cursor-pointer inline-block")}
+        <div
+          className={cn("cursor-pointer inline-block")}
           onClick={() => setOpen(true)}
           onMouseOver={() => setOver(true)}
           onMouseLeave={() => setOver(false)}
         >
           <div className="flex items-center gap-2">
-            <h3 className="font-semibold">説明</h3>
+            <h3 className="font-semibold">署名</h3>
             {over && <RiEditLine size={18} />}
           </div>
-          <div className={cn("mt-1 text-md", over && "underline")}>
-            {school.description}
+          <div className={cn("mt-1 text-md whitespace-pre-wrap", over && "underline")}>
+            {school.signature}
           </div>
         </div>
       </DialogTrigger>
@@ -99,11 +100,7 @@ export default function SchoolEditDesc({ school }: Props) {
               <DialogTitle>編集</DialogTitle>
             </DialogHeader>
             <div className="space-y-6 mt-6">
-              <TextAreaInput
-                form={form}
-                name='description'
-                label="説明"
-              />
+              <TextAreaInput form={form} name="signature" label="署名" />
               <DialogFooter className="sm:justify-between gap-2 mt-6">
                 <DialogClose asChild>
                   <Button type="button" variant="secondary" className="w-full">
@@ -124,6 +121,6 @@ export default function SchoolEditDesc({ school }: Props) {
           </form>
         </Form>
       </DialogContent>
-    </Dialog >
+    </Dialog>
   );
 }

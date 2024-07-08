@@ -28,6 +28,8 @@ export default function ProductEditWithDeleteButton({ id, product }: Props) {
   const studentsCount = useStore((state) => state.studentsCount);
 
   async function handleClickProductDelete(productId: string) {
+    const result = confirm("削除して宜しいでしょうか");
+    if (!result) return;
     startTransaction(async () => {
       await new Promise((resolve) => setTimeout(resolve, 500));
       await deleteProduct(productId);

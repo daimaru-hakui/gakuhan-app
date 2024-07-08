@@ -23,6 +23,9 @@ const paths = {
   adminAll() {
     return `/admin`;
   },
+  accountShow(id: string) {
+    return `/account/${id}`;
+  },
 };
 
 export default paths;

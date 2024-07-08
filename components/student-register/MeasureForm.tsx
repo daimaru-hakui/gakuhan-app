@@ -17,7 +17,6 @@ import * as actions from '@/actions';
 import { School } from "@/utils/school.interface";
 import { useRouter } from "next/navigation";
 import { sendEmail } from "@/utils/send-email";
-import { calcTotalPrice } from "@/utils/calc";
 
 interface Props {
   student: Student;

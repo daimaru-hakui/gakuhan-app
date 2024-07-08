@@ -34,8 +34,8 @@ export default function ProductsList({ id, products }: Props) {
             </TableHead>
             <TableHead className="text-center min-w-[100px]">数量</TableHead>
             <TableHead className="min-w-[100px] max-w-[500px]">商品名</TableHead>
-            <TableHead className="text-center min-w-[100px] max-w-[500px]"> サイズ</TableHead>
-            <TableHead className="text-center min-w-[100px] max-w-[500px]">カラー</TableHead>
+            <TableHead className="min-w-[100px] max-w-[500px]">カラー</TableHead>
+            <TableHead className="min-w-[100px] max-w-[500px]">サイズ</TableHead>
             <TableHead className="text-center min-w-[100px]">
               商品画像
             </TableHead>
@@ -84,24 +84,24 @@ export default function ProductsList({ id, products }: Props) {
                   <div key={item.name}>{item.name}</div>
                 ))}
               </TableCell>
-              <TableCell className="text-center">
+              <TableCell>
                 {product.items?.map((item) => (
-                  <div key={item.name} className="flex justify-center whitespace-nowrap">
-                    {item.size.length === 0 ? (
-                      <RxDotFilled className="text-muted" />
-                    ) : (
-                      item.size.join(",")
-                    )}
-                  </div>
-                ))}
-              </TableCell>
-              <TableCell className="text-center">
-                {product.items?.map((item) => (
-                  <div key={item.name} className="flex justify-center whitespace-nowrap">
+                  <div key={item.name} className="flex justify-start whitespace-nowrap">
                     {item.color.length === 0 ? (
                       <RxDotFilled className="text-muted" />
                     ) : (
                       item.color.join(",")
+                    )}
+                  </div>
+                ))}
+              </TableCell>
+              <TableCell>
+                {product.items?.map((item) => (
+                  <div key={item.name} className="flex justify-start whitespace-nowrap">
+                    {item.size.length === 0 ? (
+                      <RxDotFilled className="text-muted" />
+                    ) : (
+                      item.size.join(",")
                     )}
                   </div>
                 ))}

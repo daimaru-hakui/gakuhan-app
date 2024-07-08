@@ -7,13 +7,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import { db } from "@/lib/firebase/client";
 import { CreateSchool, CreateSchoolSchema } from "@/utils/schemas";
+import { User } from "@/utils/user.interface";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addDoc, collection } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 
-export default function SchoolCreateForm() {
+interface Props {
+  user: User;
+}
+
+export default function SchoolCreateForm({ user }: Props) {
   const router = useRouter();
   const [pending, startTransaction] = useTransition();
   const form = useForm<CreateSchool>({
@@ -40,6 +45,7 @@ export default function SchoolCreateForm() {
       isGender: false,
       isShipping: false,
       shippingFee: 0,
+      signature: user.signature || "",
       createdAt: new Date(),
       isPublic: true,
       isDeleted: false,

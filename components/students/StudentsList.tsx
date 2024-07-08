@@ -10,7 +10,7 @@ import {
 } from "../ui/table";
 import { Student } from "@/utils/student.interface";
 import { format } from "date-fns";
-import { calcDifferenceTime } from "@/utils/calc";
+import { calcDifferenceTime, calcTotalPrice } from "@/utils/calc";
 import { School } from "@/utils/school.interface";
 import StudentEditWithDeleteButton from "./StudentEditWithDeleteButton";
 import { useStore } from "@/store";
@@ -117,7 +117,7 @@ export default function StudentsList({ id, students, count, school }: Props) {
             <TableCell>{student.studentNumber}</TableCell>
             <TableCell>{`${student.lastName} ${student.firstName}`}</TableCell>
             <TableCell>{getGenderDisplay(student.gender)}</TableCell>
-            <TableCell>合計</TableCell>
+            <TableCell>{calcTotalPrice(student.products, school)}</TableCell>
             {student?.products &&
               Object.values(student?.products).map((product, index) => (
                 <React.Fragment key={index}>

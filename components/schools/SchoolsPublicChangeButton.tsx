@@ -11,19 +11,13 @@ interface Props {
 }
 
 export default function SchoolsPublicChangeButton({ school }: Props) {
-
   function handlePublicChange() {
     try {
       const schoolRef = doc(db, "schools", school.id);
-      if (school.isPublic) {
-        updateDoc(schoolRef, {
-          isPublic: false
-        });
-      } else {
-        updateDoc(schoolRef, {
-          isPublic: true
-        });
-      }
+      const result = school.isPublic ? false : true;
+      updateDoc(schoolRef, {
+        isPublic: result,
+      });
     } catch (e: unknown) {
       console.error(e);
       const message = e instanceof Error ? e.message : "更新に失敗しました。";
@@ -38,7 +32,9 @@ export default function SchoolsPublicChangeButton({ school }: Props) {
         checked={school.isPublic ? true : false}
         onClick={handlePublicChange}
       />
-      <Label htmlFor="airplane-mode">{school.isPublic ? "公開" : "非公開"}</Label>
+      <Label htmlFor="airplane-mode">
+        {school.isPublic ? "公開" : "非公開"}
+      </Label>
     </div>
   );
 }

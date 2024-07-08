@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import SchoolEditCalendar from "./SchoolEditCalendarI";
 import SchoolEditTitle from "./SchoolEditTitleModal";
 import SchoolEditDesc from "./SchoolEditDescModal";
+import SchoolEditSignature from "./SchoolEditSignature";
 
 interface Props {
   school: School;
@@ -11,7 +12,7 @@ interface Props {
 
 export default function SchoolContent({ school }: Props) {
   return (
-    <div className="space-y-8">
+    <div className="space-y-5">
       <div>
         <div className="flex justify-between items-center">
           {school.isPublic
@@ -28,6 +29,9 @@ export default function SchoolContent({ school }: Props) {
       </div>
       <div>
         <SchoolEditCalendar school={school} />
+      </div>
+      <div>
+        <SchoolEditSignature school={school} />
       </div>
     </div>
   );

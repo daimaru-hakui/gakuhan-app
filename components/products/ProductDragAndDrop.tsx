@@ -65,7 +65,7 @@ export default function ProductDragAndDrop({ id, products }: Props) {
           並び替え
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="w-auto max-w-[800px]">
         <DialogHeader>
           <DialogTitle>並び替え</DialogTitle>
         </DialogHeader>
@@ -83,10 +83,10 @@ export default function ProductDragAndDrop({ id, products }: Props) {
                 "flex items-center gap-3 w-full bg-white border rounded-md p-3 cursor-pointer"
               )}
             >
-              <GenderBadge gender={item.gender} />
+              <GenderBadge gender={item.gender} className="min-w-[80px] flex justify-center" />
               <p>
                 {item.items.map((item) => (
-                  <span key={item.name} className="">
+                  <span key={item.name} className="whitespace-nowrap overflow-ellipsis">
                     {item.name}
                   </span>
                 ))}

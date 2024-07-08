@@ -78,6 +78,12 @@ export default function MeasureDrawer({
 
     form.setValue(`products.${index}.name`, item.name);
 
+    if (item.price === 0) {
+      form.setValue(`products.${index}.price`, 0);
+    } else {
+      form.setValue(`products.${index}.price`, item.price);
+    }
+
     if (item.color.length === 0) {
       form.setValue(`products.${index}.color`, null); //
     } else if (item.color.length === 1) {
@@ -161,8 +167,9 @@ export default function MeasureDrawer({
                     setValue={setCutLength}
                     min={item.inseam.min}
                     max={item.inseam.max}
-                    label={`股下カット  ${item.inseam.price > 0 ? `(${item.inseam.price}円)` : ""
-                      }`}
+                    label={`股下カット  ${
+                      item.inseam.price > 0 ? `(${item.inseam.price}円)` : ""
+                    }`}
                     unit="cm"
                     check={isNoInseam}
                     setCheck={setIsNoInseam}

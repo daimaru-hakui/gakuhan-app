@@ -55,7 +55,14 @@ export default async function StudentPage({ params }: Props) {
     .filter(
       (product) =>
         product.gender === "other" || product.gender === student.gender
-    );
+    )
+    .sort((a, b) => {
+      if (a.sortNum < b.sortNum) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
 
   const productsRaw = JSON.stringify(filterProductsSnap);
   const products = JSON.parse(productsRaw) as Product[];
