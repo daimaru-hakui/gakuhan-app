@@ -65,7 +65,7 @@ export default function ProductDragAndDrop({ id, products }: Props) {
           並び替え
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-auto max-w-[800px] min-h-auto max-h-[calc(100vh-10px)] ">
+      <DialogContent className="w-full max-w-[800px] min-h-auto max-h-[calc(100vh-10px)] ">
         <DialogHeader>
           <DialogTitle>並び替え</DialogTitle>
         </DialogHeader>
@@ -88,11 +88,11 @@ export default function ProductDragAndDrop({ id, products }: Props) {
                   gender={item.gender}
                   className="min-w-[80px] flex justify-center"
                 />
-                <p>
+                <p className="overflow-hidden text-ellipsis">
                   {item.items.map((item) => (
                     <span
                       key={item.name}
-                      className="whitespace-nowrap overflow-ellipsis text-xs"
+                      className="whitespace-nowrap text-xs"
                     >
                       {item.name}
                     </span>
