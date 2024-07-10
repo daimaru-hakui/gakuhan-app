@@ -1,9 +1,9 @@
 import React from "react";
-import AnonymousLoginForm from "./AnonymousLoginForm";
 import { auth } from "@/auth";
 import { notFound, redirect } from "next/navigation";
 import { db } from "@/lib/firebase/server";
 import { School } from "@/utils/school.interface";
+import PaymentLoginForm from "./PaymentLoginForm";
 
 interface Props {
   params: {
@@ -28,7 +28,11 @@ export default async function AnoonymousLoginPage({ params }: Props) {
   }
   return (
     <div className="w-full flex justify-center items-center min-h-[100vh]">
-      <AnonymousLoginForm id={id} school={school} />
+      {school.isPayment ? (
+        <PaymentLoginForm id={id} school={school} />
+      ) : (
+        notFound()
+      )}
     </div>
   );
 }

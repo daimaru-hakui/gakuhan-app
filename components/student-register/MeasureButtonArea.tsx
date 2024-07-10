@@ -4,8 +4,11 @@ import { LoadingButton } from "../form/Buttons";
 import { UseFormReturn } from "react-hook-form";
 import { CreateMeasureStudent } from "@/utils/schemas";
 import { Button } from "../ui/button";
+import { FaCheck } from "react-icons/fa";
+import Link from "next/link";
 
 interface Props {
+  id: string;
   form: UseFormReturn<CreateMeasureStudent, any, any>;
   totalCount: number;
   pending: boolean;
@@ -13,9 +16,11 @@ interface Props {
   setOpen: (bool: boolean) => void;
   onStudentRegister: (data: CreateMeasureStudent) => void;
   data?: CreateMeasureStudent;
+  type?: string;
 }
 
 export default function MeasureButtonArea({
+  id,
   form,
   totalCount,
   pending,
@@ -23,6 +28,7 @@ export default function MeasureButtonArea({
   setOpen,
   onStudentRegister,
   data,
+  type,
 }: Props) {
   const count = form.watch(`products`).filter((product) => {
     let array = [];
@@ -41,17 +47,26 @@ export default function MeasureButtonArea({
     >
       {!open ? (
         <>
-          <div
-            className="text-center border rounded-md p-1"
-          >
-            {count}/{totalCount}
+          <div className="grid grid-cols-1 items-center justify-center border rounded-md p-1 h-9">
+            {count === totalCount ? (
+              <FaCheck className="mx-auto" />
+            ) : (
+              <span className="mx-auto">{`${count} / ${totalCount}`}</span>
+            )}
           </div>
-          <Button
-            className="w-full text-muted"
-            disabled={count !== totalCount ? true : false}
-          >
-            次へ
-          </Button>
+          <div className="flex gap-3">
+            {type === "edit" && (
+              <Button variant="outline" asChild>
+                <Link href={`/schools/${id}/students`}>一覧へ戻る</Link>
+              </Button>
+            )}
+            <Button
+              className="w-full text-muted"
+              disabled={count !== totalCount ? true : false}
+            >
+              次へ
+            </Button>
+          </div>
         </>
       ) : (
         <>
@@ -64,7 +79,7 @@ export default function MeasureButtonArea({
             戻る
           </Button>
           <LoadingButton
-            text="登録"
+            text={type === "edit" ? "更新" : "登録"}
             className="w-full"
             isPending={pending}
             isValid={count !== totalCount ? true : false}

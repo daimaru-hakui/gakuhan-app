@@ -14,9 +14,8 @@ interface Props {
   school: School;
 }
 
-export default function AnonymousLoginForm({ id, school }: Props) {
+export default function AnonymousForm({ id, school }: Props) {
   const [pending, startTransition] = useTransition();
-  const setUser = useStore((state) => state.setUser);
 
   function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -25,7 +24,7 @@ export default function AnonymousLoginForm({ id, school }: Props) {
         const userCredential = await signInAnonymously(auth);
         const user = userCredential.user;
         const token = await user.getIdToken();
-        setUser(user);
+        await auth.signOut()
         await signIn("credentials", {
           token,
           callbackUrl: `/student-register/${id}`,

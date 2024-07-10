@@ -13,7 +13,7 @@ import { redirect } from "next/navigation";
 export async function createStudent(
   data: CreateStudent,
   school: School
-): Promise<{ status: string; message: string; }> {
+): Promise<{ status: string; message: string }> {
   const id = school.id;
   const session = await auth();
   try {
@@ -39,6 +39,15 @@ export async function createStudent(
       studentId: session.user.uid,
     });
 
+    const userRef = db.collection("users").doc(session.user.uid);
+    userRef.update({
+      schools: FieldValue.arrayUnion({
+        id: school.id,
+        schoolName: school.title,
+      }),
+      name: result.lastName + " " + result.firstName,
+      email: result.email || null,
+    });
   } catch (e: unknown) {
     console.log(e);
     return {

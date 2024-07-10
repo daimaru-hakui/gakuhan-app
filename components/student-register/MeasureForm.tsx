@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useTransition } from "react";
-import { Form } from "../ui/form";
+import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { Student } from "@/utils/student.interface";
 import { Product } from "@/utils/product.interface";
@@ -13,7 +13,7 @@ import MeasureButtonArea from "./MeasureButtonArea";
 import { toast } from "sonner";
 import MeasureConfirm from "./MeasureConfirm";
 import MeasureCard from "./MeasureCard";
-import * as actions from '@/actions';
+import * as actions from "@/actions";
 import { School } from "@/utils/school.interface";
 import { useRouter } from "next/navigation";
 import { sendEmail } from "@/utils/send-email";
@@ -22,94 +22,33 @@ interface Props {
   student: Student;
   products: Product[];
   school: School;
+  defaultValues: {
+    name: string | undefined;
+    price: number;
+    size: string;
+    color: string | null;
+    quantity: number | undefined;
+    cutLength: number | undefined;
+    inseam: {
+      price: number;
+      base: number;
+      isFlag: boolean;
+    };
+  }[];
+  type?: string;
 }
 
-export default function MeasureForm({ student, products, school }: Props) {
+export default function MeasureForm({
+  student,
+  products,
+  school,
+  defaultValues,
+  type,
+}: Props) {
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState<CreateMeasureStudent>();
   const [pending, startTransition] = useTransition();
   const router = useRouter();
-  const defaultValues = products.map((product) => {
-    const oneItem = product.items.length === 1;
-    const item = product.items.at(0);
-
-    // サイズ
-    let size;
-    if (oneItem) {
-      switch (item?.size.length) {
-        case 0:
-          size = "F";
-          break;
-        case 1:
-          size = item.size.join();
-          break;
-        default:
-          size = "";
-      }
-    } else {
-      size = "";
-    }
-
-    // カラー
-    let color;
-    if (oneItem) {
-      switch (item?.color.length) {
-        case 0:
-          color = null;
-          break;
-        case 1:
-          color = item.color.join();
-          break;
-        default:
-          color = "";
-      }
-    } else {
-      color = "";
-    }
-
-    // スソ上げ
-    let cutLength;
-    if (oneItem) {
-      cutLength = item?.inseam.isFlag ? undefined : 0;
-    } else {
-      cutLength = undefined;
-    }
-
-    const inseam = {
-      price: 0,
-      base: 0,
-      isFlag: false,
-    };
-
-    if (oneItem) {
-      inseam.price = item?.inseam.isFlag ? item.inseam.price : 0;
-      inseam.base = item?.inseam.isFlag ? item.inseam.base : 0;
-      inseam.isFlag = item?.inseam.isFlag ? true : false;
-    } else {
-      inseam.price = 0;
-      inseam.base = 0;
-      inseam.isFlag = product.items.some((item) => item.inseam.isFlag);
-    }
-
-    let quantity;
-    if (product.quantity.min === product.quantity.max) {
-      quantity = product.quantity.min;
-    }
-
-    return {
-      name: oneItem ? item?.name : "",
-      price: oneItem ? item?.price || 0 : 0,
-      size,
-      color,
-      quantity,
-      cutLength,
-      inseam: {
-        price: inseam.price,
-        base: inseam.base,
-        isFlag: inseam.isFlag,
-      },
-    };
-  });
 
   const form = useForm<CreateMeasureStudent>({
     resolver: zodResolver(CreateMeasureStudentSchema),
@@ -126,16 +65,23 @@ export default function MeasureForm({ student, products, school }: Props) {
     console.log(data);
   }
 
-  async function handleClickRegister(data: CreateMeasureStudent) {
+  async function handleStudentRegister(data: CreateMeasureStudent) {
     const result = confirm("登録して宜しいでしょうか");
     if (!result) return;
     startTransition(async () => {
-      const { status, message } =
-        await actions.createMeasureStudent(
-          data, { schoolId: school.id, studentId: student.id });
+      const { status, message } = await actions.createMeasureStudent(data, {
+        schoolId: school.id,
+        studentId: student.id,
+      });
       if (status === "success") {
         await sendEmail(data, student, school);
-        router.push(`/student-register/{schoolId}/students/${student.id}/compleate`);
+        if (type === "edit") {
+          router.push(`/schools/${school.id}/students`);
+          return;
+        }
+        router.push(
+          `/student-register/${school.id}/students/${student.id}/compleate`
+        );
       } else {
         toast.error(message);
       }
@@ -165,13 +111,15 @@ export default function MeasureForm({ student, products, school }: Props) {
           <MeasureConfirm values={values} school={school} />
         )}
         <MeasureButtonArea
+          id={school.id}
           form={form}
           totalCount={products.length}
           pending={pending}
           open={open}
           setOpen={setOpen}
-          onStudentRegister={handleClickRegister}
+          onStudentRegister={handleStudentRegister}
           data={values}
+          type={type}
         />
       </form>
     </Form>

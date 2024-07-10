@@ -38,7 +38,10 @@ export default async function StudentRegisterPage({ params }: Props) {
 
   return (
     <div>
-      <StudentRagisterContainer school={school} />
+      <StudentRagisterContainer
+        school={school}
+        email={session.user.email || ""}
+      />
     </div>
   );
 }

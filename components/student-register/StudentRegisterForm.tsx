@@ -16,9 +16,10 @@ import PrivacyText from "./PrivacyText";
 
 interface Props {
   school: School;
+  email?: string;
 }
 
-export default function StudentRegisterForm({ school }: Props) {
+export default function StudentRegisterForm({ school, email }: Props) {
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState<CreateStudent>();
   const [agreement, setAgreement] = useState<boolean>(false);
@@ -39,7 +40,7 @@ export default function StudentRegisterForm({ school }: Props) {
         building: school.isAddress ? "" : null,
       },
       tel: school.isAddress ? "" : null,
-      email: "",
+      email: email || "",
     },
   });
 
@@ -157,7 +158,9 @@ export default function StudentRegisterForm({ school }: Props) {
         />
         <PrivacyText agreement={agreement} setAgreement={setAgreement} />
         <div className="text-center">
-          <Button disabled={!form.formState.isValid || !agreement}>確認する</Button>
+          <Button disabled={!form.formState.isValid || !agreement}>
+            確認する
+          </Button>
         </div>
         <StudentRegisterConfirm
           open={open}

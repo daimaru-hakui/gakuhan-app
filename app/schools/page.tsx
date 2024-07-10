@@ -1,6 +1,14 @@
+import { auth } from "@/auth";
 import SchoolsContainer from "@/components/schools/SchoolsContainer";
+import { notFound } from "next/navigation";
 
-export default function SchoolsPage() {
+export default async function SchoolsPage() {
+  const session = await auth();
+  if (!session) return notFound();
+
+  const role = session.user.role;
+  if (role === "user") notFound();
+  
   return (
     <div className="w-full grid grid-cols-1 px-6">
       <SchoolsContainer />

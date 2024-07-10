@@ -20,6 +20,8 @@ export default async function StudentPage({ params }: Props) {
   const session = await auth();
   if (!session) return <NotFound />;
 
+  if (session.user.uid !== studentId) notFound();
+
   const schoolSnap = await db.collection("schools").doc(id).get();
   if (!schoolSnap.exists) return notFound();
   const schoolRaw = JSON.stringify({ ...schoolSnap.data(), id: schoolSnap.id });

@@ -57,7 +57,7 @@ export default function StudentsList({ id, students, count, school }: Props) {
     <Table className="text-xs">
       <TableHeader>
         <TableRow>
-          <TableHead className="min-w-[80px]">
+          <TableHead className="min-w-[100px]">
             <Checkbox
               id="terms"
               checked={studentsCheckList.length > 0}
@@ -116,15 +116,25 @@ export default function StudentsList({ id, students, count, school }: Props) {
             </TableCell>
             <TableCell>{student.studentNumber}</TableCell>
             <TableCell>{`${student.lastName} ${student.firstName}`}</TableCell>
-            <TableCell>{getGenderDisplay(student.gender)}</TableCell>
-            <TableCell>{calcTotalPrice(student.products, school)}</TableCell>
+            <TableCell>
+              {getGenderDisplay(student.gender)?.replace("用", "")}
+            </TableCell>
+            <TableCell>
+              {student.totalAmount
+                ? `${student.totalAmount.toLocaleString()}円`
+                : ""}
+            </TableCell>
             {student?.products &&
               Object.values(student?.products).map((product, index) => (
                 <React.Fragment key={index}>
                   {product.name ? (
                     <>
-                      <TableCell className="whitespace-nowrap">{product.name}</TableCell>
-                      <TableCell className="whitespace-nowrap">{product.color}</TableCell>
+                      <TableCell className="whitespace-nowrap">
+                        {product.name}
+                      </TableCell>
+                      <TableCell className="whitespace-nowrap">
+                        {product.color}
+                      </TableCell>
                       <TableCell>{product.size}</TableCell>
                       <TableCell>{product.quantity}</TableCell>
                       <TableCell>

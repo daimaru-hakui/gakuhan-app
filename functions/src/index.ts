@@ -23,17 +23,26 @@ export const processSignUp = functions.auth.user().onCreate(async (user) => {
   }
   try {
     await getAuth().setCustomUserClaims(user.uid, customClaims);
-    if (user.providerData.length === 0) return;
     const userRef = db.doc(`users/${user.uid}`);
     await userRef.set({
       createdAt: new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" }),
       email: user.email,
-      signature: "",
     });
   } catch (e) {
     console.log(e);
   }
 });
+
+export const processDeleteUser = functions.auth
+  .user()
+  .onDelete(async (user) => {
+    try {
+      const userRef = db.doc(`users/${user.uid}`);
+      await userRef.delete();
+    } catch (e) {
+      console.log(e);
+    }
+  });
 
 export const deleteImage = onDocumentDeleted("media/{docId}", (event) => {
   const snapshot = event.data;

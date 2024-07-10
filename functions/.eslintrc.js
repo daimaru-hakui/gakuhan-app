@@ -32,5 +32,6 @@ module.exports = {
     "object-curly-spacing": "off",
     "quote-props": "off",
     "semi": "off",
+    "max-len": "off",
   },
 };

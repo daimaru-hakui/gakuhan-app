@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import PublicStudentsBoard from "@/components/students/board/StudentsBoard";
 import { db } from "@/lib/firebase/server";
 import { School } from "@/utils/school.interface";
@@ -10,6 +11,12 @@ interface Props {
 }
 
 export default async function PublicStudentsPage({ params }: Props) {
+  const session = await auth();
+  if (!session) return notFound();
+
+  const role = session.user.role;
+  if (role === "user") notFound();
+
   const { id } = params;
   const schoolSnap = await db.collection("schools").doc(id).get();
   const school = schoolSnap.data() as School;

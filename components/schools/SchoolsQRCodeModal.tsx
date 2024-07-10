@@ -83,7 +83,7 @@ export default function SchoolsQRCodeModal({
             <QRCode
               size={256}
               style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-              value={`auth/${school.id}/login`}
+              value={`${hostName}/auth/${school.id}/register`}
               viewBox={`0 0 256 256`}
             />
           </div>
@@ -91,7 +91,7 @@ export default function SchoolsQRCodeModal({
         <div className="flex items-center gap-3">
           <Input
             ref={inputRef}
-            defaultValue={`${hostName}/auth/${school.id}/login`}
+            defaultValue={`${hostName}/auth/${school.id}/register`}
             onFocus={(e) => e.target.select()}
           />
           <MdContentCopy

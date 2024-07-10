@@ -9,7 +9,7 @@ export default function StripeForm() {
   const [error, setError] = useState(null);
 
   const handleSubmit = async (event: any) => {
-    event.preventDefault(); // Prevent default form submission behavior
+    event.preventDefault(); 
 
     setIsLoading(true);
     setError(null);

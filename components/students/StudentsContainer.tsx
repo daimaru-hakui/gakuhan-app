@@ -6,8 +6,7 @@ import React, { useEffect, useState } from "react";
 import PublicStudentsList from "./StudentsList";
 import LoaderIcon from "../LoaderIcon";
 import { School } from "@/utils/school.interface";
-import PublicStudentsHeader from "./StudentsHeader";
-import SchoolHeader from "../schools/setting/SchoolHeader";
+import StudentsHeader from "./StudentsHeader";
 
 interface Props {
   id: string;
@@ -47,7 +46,7 @@ export default function StudentsContainer({ id, count, school }: Props) {
   return (
     <div className="px-6">
       <div className="flex justify-between mb-4">
-        <PublicStudentsHeader id={id} />
+        <StudentsHeader id={id} students={students} />
       </div>
       <PublicStudentsList
         id={id}

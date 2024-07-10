@@ -3,6 +3,7 @@ import { Checkbox } from "../ui/checkbox";
 import { useStore } from "@/store";
 import Link from "next/link";
 import { RiEditLine } from "react-icons/ri";
+import { Button } from "../ui/button";
 
 interface Props {
   id: string;
@@ -10,7 +11,11 @@ interface Props {
   flag: boolean;
 }
 
-export default function StudentEditWithDeleteButton({ id, studentId, flag }: Props) {
+export default function StudentEditWithDeleteButton({
+  id,
+  studentId,
+  flag,
+}: Props) {
   const [checked, setChecked] = useState(false);
   const studentsCheckList = useStore((state) => state.studentsCheckList);
   const addStudentsCheckList = useStore((state) => state.addStudentsCheckList);
@@ -37,11 +42,14 @@ export default function StudentEditWithDeleteButton({ id, studentId, flag }: Pro
   }
 
   return (
-    <div className="grid grid-cols-2 gap-2">
+    <div className="grid grid-cols-3 gap-2 items-center">
       <Checkbox id="terms" checked={checked} onCheckedChange={handleCheck} />
-      <Link href={`/schools/${id}/students/${studentId}/edit`}>
+      <Button size="sm" className="w-12">
+        <Link href={`/schools/${id}/students/${studentId}`}>詳細</Link>
+      </Button>
+      {/* <Link href={`/schools/${id}/students/${studentId}/edit`}>
         <RiEditLine size={18} />
-      </Link>
+      </Link> */}
     </div>
   );
 }

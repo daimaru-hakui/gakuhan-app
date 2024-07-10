@@ -37,3 +37,17 @@ export interface Student {
   startedAt: Timestamp;
   finishedAt: Timestamp | null;
 }
+
+export interface StudentProduct {
+  name: string | undefined;
+  price: number;
+  size: string;
+  color: string | null;
+  quantity: number | undefined;
+  cutLength: number | undefined;
+  inseam: {
+    price: number;
+    base: number;
+    isFlag: boolean;
+  };
+}[];

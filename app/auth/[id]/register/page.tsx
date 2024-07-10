@@ -1,9 +1,9 @@
-import React from "react";
-import { auth } from "@/auth";
-import { notFound, redirect } from "next/navigation";
 import { db } from "@/lib/firebase/server";
+import PaymentSignUpForm from "./PaymentSignUpForm";
+import { notFound, redirect } from "next/navigation";
+import { auth } from "@/auth";
 import { School } from "@/utils/school.interface";
-import LoginForm from "@/app/auth/login/LoginForm";
+import AnonymousForm from "./AnonymousForm";
 
 interface Props {
   params: {
@@ -11,7 +11,7 @@ interface Props {
   };
 }
 
-export default async function PaymentLoginPage({ params }: Props) {
+export default async function PaymentSignUpPage({ params }: Props) {
   const { id } = params;
 
   const schoolSnap = await db.collection("schools").doc(id).get();
@@ -28,7 +28,11 @@ export default async function PaymentLoginPage({ params }: Props) {
   }
   return (
     <div className="w-full flex justify-center items-center min-h-[100vh]">
-      <LoginForm />
+      {school.isPayment ? (
+        <PaymentSignUpForm id={id} school={school} />
+      ) : (
+        <AnonymousForm id={id} school={school} />
+      )}
     </div>
   );
 }
