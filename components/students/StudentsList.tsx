@@ -104,10 +104,10 @@ export default function StudentsList({ id, students, count, school }: Props) {
           <TableRow
             key={student.id}
             className={cn(
-              student.finishedAt ? "" : "bg-red-400 hover:bg-red-500 w-full"
+              student.finishedAt ? "" : "bg-red-400 hover:bg-red-500 w-full",
             )}
           >
-            <TableCell>
+            <TableCell className="py-1">
               <StudentEditWithDeleteButton
                 id={id}
                 studentId={student.id}

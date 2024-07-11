@@ -1,5 +1,5 @@
 import NextAuth from "next-auth";
-import { auth as firebaseAuth } from './lib/firebase/server';
+import { auth as firebaseAuth } from "./lib/firebase/server";
 import Credentials from "next-auth/providers/credentials";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -12,18 +12,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const decoded = await firebaseAuth.verifyIdToken(idToken);
         user = {
           ...decoded,
-          uid: decoded.uid
+          uid: decoded.uid,
         };
         if (!user) {
           throw new Error("User not found");
         }
         return user;
-      }
-    })
+      },
+    }),
   ],
   session: {
-    strategy: 'jwt',
-    maxAge: 60 * 60
+    strategy: "jwt",
+    maxAge: 60 * 60,
   },
   callbacks: {
     async jwt({ token, user }: any) {
@@ -32,7 +32,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       session.user.role = token.role;
       session.user.uid = token.uid;
+      session.user.displayName = token.displayName;
       return session;
-    }
-  }
+    },
+  },
 });

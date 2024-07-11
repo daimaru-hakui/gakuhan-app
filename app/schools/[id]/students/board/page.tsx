@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import PublicStudentsBoard from "@/components/students/board/StudentsBoard";
+import StudentsBoard from "@/components/students/board/StudentsBoard";
 import { db } from "@/lib/firebase/server";
 import { School } from "@/utils/school.interface";
 import { notFound } from "next/navigation";
@@ -27,7 +27,7 @@ export default async function PublicStudentsPage({ params }: Props) {
 
   return (
     <div>
-      <PublicStudentsBoard id={id} />
+      <StudentsBoard id={id} />
     </div>
   );
 }

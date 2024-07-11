@@ -37,12 +37,12 @@ export default function PublicStudentsBoard({ id }: Props) {
     );
 
   return (
-    <div className="flex flex-row flex-wrap gap-3">
+    <div className="flex flex-row flex-wrap gap-1">
       {students.map((student) => (
         <div
           key={student.id}
           className={cn(
-            "border rounded-md p-1",
+            "border rounded-md mx-auto p-0.5 text-sm w-[100px]",
             student.finishedAt
               ? "bg-muted"
               : "bg-red-400 text-primary-foreground"

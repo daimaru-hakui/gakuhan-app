@@ -16,10 +16,14 @@ import PrivacyText from "./PrivacyText";
 
 interface Props {
   school: School;
-  email?: string;
+  user?: {
+    email: string | undefined;
+    lastName: string | undefined;
+    firstName: string | undefined;
+  };
 }
 
-export default function StudentRegisterForm({ school, email }: Props) {
+export default function StudentRegisterForm({ school, user }: Props) {
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState<CreateStudent>();
   const [agreement, setAgreement] = useState<boolean>(false);
@@ -29,8 +33,8 @@ export default function StudentRegisterForm({ school, email }: Props) {
     mode: "onChange",
     defaultValues: {
       studentNumber: "",
-      lastName: "",
-      firstName: "",
+      lastName: user?.lastName || "",
+      firstName: user?.firstName || "",
       gender: school.isGender ? "" : "other",
       address: {
         zipCode: school.isAddress ? "" : null,
@@ -40,7 +44,7 @@ export default function StudentRegisterForm({ school, email }: Props) {
         building: school.isAddress ? "" : null,
       },
       tel: school.isAddress ? "" : null,
-      email: email || "",
+      email: user?.email || "",
     },
   });
 

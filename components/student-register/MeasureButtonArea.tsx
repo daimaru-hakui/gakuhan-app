@@ -9,6 +9,7 @@ import Link from "next/link";
 
 interface Props {
   id: string;
+  studentId: string;
   form: UseFormReturn<CreateMeasureStudent, any, any>;
   totalCount: number;
   pending: boolean;
@@ -21,6 +22,7 @@ interface Props {
 
 export default function MeasureButtonArea({
   id,
+  studentId,
   form,
   totalCount,
   pending,
@@ -57,7 +59,9 @@ export default function MeasureButtonArea({
           <div className="flex gap-3">
             {type === "edit" && (
               <Button variant="outline" asChild>
-                <Link href={`/schools/${id}/students`}>一覧へ戻る</Link>
+                <Link href={`/schools/${id}/students/${studentId}`}>
+                  編集キャンセル
+                </Link>
               </Button>
             )}
             <Button

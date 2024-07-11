@@ -11,10 +11,14 @@ import StudentRegisterForm from "./StudentRegisterForm";
 
 interface Props {
   school: School;
-  email?: string;
+  user?: {
+    email:string | undefined,
+    lastName:string | undefined,
+    firstName:string | undefined
+  };
 }
 
-export default function StudentRagisterContainer({ school, email }: Props) {
+export default function StudentRagisterContainer({ school, user }: Props) {
   if (!school) return;
 
   return (
@@ -26,7 +30,7 @@ export default function StudentRagisterContainer({ school, email }: Props) {
         </CardHeader>
         <CardContent className="w-full space-y-6">
           <CardDescription>{school.description}</CardDescription>
-          <StudentRegisterForm school={school} email={email} />
+          <StudentRegisterForm school={school} user={user} />
         </CardContent>
       </Card>
     </div>

@@ -1,7 +1,6 @@
 import NotFound from "@/app/not-found";
 import { auth } from "@/auth";
 import StudentProductList from "@/components/students/StudentProductList";
-import StudentQrCode from "@/components/students/StudentQrCode";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { db } from "@/lib/firebase/server";
@@ -39,9 +38,10 @@ export default async function PublicStudentShowPage({ params }: Props) {
     id: studentSnap.id,
   });
   const student = JSON.parse(studentRaw) as Student;
-  
+  const { zipCode, prefecture, city, street, building } = student.address;
+
   return (
-    <div className="w-full max-w-[900px] mb-6">
+    <div className="w-full max-w-[900px] mb-6 px-3">
       <header className="flex justify-between">
         <Button size="sm" variant="outline">
           <Link href={`/schools/${id}/students`}>一覧へ戻る</Link>
@@ -55,7 +55,7 @@ export default async function PublicStudentShowPage({ params }: Props) {
           <CardTitle>詳細</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_300px]">
+          <div className="grid grid-cols-1 md:grid-cols-2">
             <div className="space-y-1">
               <dl className="grid grid-cols-[100px_1fr]">
                 <dt>学籍番号</dt>
@@ -69,22 +69,35 @@ export default async function PublicStudentShowPage({ params }: Props) {
                 <dt>性別</dt>
                 <dd>{getGenderDisplay(student.gender)?.replace("用", "")}</dd>
               </dl>
-              <dl className="grid grid-cols-[100px_1fr]">
-                <dt>住所</dt>
-                <dd className="whitespace-pre-wrap">
-                  {`〒${student.address.zipCode}\n${student.address.prefecture}${student.address.city}\n${student.address.street}\n${student.address.building}`}
-                </dd>
-              </dl>
-              <dl className="grid grid-cols-[100px_1fr]">
-                <dt>TEL</dt>
-                <dd>{student.tel}</dd>
-              </dl>
-              <dl className="grid grid-cols-[100px_1fr]">
-                <dt>Email</dt>
-                <dd>{student.email}</dd>
-              </dl>
+              {student.totalAmount && (
+                <dl className="grid grid-cols-[100px_1fr]">
+                  <dt>金額</dt>
+                  <dd>{student.totalAmount.toLocaleString()}円</dd>
+                </dl>
+              )}
             </div>
-            <StudentQrCode id={id} studentId={student.id} />
+            <div className="space-y-1">
+              {student.email && (
+                <dl className="grid grid-cols-[100px_1fr]">
+                  <dt>Email</dt>
+                  <dd>{student.email}</dd>
+                </dl>
+              )}
+              {student.tel && (
+                <dl className="grid grid-cols-[100px_1fr]">
+                  <dt>TEL</dt>
+                  <dd>{student.tel}</dd>
+                </dl>
+              )}
+              {zipCode && (
+                <dl className="grid grid-cols-[100px_1fr]">
+                  <dt>住所</dt>
+                  <dd className="whitespace-pre-wrap">
+                    {`〒${zipCode}\n${prefecture}${city}${street}\n${building}`}
+                  </dd>
+                </dl>
+              )}
+            </div>
           </div>
           <StudentProductList products={student.products} />
         </CardContent>

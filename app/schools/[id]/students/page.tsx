@@ -1,7 +1,7 @@
+import { auth } from "@/auth";
 import StudentsContainer from "@/components/students/StudentsContainer";
 import { db } from "@/lib/firebase/server";
 import { Product } from "@/utils/product.interface";
-import { School } from "@/utils/school.interface";
 
 interface Props {
   params: {
@@ -9,11 +9,14 @@ interface Props {
   };
 }
 
-export default async function PublicStudentsPage({ params }: Props) {
+export default async function StudentsPage({ params }: Props) {
   const { id } = params;
 
   const schoolSnap = await db.collection("schools").doc(id).get();
-  const schoolData= JSON.stringify({ ...schoolSnap.data(), id: schoolSnap.id })
+  const schoolData = JSON.stringify({
+    ...schoolSnap.data(),
+    id: schoolSnap.id,
+  });
   const school = JSON.parse(schoolData);
 
   const productsSnap = await db

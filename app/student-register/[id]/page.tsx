@@ -3,8 +3,10 @@ import { auth } from "@/auth";
 import StudentRagisterContainer from "@/components/student-register/StudentRagisterContainer";
 import { db } from "@/lib/firebase/server";
 import { School } from "@/utils/school.interface";
+import { Auth } from "firebase-admin/auth";
 import { notFound, redirect } from "next/navigation";
 import React from "react";
+import { auth as firebaseAuth } from "@/lib/firebase/server";
 
 interface Props {
   params: {
@@ -36,11 +38,21 @@ export default async function StudentRegisterPage({ params }: Props) {
     redirect(`/student-register/${id}/students/${session.user.uid}`);
   }
 
+  const { email, displayName } = await firebaseAuth.getUser(session.user.uid);
+  const lastName = displayName?.split(" ")[0];
+  const firstName = displayName?.split(" ")[1];
+
+  const user = {
+    email,
+    lastName,
+    firstName,
+  };
+
   return (
     <div>
       <StudentRagisterContainer
         school={school}
-        email={session.user.email || ""}
+        user={user}
       />
     </div>
   );

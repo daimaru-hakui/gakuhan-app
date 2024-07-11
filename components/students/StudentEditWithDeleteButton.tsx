@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Checkbox } from "../ui/checkbox";
 import { useStore } from "@/store";
 import Link from "next/link";
-import { RiEditLine } from "react-icons/ri";
 import { Button } from "../ui/button";
 
 interface Props {
@@ -47,9 +46,6 @@ export default function StudentEditWithDeleteButton({
       <Button size="sm" className="w-12">
         <Link href={`/schools/${id}/students/${studentId}`}>詳細</Link>
       </Button>
-      {/* <Link href={`/schools/${id}/students/${studentId}/edit`}>
-        <RiEditLine size={18} />
-      </Link> */}
     </div>
   );
 }

@@ -112,6 +112,7 @@ export default function MeasureForm({
         )}
         <MeasureButtonArea
           id={school.id}
+          studentId={student.id}
           form={form}
           totalCount={products.length}
           pending={pending}

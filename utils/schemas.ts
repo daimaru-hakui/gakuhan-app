@@ -25,6 +25,30 @@ export const SignUpSchema = z
   });
 export type SignUpInputs = z.infer<typeof SignUpSchema>;
 
+export const PaymentSignUpSchema = z
+  .object({
+    email: z
+      .string()
+      .min(1, { message: "emailを入力してください" })
+      .email({ message: "email形式で入力してください" }),
+    lastName: z.string().min(1, { message: "姓を入力してください" }),
+    firstName: z.string().min(1, { message: "名を入力してください" }),
+    password: z.string().min(8, { message: "8文字以上で登録をお願いします。" }),
+    confirmPassword: z
+      .string()
+      .min(8, { message: "8文字以上で登録をお願いします。" }),
+  })
+  .superRefine(({ password, confirmPassword }, ctx) => {
+    if (password !== confirmPassword) {
+      ctx.addIssue({
+        path: ["confirmPassword"],
+        code: "custom",
+        message: "パスワードと確認パスワードが一致しません",
+      });
+    }
+  });
+export type PaymentSignUpInputs = z.infer<typeof PaymentSignUpSchema>;
+
 export const CreateSchoolSchema = z.object({
   title: z
     .string()
@@ -32,7 +56,7 @@ export const CreateSchoolSchema = z.object({
     .max(100, { message: "100文字以内で入力してください" }),
   scheduledDate: z.date().optional(),
   description: z.string().max(1000),
-  signature:z.string().max(1000).optional()
+  signature: z.string().max(1000).optional(),
 });
 export type CreateSchool = z.infer<typeof CreateSchoolSchema>;
 
