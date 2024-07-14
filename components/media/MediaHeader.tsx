@@ -4,11 +4,13 @@ import { useStore } from "@/store";
 import { format } from "date-fns";
 import { addDoc, collection } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { useSession } from "next-auth/react";
 import { useRef, useState } from "react";
 import { LuLoader2, LuPlus } from "react-icons/lu";
 
 export default function MediaHeader() {
-  const user = useStore((state) => state.user);
+  const session = useSession();
+  const user = session.data?.user;
   const inputRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
