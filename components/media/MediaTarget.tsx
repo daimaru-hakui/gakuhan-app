@@ -3,8 +3,7 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import { MediaImage } from "./MediaModal";
 import { deleteDoc, doc } from "firebase/firestore";
-import { db, storage } from "@/lib/firebase/client";
-import { deleteObject, ref } from "firebase/storage";
+import { db } from "@/lib/firebase/client";
 import { useState } from "react";
 import { LuLoader2 } from "react-icons/lu";
 

@@ -18,10 +18,10 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase/client";
-import { useStore } from "@/store";
 import { format } from "date-fns";
 import { getfileCapacity } from "@/utils/calc";
 import EmptyList from "../EmptyList";
+import { useSession } from "next-auth/react";
 
 interface Props {
   mediaImage: MediaImage | null;
@@ -30,11 +30,12 @@ interface Props {
 
 export default function MediaList({ mediaImage, setMediaImage }: Props) {
   const [images, setImages] = useState<MediaImage[]>();
-  const user = useStore((state) => state.user);
+  const session = useSession();
+  const user = session.data?.user;
 
   useEffect(() => {
-    const mediaRef = collection(db, "media");
     if (!user) return;
+    const mediaRef = collection(db, "media");
     const q = query(
       mediaRef,
       orderBy("createdAt", "desc"),
