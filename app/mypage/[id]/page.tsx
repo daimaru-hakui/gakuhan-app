@@ -2,8 +2,8 @@ import React from "react";
 import { db, auth as firebaseAuth } from "@/lib/firebase/server";
 import { notFound } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { auth } from "@/auth";
+import MyPageIdContainer from "@/components/mypage/MyPageIdContainer";
 interface Props {
   params: {
     id: string;
@@ -59,11 +59,7 @@ export default async function MyPageById({ params }: Props) {
         </div>
         <Separator />
         {schools.map((school) => (
-          <Card key={school.id}>
-            <CardHeader>
-              <CardTitle>{school.schoolName}</CardTitle>
-            </CardHeader>
-          </Card>
+          <MyPageIdContainer key={school.id} school={school} uid={id}/>
         ))}
       </div>
     </section>

@@ -10,6 +10,7 @@ export interface Student {
   schoolName: string;
   studentId: string;
   totalAmount: number;
+  paymentStatus: boolean;
   address: {
     zipCode: string;
     prefecture: string;
@@ -50,4 +51,5 @@ export interface StudentProduct {
     base: number;
     isFlag: boolean;
   };
-}[];
+}
+[];
