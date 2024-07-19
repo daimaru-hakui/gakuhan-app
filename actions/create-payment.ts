@@ -27,9 +27,8 @@ export async function createPayment({
     redirect("/mypate");
   }
   const student = studentSnap.data() as Student;
-  if (student.paymentStatus) {
-    redirect("/mypage");
+  if (!student.paymentStatus) {
+    redirect(`/checkout?schoolId=${schoolId}&studentId=${studentId}`);
   }
-
-  redirect(`/checkout?schoolId=${schoolId}&studentId=${studentId}`);
+  redirect("/mypage");
 }
