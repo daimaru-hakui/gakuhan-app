@@ -36,7 +36,7 @@ export default function LoginForm() {
       .then((userCredential) => {
         const user = userCredential.user;
         user.getIdToken().then((token) => {
-          signIn("credentials", { token, callbackUrl: "/schools" });
+          signIn("credentials", { token, callbackUrl: "/" });
         });
         setUser(user);
       })

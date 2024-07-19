@@ -33,5 +33,5 @@ export const GET = async (req: NextRequest) => {
       statusText: "Internal Server Error",
     });
   }
-  redirect(`/mypage/${studentId}`);
+  redirect(`/mypage}`);
 };
